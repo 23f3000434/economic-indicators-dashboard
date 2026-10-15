@@ -1,6 +1,6 @@
 # Requirements and verification
 
-The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope is documents, source probes, one source/storage/contract proof, tests, and a local commit. Full frontend/API development and authentication implementation are outside this checkpoint.
+The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope is the complete local authenticated GDP vertical slice, including scaffold, migrations, scheduled collection, protected API, one React panel and verification. Other providers, public deployment and final Figma acceptance remain outside this stage. Domain/DNS does not block local implementation.
 
 References read without modification:
 - `Interview_Round_2_Full_Stack_Application_Challenge.docx` supplied from Downloads.
@@ -20,7 +20,7 @@ References read without modification:
 | R07 | Independent scheduled collector, timeouts, caching, validation, rate-aware refresh, frontend update mechanism | Job and failure tests, collection-run records, browser polling audit; more users do not increase upstream fetch rates |
 | R08 | Provider failures isolated; last valid observations retained and marked stale; missing values shown as `—` | Malformed/timeout/missing-value fixtures; one provider fails while other panels still render; no replacement with invalid/zero data |
 | R09 | Useful loading, empty, unavailable, API error/offline, and stale states | State and layout tests; fixed panel space during initial load; partial failures preserve dashboard structure |
-| R10 | Sign-in protects dashboard/API; selected refreshable session behaviour | Authentication acceptance in `contracts.md`; separate evaluation account instructions; auth remains unimplemented now |
+| R10 | Sign-in protects dashboard/API; selected refreshable session behaviour | Authentication acceptance in `contracts.md`; separate evaluation account instructions; local slice implements it |
 | R11 | Persistent private database; parameterized direct SQL; no untrusted SQL concatenation | SQL review; restart/redeploy and restore checks; filesystem permissions; no DB network listener or static-file exposure |
 | R12 | Frontend and API on separate HTTPS websites and separate hosting environments; exact-origin CORS | Remote checks of both origins, certificates, allowed/disallowed CORS requests; hosting/domain setup recorded |
 | R13 | Health route; API request/response/auth documentation; environment names; DB setup/migrations; local run instructions | OpenAPI and README review; clean-checkout setup; health does not call upstream providers |
@@ -32,7 +32,7 @@ The SVG is `1248 × 2193`, has outlined text and embedded images, and cannot pro
 
 | Deliverable | Verification/completion gate |
 | --- | --- |
-| Repository with frontend/backend, schema/migrations, README | Clean checkout runs; secrets absent; current commit is a preparatory checkpoint only |
+| Repository with frontend/backend, schema/migrations, README | Locked local setup, tests and GDP slice are implemented; full multi-provider delivery is still pending |
 | Frontend URL, API/docs URL, health URL | Accessible during evaluation; production HTTPS/CORS/health checks pass |
 | Evaluation account or instructions shared separately | Login works; no passwords, signing keys, refresh tokens, or production credentials committed |
 | Portfolio URL and flagship project links | User supplies working links plus accurate role, technologies, and contribution summaries |

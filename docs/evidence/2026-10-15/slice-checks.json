@@ -1,0 +1,55 @@
+{
+  "checked_at": "2026-10-15T15:04:53.400Z",
+  "runtime": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1"
+  },
+  "commands": [
+    {
+      "command": ".venv/bin/pytest -q",
+      "result": "passed",
+      "tests": 40,
+      "subtests": 9,
+      "warnings": [
+        "Starlette TestClient HTTPX adapter deprecation"
+      ]
+    },
+    {
+      "command": ".venv/bin/ruff check backend tests",
+      "result": "passed"
+    },
+    {
+      "command": "npm test",
+      "result": "passed",
+      "tests": 2
+    },
+    {
+      "command": "npm run format:check",
+      "result": "passed"
+    },
+    {
+      "command": "npm run build",
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:browser",
+      "result": "passed",
+      "tests": 5
+    },
+    {
+      "command": "node scripts/smoke_local.mjs",
+      "result": "passed",
+      "checks": 11
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "external_gates": [
+    "controlled-domain HTTPS/DNS and production cookies",
+    "hosting/persistent disk/backup restore",
+    "other provider collectors and market access",
+    "exact Figma and full dashboard acceptance"
+  ]
+}

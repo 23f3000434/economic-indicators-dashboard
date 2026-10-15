@@ -1,0 +1,91 @@
+import json
+from pathlib import Path
+
+import httpx
+import pytest
+from app.config import Settings
+from app.main import create_app
+from fastapi.testclient import TestClient
+
+FIXTURES = Path(__file__).parent / "fixtures"
+PASSWORD = "Test-only password 93!"
+
+
+class Clock:
+    def __init__(self):
+        self.value = 1792065600.0  # 2026-10-15 UTC; tests never change the production clock.
+
+    def __call__(self):
+        return self.value
+
+    def advance(self, seconds):
+        self.value += seconds
+
+
+def fixture_response(request):
+    path = request.url.path
+    name = (
+        "world_bank_india_metadata"
+        if "metadata" in path
+        else "world_bank_indicator"
+        if "/country/" not in path
+        else "world_bank_india"
+        if "/IND/" in path
+        else "world_bank_world"
+    )
+    payload = json.loads((FIXTURES / f"{name}.json").read_text())
+    if name in {"world_bank_india", "world_bank_world"}:
+        start, end = map(int, request.url.params["date"].split(":"))
+        payload[1] = [p for p in payload[1] if start <= int(p["date"]) <= end]
+        payload[0]["total"] = len(payload[1])
+    return httpx.Response(200, json=payload)
+
+
+@pytest.fixture
+def settings(tmp_path):
+    return Settings(
+        database=tmp_path / "private/dashboard.sqlite3",
+        jwt_secret="j" * 48,
+        csrf_secret="c" * 48,
+        rotation_secret="r" * 48,
+        environment="test",
+        collector_enabled=False,
+        start_year=2020,
+        end_year=2025,
+        collection_years=6,
+        upstream_attempts=1,
+    )
+
+
+@pytest.fixture
+def clock():
+    return Clock()
+
+
+@pytest.fixture
+def app(settings, clock):
+    return create_app(settings, clock)
+
+
+@pytest.fixture
+def client(app):
+    with TestClient(app, base_url="http://localhost:8000") as client:
+        app.state.auth.create_user("analyst", PASSWORD)
+        yield client
+
+
+def login(client, username="analyst", password=PASSWORD):
+    return client.post(
+        "/api/v1/auth/login",
+        json={"username": username, "password": password},
+        headers={"Origin": "http://localhost:5173", "X-CSRF-Protection": "1"},
+    )
+
+
+def headers(tokens):
+    return {
+        "Origin": "http://localhost:5173",
+        "Content-Type": "application/json",
+        "X-CSRF-Protection": "1",
+        "X-CSRF-Token": tokens["csrf_token"],
+    }

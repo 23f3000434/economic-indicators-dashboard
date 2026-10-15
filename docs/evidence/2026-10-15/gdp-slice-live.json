@@ -1,0 +1,262 @@
+{
+  "checked_at": "2026-10-15T15:04:53.400Z",
+  "frontend": "http://localhost:5173",
+  "api": "http://localhost:8010",
+  "source": "live World Bank observations stored by application collector",
+  "checks": [
+    "unauthenticated read denied",
+    "login",
+    "protected stored read",
+    "canonical card/table agreement",
+    "reload renewal",
+    "memory-only JWT",
+    "persistent HttpOnly local cookie",
+    "desktop/mobile no horizontal overflow",
+    "API-only browser data fetches",
+    "logout revokes prior access JWT",
+    "no browser runtime errors"
+  ],
+  "gdp_panel_geometry": {
+    "x": 30,
+    "y": 287,
+    "width": 565,
+    "height": 630
+  },
+  "read_latency_ms": {
+    "min": 1.4686249999999745,
+    "max": 4.151875000000018
+  },
+  "cookie": {
+    "name": "dev_refresh",
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Strict"
+  },
+  "panel": {
+    "schema_version": "1",
+    "id": "gdp",
+    "state": "ready",
+    "collection": {
+      "last_attempt_at": "2026-10-15T15:01:03.637515Z",
+      "last_success_at": "2026-10-15T15:01:03.819045Z",
+      "last_error_kind": null,
+      "in_progress": false
+    },
+    "series": [
+      {
+        "id": "gdp_india",
+        "label": "India",
+        "unit": "percent",
+        "reporting_basis": "fiscal_year_apr_mar",
+        "points": [
+          {
+            "period_key": "2021",
+            "period_label": "FY 2021–22",
+            "period_start": "2021-04-01",
+            "period_end": "2022-03-31",
+            "value": "9.68959249191741",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.797042Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2022",
+            "period_label": "FY 2022–23",
+            "period_start": "2022-04-01",
+            "period_end": "2023-03-31",
+            "value": "7.6093649776932",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.797042Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2023",
+            "period_label": "FY 2023–24",
+            "period_start": "2023-04-01",
+            "period_end": "2024-03-31",
+            "value": "7.210224629335",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.797042Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2024",
+            "period_label": "FY 2024–25",
+            "period_start": "2024-04-01",
+            "period_end": "2025-03-31",
+            "value": "7.09927893176518",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.797042Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2025",
+            "period_label": "FY 2025–26",
+            "period_start": "2025-04-01",
+            "period_end": "2026-03-31",
+            "value": "7.56666179284244",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.797042Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          }
+        ],
+        "source": {
+          "id": "world_bank_wdi",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2014:2025&per_page=100&footnote=y",
+          "published_at": null,
+          "dataset_updated_on": "2026-10-08",
+          "retrieved_at": "2026-10-15T15:01:03.797042Z"
+        }
+      },
+      {
+        "id": "gdp_world",
+        "label": "World",
+        "unit": "percent",
+        "reporting_basis": "calendar_year_aggregate",
+        "points": [
+          {
+            "period_key": "2021",
+            "period_label": "CY 2021",
+            "period_start": "2021-01-01",
+            "period_end": "2021-12-31",
+            "value": "6.48508887596732",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.790236Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2022",
+            "period_label": "CY 2022",
+            "period_start": "2022-01-01",
+            "period_end": "2022-12-31",
+            "value": "3.44001097265658",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.790236Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2023",
+            "period_label": "CY 2023",
+            "period_start": "2023-01-01",
+            "period_end": "2023-12-31",
+            "value": "2.85938493335971",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.790236Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2024",
+            "period_label": "CY 2024",
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31",
+            "value": "2.90001340156711",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.790236Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          },
+          {
+            "period_key": "2025",
+            "period_label": "CY 2025",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "value": "2.92127318539153",
+            "estimate_status": "unspecified",
+            "provider_status": "",
+            "footnote": "",
+            "retrieved_at": "2026-10-15T15:01:03.790236Z",
+            "dataset_updated_on": "2026-10-08",
+            "retained": false
+          }
+        ],
+        "source": {
+          "id": "world_bank_wdi",
+          "url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2014:2025&per_page=100&footnote=y",
+          "published_at": null,
+          "dataset_updated_on": "2026-10-08",
+          "retrieved_at": "2026-10-15T15:01:03.790236Z"
+        }
+      }
+    ],
+    "summaries": [
+      {
+        "series_id": "gdp_india",
+        "current_period_key": "2025",
+        "comparison_period_key": "2024",
+        "change": {
+          "kind": "percentage_points",
+          "value": "0.46738286107726"
+        }
+      },
+      {
+        "series_id": "gdp_world",
+        "current_period_key": "2025",
+        "comparison_period_key": "2024",
+        "change": {
+          "kind": "percentage_points",
+          "value": "0.02125978382442"
+        }
+      }
+    ],
+    "notes": [
+      "India: April–March fiscal years; World: published calendar-year aggregate. These windows differ.",
+      "Real GDP growth, annual %. Changes compare growth rates in percentage points (pp).",
+      "Release freshness unknown: WDI dataset update and collection times are not observation publication dates.",
+      "A retained point keeps its original provenance when a successful response omits its value."
+    ]
+  },
+  "application_storage": {
+    "schema_version": 1,
+    "observations": [
+      {
+        "series_id": "gdp_india",
+        "non_null_points": 12,
+        "start_year": "2014",
+        "end_year": "2025"
+      },
+      {
+        "series_id": "gdp_world",
+        "non_null_points": 12,
+        "start_year": "2014",
+        "end_year": "2025"
+      }
+    ],
+    "last_run": {
+      "group_id": "gdp",
+      "attempted_at": "2026-10-15T15:01:03.637515Z",
+      "completed_at": "2026-10-15T15:01:03.819045Z",
+      "outcome": "ok",
+      "window_start": 2014,
+      "window_end": 2025
+    },
+    "database_mode": "0o600",
+    "directory_mode": "0o700"
+  },
+  "frontend_serving": "Vite preview of the production build, after API process restart"
+}

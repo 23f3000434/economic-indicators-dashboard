@@ -1,19 +1,19 @@
 """Offline checks for the source/storage contract. No application server required."""
-from copy import deepcopy
-from decimal import Decimal
 import json
-from pathlib import Path
 import socket
 import ssl
 import sys
 import unittest
+from copy import deepcopy
+from decimal import Decimal
+from pathlib import Path
 from unittest.mock import patch
 from urllib.error import URLError
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from probe_sources import SOURCES, error_kind, parse_gdp, probe, workspace_path
-from prove_gdp import connect, ingest, panel, record_failure, validate_india_metadata
+from probe_sources import SOURCES, error_kind, parse_gdp, probe, workspace_path  # noqa: E402
+from prove_gdp import connect, ingest, panel, record_failure, validate_india_metadata  # noqa: E402
 
 FIXTURES = ROOT / "tests" / "fixtures"
 AT = "2026-10-15T13:31:57Z"

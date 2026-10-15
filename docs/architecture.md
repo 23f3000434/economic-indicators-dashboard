@@ -29,17 +29,23 @@ The browser polls the stored-data endpoint once/minute while visible, with abort
 | --- | --- |
 | `observations` | Necessary: one latest-valid record per series/reporting period, decimal value, provenance, and provider status/notes. Historical periods satisfy assignment history. A full archive of every revision is not required. |
 | `collection_runs` | Necessary: per-group attempts, successful retrieval/validation time, and failure category, so stale status survives restarts. Bound/clean old diagnostics. |
-| `users`, `sessions`, `refresh_tokens` | Required by the user's selected authentication contract, but not implemented at this checkpoint. Session and token hashes support revocation/rotation/reuse detection. |
+| `users`, `sessions`, `refresh_tokens` | Implemented for the selected session contract. Session rows supply immediate revocation; active/pending/retired token digests support delivery-confirmed rotation. No plaintext token cache. |
 | Schema version | Use ordered SQL migrations with SQLite `PRAGMA user_version`; no migration-history table/framework is needed for this small database. |
 | Series definitions and source configuration | Versioned application configuration, not separate mutable `sources`/`series` tables. Preserve period and methodology semantics there; use different series IDs for incompatible bases. |
 | Raw snapshot, transformation, card, chart, and table tables | Omit. Source URLs, dataset metadata, response hashes, provider notes, and versioned transforms suffice initially. Keep raw bodies only in ignored diagnostic output unless a later source demonstrates a retention need. |
-| Probe dependencies | Python standard library only: HTTP/TLS, JSON/Decimal, SQLite, hashing, unittest. No installation or application scaffold. |
+| Probe dependencies | Historical probes still use only the Python standard library. Application dependencies are locked separately in `uv.lock` and `frontend/package-lock.json`. |
 | First backend slice | FastAPI/Pydantic, Uvicorn, HTTPX; `sqlite3` and `asyncio` from standard library. Direct parameterized SQL, no ORM/Redis/Celery/APScheduler. |
 | First frontend slice | React, TypeScript, Vite, scoped CSS, Recharts for the required bar/line/stacked chart types. A single fetch/polling hook suffices initially; defer routing/query-state libraries until demonstrated need. |
-| Authentication dependencies | Add PyJWT and Argon2 password hashing only when authentication implementation is authorised after domain setup. Refresh tokens are high-entropy random secrets hashed with SHA-256, not password hashes. |
+| Authentication dependencies | PyJWT, Argon2 and python-dotenv are now authorised/implemented. Initial refresh tokens have 256 random bits; successors use a dedicated HMAC key plus the predecessor secret. Only SHA-256 digests persist. Domain setup gates production verification. |
 | PDF/HTML parsing | Defer until a validated extractor for a chosen source needs it. Downloading a PDF does not justify installing several parsers. |
 
-The proof creates only `observations` and `collection_runs` in a disposable database; it is not a production migration. SQLite's default journal is sufficient for this low-write assignment. Revisit WAL only for demonstrated concurrency needs and a patched SQLite runtime. Provider corrections replace a period's valid record after validation; they are not promised as a user-visible revision-history product.
+The historical proof remains disposable. The application uses `backend/migrations/001_initial.sql`, applied transactionally with `PRAGMA user_version`. SQLite's default journal is sufficient for this low-write assignment. Connections require an existing file; readiness cannot silently create a replacement database. The data directory is owner-only (0700), the database 0600, and the API has no static file/database route. Provider corrections replace a period's valid record after validation; no user-visible revision archive is promised.
+
+Application code lives in `backend/app/` and `frontend/src/`. Test-only dependencies are pytest/Ruff and Vitest/Playwright/Prettier; no ORM, scheduler, query cache, router or state framework is introduced. The chart is lazy-loaded after sign-in. Fonts are self-hosted with OFL licences. Auth, protected reads, validation and failures are covered by the verification matrix.
+
+GDP input defaults to the 12 years ending in the previous UTC year; explicit start/end overrides and a 2–50-year reporting window are supported. The displayed window is shared across both series; absent requested periods stay null instead of silently moving a card to another year. Both countries and their metadata form one WDI collection group. Validation completes before a short commit. Non-null corrections replace prior data; provider omissions retain existing values with their original point provenance and a visible retained/stale flag. A new gap stays null. Collection lateness (twice the configured interval), source failure and unknown economic-release freshness are distinct concepts.
+
+The supervisor starts in FastAPI lifespan, coalesces missed jobs, prevents overlap, records cancellation/restart interruption and retries after failure on the shorter of one hour or the configured interval. Each request has a timeout, byte limit and bounded retry budget; the group also has an overall deadline. Reads never enqueue work. Process supervision belongs to the host; `/healthz` checks storage and task liveness without calling providers. Run exactly one worker/replica with this scheduler/SQLite arrangement.
 
 ## Planned hosting, not deployed hosting
 
@@ -50,5 +56,7 @@ Use private daily consistent SQLite backups and a private off-host copy, then ve
 [Render disks](https://render.com/docs/disks) support the intended single instance but prevent zero-downtime deployment and cannot be shared with a separate cron service. Run collection inside the API environment. Separate static and API environments meet the brief; do not colocate them to solve cookie issues.
 
 Authentication requires `https://dashboard.<controlled-domain>` on Pages and `https://api.<controlled-domain>` on Render: separate origins/hosts, one HTTPS site. Required setup and a same-origin proxy alternative are in `contracts.md`. No domain, deployed origins, provider account access, or cloud source egress has been verified.
+
+The production API start command must bind the host-provided HTTP port (for Render: `--host 0.0.0.0 --port "$PORT" --workers 1`), unlike the local loopback command. No database port is opened. Configure the static build's HTTPS API base URL and production secrets/origins explicitly before deploying.
 
 Only a concrete limitation should trigger PostgreSQL: multiple API replicas, separate collector machines requiring shared storage, unsupported persistent-disk semantics, or measured write contention. A move would use a private connection boundary and blocked public DB ingress; a public HTTP proxy would not provide database isolation.

@@ -1,0 +1,36 @@
+import { defineConfig } from '@playwright/test';
+import { fileURLToPath } from 'node:url';
+
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: false,
+  workers: 1,
+  timeout: 35000,
+  expect: { timeout: 8000 },
+  use: {
+    baseURL: 'http://localhost:5174',
+    viewport: { width: 1214, height: 2159 },
+    launchOptions: {
+      executablePath:
+        process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    },
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
+  },
+  reporter: [['list'], ['html', { open: 'never' }]],
+  webServer: [
+    {
+      command:
+        'PYTHONPATH=backend .venv/bin/python -m uvicorn tests.browser_server:app --host localhost --port 8001 --no-access-log',
+      cwd: fileURLToPath(new URL('..', import.meta.url)),
+      url: 'http://localhost:8001/healthz',
+      reuseExistingServer: false,
+    },
+    {
+      command: 'npm run dev -- --port 5174',
+      url: 'http://localhost:5174',
+      reuseExistingServer: false,
+      env: { VITE_API_BASE_URL: 'http://localhost:8001' },
+    },
+  ],
+});

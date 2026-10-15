@@ -1,0 +1,87 @@
+"""Test-only fixture server. Never imported by app code or used for local/live preview."""
+
+from contextlib import asynccontextmanager
+from pathlib import Path
+
+import httpx
+from app.config import Settings
+from app.main import create_app
+
+from tests.conftest import PASSWORD, Clock, fixture_response
+
+ROOT = Path(__file__).resolve().parents[1]
+clock = Clock()
+settings = Settings(
+    database=ROOT / ".verification/browser/dashboard.sqlite3",
+    jwt_secret="test-j" * 10,
+    csrf_secret="test-c" * 10,
+    rotation_secret="test-r" * 10,
+    environment="test",
+    api_origin="http://localhost:8001",
+    frontend_origin="http://localhost:5174",
+    collector_enabled=False,
+    start_year=2020,
+    end_year=2025,
+    collection_years=6,
+    upstream_attempts=1,
+)
+upstream = httpx.AsyncClient(transport=httpx.MockTransport(fixture_response))
+app = create_app(settings, clock, upstream)
+original_lifespan = app.router.lifespan_context
+
+
+async def reset():
+    clock.value = Clock().value
+    with app.state.db.connect(write=True) as db:
+        for table in ("refresh_tokens", "sessions", "users", "observations", "collection_runs"):
+            db.execute(f"DELETE FROM {table}")  # fixed test-only table names
+    app.state.auth.attempts.clear()
+    app.state.auth.create_user("analyst", PASSWORD)
+    app.state.collector.client = upstream
+    await app.state.collector.collect_once()
+
+
+@asynccontextmanager
+async def lifespan(app):
+    async with original_lifespan(app):
+        await reset()
+        yield
+    await upstream.aclose()
+
+
+app.router.lifespan_context = lifespan
+
+
+@app.post("/__test/reset")
+async def reset_endpoint():
+    await reset()
+    return {"now": clock.value * 1000}
+
+
+@app.post("/__test/advance/{seconds}")
+def advance(seconds: int):
+    clock.advance(seconds)
+    return {"now": clock.value * 1000}
+
+
+@app.post("/__test/collect/{mode}")
+async def collect(mode: str):
+    def respond(request):
+        if mode == "failure":
+            raise httpx.ReadTimeout("injected browser-test timeout", request=request)
+        response = fixture_response(request)
+        if mode == "missing" and "/indicator/" in request.url.path and "/country/" in request.url.path:
+            data = response.json()
+            data[1] = [p for p in data[1] if p["date"] != "2023"]
+            data[0]["total"] = len(data[1])
+            return httpx.Response(200, json=data)
+        return response
+
+    if mode == "missing":
+        with app.state.db.connect(write=True) as db:
+            db.execute("DELETE FROM observations")
+    async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as source:
+        app.state.collector.client = source
+        ok = await app.state.collector.collect_once()
+    app.state.collector.client = upstream
+    return {"ok": ok}
