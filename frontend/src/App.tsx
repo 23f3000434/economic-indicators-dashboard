@@ -140,11 +140,16 @@ export function App() {
   useEffect(() => {
     if (!signedIn) return;
     const timer = window.setInterval(() => {
-      if (!document.hidden && auth.tokens && Date.parse(auth.tokens.access_expires_at) < Date.now() + 60000)
-        void auth.renew().catch((e) => setError(e.message));
+      if (!document.hidden && auth.tokens && Date.parse(auth.tokens.access_expires_at) < Date.now() + 60000) {
+        const session = auth.tokens.csrf_token;
+        void auth.renew().catch((e) => {
+          if (e.name !== 'AbortError' && auth.state === 'signed-in' && auth.tokens?.csrf_token === session)
+            setError(e.message);
+        });
+      }
     }, 15000);
     return () => window.clearInterval(timer);
-  }, [signedIn]);
+  }, [signedIn, userId]);
   async function signIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);

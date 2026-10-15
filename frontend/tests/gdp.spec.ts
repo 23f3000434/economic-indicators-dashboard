@@ -231,3 +231,50 @@ test('a late confirmed renewal cannot undo another tab logout or account change'
   await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
   await expect(other.locator('.account')).toContainText('reviewer');
 });
+
+test('obsolete proactive renewal cannot add an error to a newer account dashboard', async ({
+  page,
+  context,
+  request,
+}) => {
+  await context.addInitScript(() => Object.defineProperty(navigator, 'locks', { value: undefined }));
+  await signIn(page);
+  const other = await context.newPage();
+  await other.clock.install({ time: await page.evaluate(() => Date.now()) });
+  await other.goto('/');
+  await expect(other.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  let release!: () => void;
+  let reached!: () => void;
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const confirmed = new Promise<void>((resolve) => {
+    reached = resolve;
+  });
+  await page.route(
+    '**/api/v1/auth/confirm',
+    async (route) => {
+      const response = await route.fetch();
+      reached();
+      await held;
+      await route.fulfill({ response });
+    },
+    { times: 1 },
+  );
+  await request.post(API + '/__test/advance/901');
+  await page.clock.fastForward(901000);
+  await confirmed;
+  await other.reload();
+  await expect(other.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  await other.getByRole('button', { name: /Sign out/ }).click();
+  await other.getByLabel('Username').fill('reviewer');
+  await other.getByLabel('Password', { exact: true }).fill(PASSWORD);
+  await other.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(page.locator('.account')).toContainText('reviewer');
+  await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  const delivered = page.waitForResponse((r) => r.url().endsWith('/auth/confirm'));
+  release();
+  await delivered;
+  await page.clock.runFor(100);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
