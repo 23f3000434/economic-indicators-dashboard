@@ -9,6 +9,7 @@ from decimal import Decimal, localcontext
 
 import httpx
 
+from .collection import Deferred, GroupState, ProviderHTTP
 from .config import Settings
 from .db import Database
 from .models import Panel
@@ -113,63 +114,22 @@ class Collector:
     ):
         self.settings, self.db, self.clock, self.client = settings, database, clock, client
         self.task: asyncio.Task | None = None
+        self.state = GroupState(database, clock, interval=settings.collection_interval)
 
     def recover(self):
-        with self.db.connect(write=True) as db:
-            db.execute(
-                "UPDATE collection_runs SET outcome='error', error_kind='interrupted', completed_at=? WHERE outcome='running'",
-                (timestamp(self.clock()),),
-            )
+        self.state.recover(timestamp(self.clock()))
 
     def due(self):
-        with self.db.connect() as db:
-            row = db.execute(
-                "SELECT * FROM collection_runs WHERE group_id='gdp' ORDER BY id DESC LIMIT 1"
-            ).fetchone()
-        if not row:
-            return True
-        interval = (
-            min(3600, self.settings.collection_interval)
-            if row["outcome"] == "error"
-            else self.settings.collection_interval
-        )
-        return (
-            self.clock()
-            >= datetime.fromisoformat(row["attempted_at"].replace("Z", "+00:00")).timestamp() + interval
-        )
+        return self.state.due()
 
     def begin(self, start, end):
-        with self.db.connect(write=True) as db:
-            if db.execute(
-                "SELECT 1 FROM collection_runs WHERE group_id='gdp' AND outcome='running'"
-            ).fetchone():
-                return None
-            return db.execute(
-                "INSERT INTO collection_runs(group_id, attempted_at, outcome, window_start, window_end) VALUES ('gdp', ?, 'running', ?, ?)",
-                (timestamp(self.clock()), start, end),
-            ).lastrowid
+        return self.state.begin(timestamp(self.clock()), start, end)
 
     async def fetch(self, client, url):
-        for attempt in range(self.settings.upstream_attempts):
-            try:
-                async with client.stream("GET", url) as response:
-                    response.raise_for_status()
-                    body = bytearray()
-                    async for chunk in response.aiter_bytes():
-                        body.extend(chunk)
-                        if len(body) > 4 * 1024 * 1024:
-                            raise ValueError("Upstream response exceeds limit")
-                return bytes(body), timestamp(self.clock())
-            except (httpx.TimeoutException, httpx.NetworkError):
-                if attempt + 1 == self.settings.upstream_attempts:
-                    raise
-            except httpx.HTTPStatusError as exc:
-                if (
-                    exc.response.status_code not in {429, 502, 503, 504}
-                    or attempt + 1 == self.settings.upstream_attempts
-                ):
-                    raise
-            await asyncio.sleep(0.5 * (attempt + 1))
+        body = await ProviderHTTP(
+            self.state, client, self.settings.upstream_timeout, self.settings.upstream_attempts
+        ).fetch(url)
+        return body, timestamp(self.clock())
 
     async def collect_once(self) -> bool:
         start, end = self.settings.window(datetime.fromtimestamp(self.clock(), timezone.utc).year)
@@ -224,7 +184,9 @@ class Collector:
             raise
         except Exception as exc:
             kind = (
-                "timeout"
+                "rate_limited"
+                if isinstance(exc, Deferred)
+                else "timeout"
                 if isinstance(exc, (httpx.TimeoutException, TimeoutError))
                 else "http_rejection"
                 if isinstance(exc, httpx.HTTPStatusError)
@@ -251,24 +213,10 @@ class Collector:
                         ON CONFLICT(series_id, period_key) DO UPDATE SET value=excluded.value, provider_status=excluded.provider_status, footnote=excluded.footnote, source_url=excluded.source_url, dataset_updated_on=excluded.dataset_updated_on, retrieved_at=excluded.retrieved_at, response_sha256=excluded.response_sha256, retained=0""",
                         row,
                     )
-            db.execute(
-                "UPDATE collection_runs SET outcome='ok', completed_at=? WHERE id=?",
-                (timestamp(self.clock()), run),
-            )
-            # Bounded diagnostic history; retain the most recent successful run too.
-            db.execute(
-                "DELETE FROM collection_runs WHERE id NOT IN (SELECT id FROM collection_runs ORDER BY id DESC LIMIT 200) AND id != (SELECT MAX(id) FROM collection_runs WHERE outcome='ok')"
-            )
+            self.state.finish_in(db, run, timestamp(self.clock()))
 
     def fail(self, run, kind):
-        with self.db.connect(write=True) as db:
-            db.execute(
-                "UPDATE collection_runs SET outcome='error', error_kind=?, completed_at=? WHERE id=?",
-                (kind, timestamp(self.clock()), run),
-            )
-            db.execute(
-                "DELETE FROM collection_runs WHERE id NOT IN (SELECT id FROM collection_runs ORDER BY id DESC LIMIT 200) AND id != COALESCE((SELECT MAX(id) FROM collection_runs WHERE outcome='ok'), -1)"
-            )
+        self.state.finish(run, timestamp(self.clock()), kind)
 
     async def supervise(self):
         while True:

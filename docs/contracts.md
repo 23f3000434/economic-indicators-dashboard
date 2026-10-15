@@ -1,6 +1,6 @@
 # API and data contracts
 
-Version 1 governs the authorised local authenticated GDP slice. Historical source-proof examples remain in [panel.ready.json](evidence/2026-10-15/panel.ready.json) and [panel.stale.json](evidence/2026-10-15/panel.stale.json). Current verification is recorded separately; those files are never application inputs.
+GDP version 1 remains a compatibility boundary. The authorised next stage adds the multi-provider backend and protected dashboard, with strict measurement/provenance/period/status contracts for new adapters. Frontend redesign and deployment remain later stages. Historical proof examples are evidence, never application inputs.
 
 ## Data read boundary
 
@@ -38,7 +38,9 @@ Machine timestamps are UTC ISO 8601; display times in IST. Explicitly label the 
 
 `state`: `ready` (usable retained data, no failed latest attempt), `stale` (retained data after a failed refresh or verified overdue release), `empty` (successful/initial scope with no observations), or `unavailable` (no retained usable data and a failed/unavailable source). Historical gaps can exist in a ready panel. Client `loading` and API connection-error states are separate from these provider states; retained browser data during a failed poll gets a visible connection/stale notice. Reserve the panel's final geometry in all states.
 
-The aggregate can include panel-local error information and source failure even when other panels succeed. Source scopes are independently collected/committed. Related inputs such as trade exports/imports must share a period/definition before computing a balance; unrelated sources must not be held in one transaction.
+The aggregate includes panel-local error information and source failure even when other panels succeed. Source scopes are independently collected/committed. Related inputs such as trade exports/imports must share a period/definition before computing a balance; unrelated sources must not be held in one transaction.
+
+Provider cooldown deadlines persist independently of attempts and survive restart. Valid Retry-After delta-seconds/HTTP-dates on 429/503 establish a minimum next-request time; bounded attempts may wait only when the delay fits the remaining request budget, otherwise collection is deferred. The deadline also gates other groups sharing that provider. Per-group history keeps recent completed outcomes, its last successful outcome and all running records; frequent groups cannot erase another group's freshness metadata.
 
 ## Metric and comparison definitions
 

@@ -1,6 +1,6 @@
 # Requirements and verification
 
-The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope is the complete local authenticated GDP vertical slice, including scaffold, migrations, scheduled collection, protected API, one React panel and verification. Other providers, public deployment and final Figma acceptance remain outside this stage. Domain/DNS does not block local implementation.
+The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. The authenticated GDP slice is the baseline. Current scope adds remaining verified provider pipelines, durable Retry-After/cooldowns, independent group scheduling/history, canonical measurement metadata and protected dashboard reads. Preserve GDP/authentication. Frontend redesign, deployment and final Figma acceptance remain later stages. A blocked source must be reported honestly and must not stop independent work.
 
 References read without modification:
 - `Interview_Round_2_Full_Stack_Application_Challenge.docx` supplied from Downloads.
