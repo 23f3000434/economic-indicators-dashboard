@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-15T19:49:46.798204+00:00",
+  "scope": "20 sequential warm keepalive database reads on the ordinary local API; no TLS/load-test/cloud latency claim",
+  "requests": 20,
+  "p50_ms": 22.0,
+  "p95_ms": 27.22,
+  "response_bytes": 332736,
+  "cache_control": "no-store",
+  "health_status": 200,
+  "unauthenticated_dashboard": 401,
+  "test_reset": 404,
+  "static_database_path": 404,
+  "post_logout_access": 401
+}

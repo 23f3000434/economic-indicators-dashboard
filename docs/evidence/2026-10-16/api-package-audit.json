@@ -1,0 +1,142 @@
+{
+  "checked_at": "2026-10-15T19:48:33.725553+00:00",
+  "scope": "Known-advisory lookup for 27 locked API runtime distributions; not an exploit test or comprehensive security audit",
+  "provider": "https://api.osv.dev/v1/querybatch",
+  "results": [
+    {
+      "package": "annotated-doc",
+      "version": "0.0.5",
+      "advisories": []
+    },
+    {
+      "package": "annotated-types",
+      "version": "0.8.0",
+      "advisories": []
+    },
+    {
+      "package": "anyio",
+      "version": "4.15.1",
+      "advisories": []
+    },
+    {
+      "package": "argon2-cffi",
+      "version": "25.1.0",
+      "advisories": []
+    },
+    {
+      "package": "argon2-cffi-bindings",
+      "version": "26.1.0",
+      "advisories": []
+    },
+    {
+      "package": "beautifulsoup4",
+      "version": "4.15.0",
+      "advisories": []
+    },
+    {
+      "package": "certifi",
+      "version": "2026.7.22",
+      "advisories": []
+    },
+    {
+      "package": "cffi",
+      "version": "2.1.1",
+      "advisories": []
+    },
+    {
+      "package": "click",
+      "version": "8.5.0",
+      "advisories": []
+    },
+    {
+      "package": "fastapi",
+      "version": "0.143.2",
+      "advisories": []
+    },
+    {
+      "package": "h11",
+      "version": "0.16.0",
+      "advisories": []
+    },
+    {
+      "package": "httpcore",
+      "version": "1.0.9",
+      "advisories": []
+    },
+    {
+      "package": "httpx",
+      "version": "0.28.1",
+      "advisories": []
+    },
+    {
+      "package": "idna",
+      "version": "3.20",
+      "advisories": []
+    },
+    {
+      "package": "opentelemetry-api",
+      "version": "1.45.1",
+      "advisories": []
+    },
+    {
+      "package": "pycparser",
+      "version": "3.11",
+      "advisories": []
+    },
+    {
+      "package": "pydantic",
+      "version": "2.14.1",
+      "advisories": []
+    },
+    {
+      "package": "pydantic-core",
+      "version": "2.50.1",
+      "advisories": []
+    },
+    {
+      "package": "pyjwt",
+      "version": "2.15.1",
+      "advisories": []
+    },
+    {
+      "package": "pypdf",
+      "version": "6.20.1",
+      "advisories": []
+    },
+    {
+      "package": "python-dotenv",
+      "version": "1.2.4",
+      "advisories": []
+    },
+    {
+      "package": "soupsieve",
+      "version": "3.0.3",
+      "advisories": []
+    },
+    {
+      "package": "starlette",
+      "version": "1.8.0",
+      "advisories": []
+    },
+    {
+      "package": "truststore",
+      "version": "0.10.5",
+      "advisories": []
+    },
+    {
+      "package": "typing-extensions",
+      "version": "4.16.0",
+      "advisories": []
+    },
+    {
+      "package": "typing-inspection",
+      "version": "0.4.4",
+      "advisories": []
+    },
+    {
+      "package": "uvicorn",
+      "version": "0.54.0",
+      "advisories": []
+    }
+  ]
+}
