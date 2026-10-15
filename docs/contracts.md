@@ -105,4 +105,14 @@ Cookie/security basis: [MDN cookie scope and SameSite](https://developer.mozilla
 - Data: invalid/partial required batches do not overwrite valid observations; repeat ingestion is idempotent; reopen preserves values; failed refresh changes status/times correctly; missing historical points stay null; API reads have no network dependency.
 - UI: reserved panel geometry, one-source failure isolation, consistent values/units/periods across card/chart/tooltip/table, and explicit FY/CY/source/freshness notes.
 
-Local application/API/session/browser acceptance belongs to this stage. Cloud persistence, HTTPS/DNS cookies, Figma fidelity and remaining-source checks remain external acceptance gates. `GET /api/v1/dashboard` is reserved for the multi-provider stage; this slice implements the GDP route only.
+Cloud persistence, HTTPS/DNS cookies and Figma fidelity remain external acceptance gates. The multi-provider backend stage implements the dashboard read boundary while keeping the existing frontend and GDP v1 payload unchanged.
+
+## Additional indicator measurements
+
+Migration 003 preserves GDP observations and permits unknown dataset-update dates as SQL NULL. Non-GDP observations add a group and a validated JSON snapshot containing `period` and `definition`; no new mutable catalogue, revision or chart tables. Original URL, response SHA-256, retrieval time, value and retention flag remain authoritative columns. Snapshotting semantics prevents a later code/catalogue change from silently reinterpreting old values.
+
+`GET /api/v1/panels/expenditure` uses the same bearer/session protection as GDP. Additional panels use `IndicatorPanel`: independently classified state, availability, collection groups, series, summaries, notes and coverage. Every canonical point contains its explicit period (key/label/kind/start/end), decimal-string value or null, definition (provider/group/unit/methodology/status/publication date), original source URL/hash/retrieval time and retained flag. Unknown publication dates stay null. Definitions distinguish provisional actuals from estimates; policy validity is a distinct period kind. Derived points carry input references. Summaries reference canonical current/comparison points; they never copy card amounts.
+
+Money comparisons use `(current/prior − 1) × 100`; missing or zero prior yields null. Compare identical period kinds and ending months in adjacent fiscal years with the same methodology. CPI compares consecutive monthly rates in pp within the same base. All arithmetic uses Decimal. Units remain INR crore or USD billion in storage; display conversions are documented above.
+
+CGA checks the published BE/RE and actual/provisional column headings independently. Only actuals enter storage; unaudited provisional status is preserved. Revenue + capital must equal total exactly in the accepted releases. Discovery uses the official selected month/latest fiscal-year selector, checks each derived archive URL against its document period, and retrieves the configured completed-FY window plus matching current/prior FYTD.

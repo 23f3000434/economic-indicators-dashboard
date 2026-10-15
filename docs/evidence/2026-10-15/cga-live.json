@@ -1,0 +1,233 @@
+{
+  "checked_at": "2026-10-15T15:52:47.758633+00:00",
+  "groups": {
+    "expenditure": {
+      "collected": true,
+      "api_status": 200,
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-15T15:52:47.883809Z",
+          "last_success_at": "2026-10-15T15:52:51.030972Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "expenditure",
+          "provider_id": "cga",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        }
+      ],
+      "summaries": [
+        {
+          "current": {
+            "series_id": "expenditure_capital",
+            "period_key": "FY2026-27:08"
+          },
+          "comparison": {
+            "series_id": "expenditure_capital",
+            "period_key": "FY2025-26:08"
+          },
+          "kind": "relative_percent",
+          "value": "18.158900224524362862882577697246622286997282073502186158269980698782841611848580"
+        },
+        {
+          "current": {
+            "series_id": "expenditure_revenue",
+            "period_key": "FY2026-27:08"
+          },
+          "comparison": {
+            "series_id": "expenditure_revenue",
+            "period_key": "FY2025-26:08"
+          },
+          "kind": "relative_percent",
+          "value": "8.1920508278921370084379655319216467729215067036596717135300696965326992726748300"
+        },
+        {
+          "current": {
+            "series_id": "expenditure_total",
+            "period_key": "FY2026-27:08"
+          },
+          "comparison": {
+            "series_id": "expenditure_total",
+            "period_key": "FY2025-26:08"
+          },
+          "kind": "relative_percent",
+          "value": "10.479025042772941342852373007695407743896149744106691506341241409523931048636210"
+        }
+      ],
+      "series": [
+        {
+          "id": "expenditure_revenue",
+          "unit": "inr_crore",
+          "points": 7,
+          "first": {
+            "series_id": "expenditure_revenue",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "expenditure",
+              "provider": "cga",
+              "unit": "inr_crore",
+              "methodology": "union_government_actual_apr_mar",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "3201373",
+            "source_url": "https://cga.gov.in/writereaddata/MonthAccount/32022/DATA2122.htm",
+            "retrieved_at": "2026-10-15T15:52:50.331554Z",
+            "response_sha256": "dc8e8923b085281aacac5aa847034f553e8b223033ffce14d806abb987512c3e",
+            "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "expenditure_revenue",
+            "period": {
+              "key": "FY2026-27:08",
+              "label": "FY 2026\u201327 April\u2013August",
+              "kind": "fiscal_year_to_date",
+              "start": "2026-04-01",
+              "end": "2026-08-31"
+            },
+            "definition": {
+              "group": "expenditure",
+              "provider": "cga",
+              "unit": "inr_crore",
+              "methodology": "union_government_actual_apr_mar",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "1568009",
+            "source_url": "https://cga.gov.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+            "retrieved_at": "2026-10-15T15:52:50.977222Z",
+            "response_sha256": "0db8588796a711cc0f2d6f33603cc3f4de6db2bcaa52b2fe657013c24346be7a",
+            "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+            "retained": false
+          }
+        },
+        {
+          "id": "expenditure_capital",
+          "unit": "inr_crore",
+          "points": 7,
+          "first": {
+            "series_id": "expenditure_capital",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "expenditure",
+              "provider": "cga",
+              "unit": "inr_crore",
+              "methodology": "union_government_actual_apr_mar",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "592798",
+            "source_url": "https://cga.gov.in/writereaddata/MonthAccount/32022/DATA2122.htm",
+            "retrieved_at": "2026-10-15T15:52:50.331554Z",
+            "response_sha256": "dc8e8923b085281aacac5aa847034f553e8b223033ffce14d806abb987512c3e",
+            "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "expenditure_capital",
+            "period": {
+              "key": "FY2026-27:08",
+              "label": "FY 2026\u201327 April\u2013August",
+              "kind": "fiscal_year_to_date",
+              "start": "2026-04-01",
+              "end": "2026-08-31"
+            },
+            "definition": {
+              "group": "expenditure",
+              "provider": "cga",
+              "unit": "inr_crore",
+              "methodology": "union_government_actual_apr_mar",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "509949",
+            "source_url": "https://cga.gov.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+            "retrieved_at": "2026-10-15T15:52:50.977222Z",
+            "response_sha256": "0db8588796a711cc0f2d6f33603cc3f4de6db2bcaa52b2fe657013c24346be7a",
+            "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+            "retained": false
+          }
+        },
+        {
+          "id": "expenditure_total",
+          "unit": "inr_crore",
+          "points": 7,
+          "first": {
+            "series_id": "expenditure_total",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "expenditure",
+              "provider": "cga",
+              "unit": "inr_crore",
+              "methodology": "union_government_actual_apr_mar",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "3794171",
+            "source_url": "https://cga.gov.in/writereaddata/MonthAccount/32022/DATA2122.htm",
+            "retrieved_at": "2026-10-15T15:52:50.331554Z",
+            "response_sha256": "dc8e8923b085281aacac5aa847034f553e8b223033ffce14d806abb987512c3e",
+            "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "expenditure_total",
+            "period": {
+              "key": "FY2026-27:08",
+              "label": "FY 2026\u201327 April\u2013August",
+              "kind": "fiscal_year_to_date",
+              "start": "2026-04-01",
+              "end": "2026-08-31"
+            },
+            "definition": {
+              "group": "expenditure",
+              "provider": "cga",
+              "unit": "inr_crore",
+              "methodology": "union_government_actual_apr_mar",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "2077958",
+            "source_url": "https://cga.gov.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+            "retrieved_at": "2026-10-15T15:52:50.977222Z",
+            "response_sha256": "0db8588796a711cc0f2d6f33603cc3f4de6db2bcaa52b2fe657013c24346be7a",
+            "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+            "retained": false
+          }
+        }
+      ]
+    }
+  }
+}

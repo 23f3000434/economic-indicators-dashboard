@@ -1,0 +1,174 @@
+[
+  {
+    "url": "https://cga.gov.in/Index.aspx",
+    "checked_at": "2026-10-15T15:34:55.359315+00:00",
+    "name": "cga_home",
+    "status": 200,
+    "final_url": "https://cga.gov.in/Index.aspx",
+    "content_type": "text/html; charset=utf-8",
+    "retry_after": null,
+    "bytes": 329949,
+    "sha256": "168a47a76d6da528c5ab0863920a7d77156df4d05ec1b24331bc34608aa46f0a"
+  },
+  {
+    "url": "https://cga.nic.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+    "checked_at": "2026-10-15T15:31:33.058140+00:00",
+    "name": "cga_aug2026",
+    "status": 200,
+    "final_url": "https://cga.nic.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+    "content_type": "text/html",
+    "retry_after": null,
+    "bytes": 130175,
+    "sha256": "0db8588796a711cc0f2d6f33603cc3f4de6db2bcaa52b2fe657013c24346be7a",
+    "reviewed_values": {
+      "expenditure_revenue": "1568009",
+      "expenditure_capital": "509949",
+      "expenditure_total": "2077958"
+    },
+    "period": {
+      "key": "FY2026-27:08",
+      "label": "FY 2026\u201327 April\u2013August",
+      "kind": "fiscal_year_to_date",
+      "start": "2026-04-01",
+      "end": "2026-08-31"
+    }
+  },
+  {
+    "url": "https://cga.gov.in/writereaddata/MonthAccount/82025/DATA2526.htm",
+    "checked_at": "2026-10-15T15:48:00.311596+00:00",
+    "name": "cga_aug2025",
+    "status": 200,
+    "final_url": "https://cga.gov.in/writereaddata/MonthAccount/82025/DATA2526.htm",
+    "content_type": "text/html",
+    "retry_after": null,
+    "bytes": 130647,
+    "sha256": "be132e4f9c8a0ba8dccafbc3a409017c2f4b475c4ec814aad06e382bdc39777e",
+    "reviewed_values": {
+      "expenditure_revenue": "1449283",
+      "expenditure_capital": "431579",
+      "expenditure_total": "1880862"
+    },
+    "period": {
+      "key": "FY2025-26:08",
+      "label": "FY 2025\u201326 April\u2013August",
+      "kind": "fiscal_year_to_date",
+      "start": "2025-04-01",
+      "end": "2025-08-31"
+    }
+  },
+  {
+    "url": "https://cga.gov.in/writereaddata/MonthAccount/32022/DATA2122.htm",
+    "checked_at": "2026-10-15T15:39:58.866034+00:00",
+    "name": "cga_mar2022",
+    "status": 200,
+    "final_url": "https://cga.gov.in/writereaddata/MonthAccount/32022/DATA2122.htm",
+    "content_type": "text/html",
+    "retry_after": null,
+    "bytes": 139737,
+    "sha256": "dc8e8923b085281aacac5aa847034f553e8b223033ffce14d806abb987512c3e",
+    "reviewed_values": {
+      "expenditure_revenue": "3201373",
+      "expenditure_capital": "592798",
+      "expenditure_total": "3794171"
+    },
+    "period": {
+      "key": "FY2021-22",
+      "label": "FY 2021\u201322",
+      "kind": "fiscal_year",
+      "start": "2021-04-01",
+      "end": "2022-03-31"
+    }
+  },
+  {
+    "url": "https://cga.gov.in/writereaddata/MonthAccount/32023/DATA2223.htm",
+    "checked_at": "2026-10-15T15:48:00.310471+00:00",
+    "name": "cga_mar2023",
+    "status": 200,
+    "final_url": "https://cga.gov.in/writereaddata/MonthAccount/32023/DATA2223.htm",
+    "content_type": "text/html",
+    "retry_after": null,
+    "bytes": 135117,
+    "sha256": "3ee14f9b3f5fd4ac08244951cd3ca50fa43f8bf68d0334a883c37261ed54a480",
+    "reviewed_values": {
+      "expenditure_revenue": "3452518",
+      "expenditure_capital": "736319",
+      "expenditure_total": "4188837"
+    },
+    "period": {
+      "key": "FY2022-23",
+      "label": "FY 2022\u201323",
+      "kind": "fiscal_year",
+      "start": "2022-04-01",
+      "end": "2023-03-31"
+    }
+  },
+  {
+    "url": "https://cga.gov.in/writereaddata/MonthAccount/32024/DATA2324.htm",
+    "checked_at": "2026-10-15T15:48:00.311302+00:00",
+    "name": "cga_mar2024",
+    "status": 200,
+    "final_url": "https://cga.gov.in/writereaddata/MonthAccount/32024/DATA2324.htm",
+    "content_type": "text/html",
+    "retry_after": null,
+    "bytes": 136255,
+    "sha256": "e3d4d6c61b5121743086be3a18f2a9b2f64d0fb024ccc61c7a1a6128a67fe365",
+    "reviewed_values": {
+      "expenditure_revenue": "3494036",
+      "expenditure_capital": "948506",
+      "expenditure_total": "4442542"
+    },
+    "period": {
+      "key": "FY2023-24",
+      "label": "FY 2023\u201324",
+      "kind": "fiscal_year",
+      "start": "2023-04-01",
+      "end": "2024-03-31"
+    }
+  },
+  {
+    "url": "https://cga.gov.in/writereaddata/MonthAccount/32025/DATA2425.htm",
+    "checked_at": "2026-10-15T15:48:00.311472+00:00",
+    "name": "cga_mar2025",
+    "status": 200,
+    "final_url": "https://cga.gov.in/writereaddata/MonthAccount/32025/DATA2425.htm",
+    "content_type": "text/html",
+    "retry_after": null,
+    "bytes": 130927,
+    "sha256": "895b87215fdfeae8345f8eb11e97b8dce834e2b7327b2790ccf5c9e1862bab73",
+    "reviewed_values": {
+      "expenditure_revenue": "3603510",
+      "expenditure_capital": "1052007",
+      "expenditure_total": "4655517"
+    },
+    "period": {
+      "key": "FY2024-25",
+      "label": "FY 2024\u201325",
+      "kind": "fiscal_year",
+      "start": "2024-04-01",
+      "end": "2025-03-31"
+    }
+  },
+  {
+    "url": "https://cga.gov.in/writereaddata/MonthAccount/32026/DATA2526.htm",
+    "checked_at": "2026-10-15T15:39:58.865907+00:00",
+    "name": "cga_mar2026",
+    "status": 200,
+    "final_url": "https://cga.gov.in/writereaddata/MonthAccount/32026/DATA2526.htm",
+    "content_type": "text/html",
+    "retry_after": null,
+    "bytes": 132750,
+    "sha256": "c322781d2d4cbf65105941e846c1339c3ba044d4986620436f3bfce5364ea83c",
+    "reviewed_values": {
+      "expenditure_revenue": "3836032",
+      "expenditure_capital": "1069119",
+      "expenditure_total": "4905151"
+    },
+    "period": {
+      "key": "FY2025-26",
+      "label": "FY 2025\u201326",
+      "kind": "fiscal_year",
+      "start": "2025-04-01",
+      "end": "2026-03-31"
+    }
+  }
+]

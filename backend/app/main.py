@@ -14,7 +14,10 @@ from .auth import Auth, AuthError
 from .config import Settings
 from .db import Database
 from .gdp import Collector, read_panel
+from .indicators import IndicatorPanel, read_indicator
+from .macro_collector import MacroCollector
 from .models import EmptyBody, ErrorEnvelope, Health, Login, Panel, SessionInfo, Tokens, User
+from .providers.cga import CGA
 
 
 def create_app(settings: Settings | None = None, clock=time.time, upstream_client=None):
@@ -22,18 +25,31 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     database = Database(settings.database)
     auth = Auth(settings, database, clock)
     collector = Collector(settings, database, clock, upstream_client)
+    jobs = {a.group: MacroCollector(a, settings, database, clock, upstream_client) for a in [CGA(settings)]}
+    enabled = set(
+        settings.macro_groups
+        if settings.macro_groups is not None
+        else ([] if settings.environment == "test" else jobs)
+    )
 
     @asynccontextmanager
     async def lifespan(app):
         database.migrate()
         collector.recover()
+        for job in jobs.values():
+            job.recover()
         if settings.collector_enabled:
             collector.task = asyncio.create_task(collector.supervise(), name="gdp-collector-supervisor")
+            for group, job in jobs.items():
+                if group in enabled:
+                    job.task = asyncio.create_task(job.supervise(), name=f"{group}-collector-supervisor")
         yield
-        if collector.task:
-            collector.task.cancel()
+        tasks = [job.task for job in [collector, *jobs.values()] if job.task]
+        for task in tasks:
+            task.cancel()
+        for task in tasks:
             with suppress(asyncio.CancelledError):
-                await collector.task
+                await task
 
     app = FastAPI(
         title="Economic Indicators API",
@@ -43,6 +59,7 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
         responses={status: {"model": ErrorEnvelope} for status in (401, 403, 409, 422, 429, 503)},
     )
     app.state.db, app.state.auth, app.state.collector = database, auth, collector
+    app.state.jobs = jobs
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[settings.frontend_origin],
@@ -169,6 +186,8 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
             if collector.task and not collector.task.done()
             else "stopped"
         )
+        if settings.collector_enabled and any(not jobs[g].task or jobs[g].task.done() for g in enabled):
+            state = "stopped"
         if state == "stopped":
             response.status_code = 503
         return dict(status="ok" if state != "stopped" else "unavailable", database="ready", collector=state)
@@ -240,5 +259,9 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     @app.get("/api/v1/panels/gdp", response_model=Panel, tags=["dashboard"])
     def gdp(user=Depends(current_user)):
         return read_panel(database, settings, clock())
+
+    @app.get("/api/v1/panels/expenditure", response_model=IndicatorPanel, tags=["dashboard"])
+    def expenditure(user=Depends(current_user)):
+        return read_indicator(database, "expenditure", jobs, clock())
 
     return app

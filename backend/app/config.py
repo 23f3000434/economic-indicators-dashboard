@@ -30,6 +30,13 @@ class Settings:
     report_years: int = 5
     upstream_timeout: float = 20
     upstream_attempts: int = 2
+    cga_interval: int = 86400
+    gst_interval: int = 86400
+    trade_interval: int = 86400
+    cpi_interval: int = 86400
+    policy_interval: int = 604800
+    macro_groups: tuple[str, ...] | None = None
+    collection_budget: int = 600
 
     def __post_init__(self):
         if self.environment not in {"development", "production", "test"}:
@@ -47,6 +54,27 @@ class Settings:
             raise ValueError("Invalid collector interval or attempt budget")
         if not 1 <= self.upstream_timeout <= 60:
             raise ValueError("Upstream timeout must be 1..60 seconds")
+        if any(
+            i < 1
+            for i in (
+                self.cga_interval,
+                self.gst_interval,
+                self.trade_interval,
+                self.cpi_interval,
+                self.policy_interval,
+            )
+        ):
+            raise ValueError("Group intervals must be positive")
+        if not 10 <= self.collection_budget <= 1800:
+            raise ValueError("Collection job budget must be 10..1800 seconds")
+        if self.macro_groups is not None and not set(self.macro_groups) <= {
+            "expenditure",
+            "gst",
+            "trade",
+            "inflation",
+            "inflation_policy",
+        }:
+            raise ValueError("Unknown collection group")
         origins = [urlsplit(self.frontend_origin), urlsplit(self.api_origin)]
         if any(o.path or o.query or o.fragment or o.username or not o.hostname for o in origins):
             raise ValueError("Origins must contain only scheme, host and optional port")
@@ -113,4 +141,13 @@ class Settings:
             report_years=integer("GDP_REPORT_YEARS", 5),
             upstream_timeout=float(os.getenv("UPSTREAM_TIMEOUT_SECONDS", 20)),
             upstream_attempts=integer("UPSTREAM_ATTEMPTS", 2),
+            cga_interval=integer("CGA_COLLECTION_INTERVAL_SECONDS", 86400),
+            gst_interval=integer("GST_COLLECTION_INTERVAL_SECONDS", 86400),
+            trade_interval=integer("TRADE_COLLECTION_INTERVAL_SECONDS", 86400),
+            cpi_interval=integer("CPI_COLLECTION_INTERVAL_SECONDS", 86400),
+            policy_interval=integer("POLICY_COLLECTION_INTERVAL_SECONDS", 604800),
+            macro_groups=tuple(g.strip() for g in os.environ["COLLECTION_GROUPS"].split(",") if g.strip())
+            if "COLLECTION_GROUPS" in os.environ
+            else None,
+            collection_budget=integer("COLLECTION_JOB_BUDGET_SECONDS", 600),
         )
