@@ -125,7 +125,19 @@ def parse_workbook(body, url, at):
         if len({x[0] for x in band}) != len(band):
             raise ValueError("Duplicate gross row")
         for col, ym in columns.items():
-            values = {label: number(format(Decimal(flat[f"{col}{index}"]), "f")) for label, index in band}
+            values = {}
+            for label, index in band:
+                text = flat[f"{col}{index}"]
+                if len(text) > 80:
+                    raise ValueError("Invalid source numeric precision")
+                value = Decimal(text)
+                if (
+                    not value.is_finite()
+                    or abs(value.as_tuple().exponent) > 50
+                    or len(value.as_tuple().digits) > 40
+                ):
+                    raise ValueError("Invalid source numeric precision")
+                values[label] = number(format(value, "f"))
             points = gross_points(values, month(*ym), body, url, at)
             for point in points:
                 key = (point.series_id, point.period.key)
@@ -290,7 +302,7 @@ class GST:
         points = await asyncio.to_thread(parse_workbook, await fetch(url), url, at())
         ym, pdf, published = discover_release(await fetch(NEWS))
         latest = await asyncio.to_thread(parse_pdf, await fetch(pdf), pdf, at(), ym, published)
-        earliest = ym[0] - self.settings.report_years - 1
+        earliest = ym[0] - self.settings.macro_report_years - 1
         first = min(p.period.start.year for p in points)
         if earliest < first:
             history = discover_history(index)

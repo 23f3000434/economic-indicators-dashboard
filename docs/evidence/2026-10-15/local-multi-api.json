@@ -1,0 +1,113 @@
+{
+  "api_url": "http://localhost:8010",
+  "health_status": 200,
+  "protected_dashboard_status": 200,
+  "panels": [
+    {
+      "id": "gdp",
+      "state": "ready",
+      "availability": null,
+      "report_years": null
+    },
+    {
+      "id": "debt",
+      "state": "unavailable",
+      "availability": "blocked",
+      "report_years": 5
+    },
+    {
+      "id": "trade",
+      "state": "ready",
+      "availability": "implemented",
+      "report_years": 5
+    },
+    {
+      "id": "gst",
+      "state": "ready",
+      "availability": "implemented",
+      "report_years": 5
+    },
+    {
+      "id": "inflation",
+      "state": "ready",
+      "availability": "implemented",
+      "report_years": 5
+    },
+    {
+      "id": "expenditure",
+      "state": "ready",
+      "availability": "implemented",
+      "report_years": 5
+    }
+  ],
+  "groups": [
+    {
+      "last_attempt_at": "2026-10-15T15:01:03.637515Z",
+      "last_success_at": "2026-10-15T15:01:03.819045Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "gdp",
+      "provider_id": "world_bank_wdi",
+      "next_request_not_before": null,
+      "interval_seconds": 604800
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529713Z",
+      "last_success_at": "2026-10-15T16:45:01.098803Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "trade",
+      "provider_id": "commerce",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.528766Z",
+      "last_success_at": "2026-10-15T16:45:07.225941Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "gst",
+      "provider_id": "gstn",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529652Z",
+      "last_success_at": "2026-10-15T16:45:06.205468Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "inflation",
+      "provider_id": "mospi",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529730Z",
+      "last_success_at": "2026-10-15T16:44:55.173997Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "inflation_policy",
+      "provider_id": "gazette",
+      "next_request_not_before": null,
+      "interval_seconds": 604800
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529029Z",
+      "last_success_at": "2026-10-15T16:45:07.167270Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "expenditure",
+      "provider_id": "cga",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    }
+  ],
+  "read_ms": [
+    22.7,
+    42.54,
+    22.54
+  ],
+  "scope": "Normal application on persistent private data/dashboard.sqlite3; live scheduled providers, no fixtures.",
+  "logout_status": 204,
+  "revoked_access_status": 401
+}

@@ -1,0 +1,168 @@
+{
+  "scope": "Network-enabled local diagnostics on 2026-10-15; no cloud-host verification. HTTP success alone is not collector proof.",
+  "requests": [
+    {
+      "url": "https://www.imf.org/external/datamapper/api/v1/GGXWDG_NGDP/IND/USA",
+      "checked_at": "2026-10-15T15:31:33.056904+00:00",
+      "name": "imf_v1",
+      "status": 403,
+      "final_url": "https://www.imf.org/external/datamapper/api/v1/GGXWDG_NGDP/IND/USA",
+      "content_type": "text/html",
+      "retry_after": null,
+      "bytes": 437,
+      "sha256": "7aa9f773cc6e28abcc2e5662e6e033dbc314e11f66624c7c343224e0357704a4"
+    },
+    {
+      "url": "https://www.imf.org/external/datamapper/api/v2/GGXWDG_NGDP/IND/USA",
+      "checked_at": "2026-10-15T15:39:59.074403+00:00",
+      "name": "imf_api2",
+      "status": 403,
+      "final_url": "https://www.imf.org/external/datamapper/api/v2/GGXWDG_NGDP/IND/USA",
+      "content_type": "text/html",
+      "retry_after": null,
+      "bytes": 437,
+      "sha256": "8d1c6b8836e9cdc9ce42c9d9e16433af7233991df82148c7e39bc1b0427255aa"
+    },
+    {
+      "url": "https://data.imf.org/en/datasets/IMF.RES:WEO",
+      "checked_at": "2026-10-15T15:34:55.760053+00:00",
+      "name": "imf_data",
+      "status": 403,
+      "final_url": "https://data.imf.org/en/datasets/IMF.RES:WEO",
+      "content_type": "text/html",
+      "retry_after": null,
+      "bytes": 403,
+      "sha256": "26de75ffab2478e520b3302726508c7d114122c0b67a1f54e8c10462a353a426"
+    },
+    {
+      "url": "https://www.imf.org/en/Publications/WEO/weo-database/2026/October/download-entire-database",
+      "checked_at": "2026-10-15T15:39:59.056630+00:00",
+      "name": "imf_weo_download",
+      "status": 403,
+      "final_url": "https://www.imf.org/en/Publications/WEO/weo-database/2026/October/download-entire-database",
+      "content_type": "text/html",
+      "retry_after": null,
+      "bytes": 469,
+      "sha256": "4803deb10cd34f554519731d898a847ee32f3f5fa0481193590a234f73cb648d"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/series/GGGDTAINA188N",
+      "checked_at": "2026-10-15T16:22:15.067485+00:00",
+      "name": "fred_GGGDTAINA188N_meta",
+      "error_type": "ReadTimeout",
+      "error": "The read operation timed out"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/series/GGGDTAUSA188N",
+      "checked_at": "2026-10-15T16:22:15.068273+00:00",
+      "name": "fred_GGGDTAUSA188N_meta",
+      "error_type": "ReadTimeout",
+      "error": "The read operation timed out"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/graph.csv?id=GGGDTAINA188N",
+      "checked_at": "2026-10-15T16:22:15.068452+00:00",
+      "name": "fred_GGGDTAINA188N_csv",
+      "error_type": "ReadTimeout",
+      "error": "The read operation timed out"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/graph.csv?id=GGGDTAUSA188N",
+      "checked_at": "2026-10-15T16:22:15.068577+00:00",
+      "name": "fred_GGGDTAUSA188N_csv",
+      "error_type": "ReadTimeout",
+      "error": "The read operation timed out"
+    },
+    {
+      "url": "https://cpi.mospi.gov.in/",
+      "checked_at": "2026-10-15T15:31:33.486922+00:00",
+      "name": "cpi_index",
+      "error_type": "ConnectTimeout",
+      "error": "timed out"
+    },
+    {
+      "url": "https://www.mospi.gov.in/api/latest-release/get-web-latest-release-list",
+      "checked_at": "2026-10-15T15:39:58.865272+00:00",
+      "name": "mospi_latest",
+      "status": 403,
+      "final_url": "https://www.mospi.gov.in/api/latest-release/get-web-latest-release-list",
+      "content_type": "text/html; charset=utf-8",
+      "retry_after": null,
+      "bytes": 185,
+      "sha256": "6e5b2024182c760fe638cda4c1d8b6dbda32f6f72cb425843b2aae88585bb513"
+    },
+    {
+      "url": "https://www.mospi.gov.in/api/latest-release/get-web-latest-release-list",
+      "method": "POST",
+      "payload": {
+        "page_no": 1,
+        "page_size": 100,
+        "search_term": "CPI",
+        "sort_field": "published_year",
+        "sort_order": "DESC",
+        "from_date": "",
+        "to_date": "",
+        "lang": "en"
+      },
+      "checked_at": "2026-10-15T15:54:55.096882+00:00",
+      "status": 200,
+      "bytes": 14886,
+      "sha256": "7130193cc3bc59a91490e0c5a44650b73b6d8719a30c80da87074ecdb79a62dc",
+      "name": "mospi_post_CPI"
+    },
+    {
+      "url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+      "checked_at": "2026-10-15T15:34:55.588940+00:00",
+      "name": "policy_pdf",
+      "error_type": "ConnectError",
+      "error": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)"
+    },
+    {
+      "url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+      "checked_at": "2026-10-15T16:17:06.744928+00:00",
+      "name": "policy_native",
+      "tls_verification": "native_system_store; hostname and certificate verification enabled",
+      "status": 200,
+      "final_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+      "content_type": "application/pdf",
+      "retry_after": null,
+      "bytes": 606925,
+      "sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7"
+    },
+    {
+      "url": "https://www.commerce.gov.in/wp-content/uploads/2024/04/PIB-Release.pdf",
+      "checked_at": "2026-10-15T16:02:42.300413+00:00",
+      "name": "commerce_mar2024_pdf",
+      "status": 404,
+      "final_url": "https://www.commerce.gov.in/wp-content/uploads/2024/04/PIB-Release.pdf",
+      "content_type": "text/html; charset=iso-8859-1",
+      "retry_after": null,
+      "bytes": 196,
+      "sha256": "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+    },
+    {
+      "url": "https://www.commerce.gov.in/wp-content/uploads/2022/04/PIB-Release.pdf",
+      "checked_at": "2026-10-15T16:02:42.300856+00:00",
+      "name": "commerce_mar2022_pdf",
+      "status": 404,
+      "final_url": "https://www.commerce.gov.in/wp-content/uploads/2022/04/PIB-Release.pdf",
+      "content_type": "text/html; charset=iso-8859-1",
+      "retry_after": null,
+      "bytes": 196,
+      "sha256": "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+    }
+  ],
+  "implemented_paths": {
+    "world_bank_wdi": "gdp-slice-live.json and multi-provider-live.json",
+    "cga": "cga-live.json",
+    "gstn": "gst-history-live.json",
+    "commerce": "trade-live.json",
+    "mospi": "inflation-live.json",
+    "gazette": "inflation-live.json"
+  },
+  "gates": {
+    "debt": "IMF HTTP rejection; FRED runtime read timeout; no accepted observation collector",
+    "nse_bse": "Access arrangement unresolved; no quote requests sent",
+    "figma": "Planning connection denied frame 1:2; not retested in this backend stage"
+  }
+}

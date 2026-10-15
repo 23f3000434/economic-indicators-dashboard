@@ -35,8 +35,10 @@ class Settings:
     trade_interval: int = 86400
     cpi_interval: int = 86400
     policy_interval: int = 604800
+    policy_url: str = "https://egazette.gov.in/WriteReadData/2026/271285.pdf"
     macro_groups: tuple[str, ...] | None = None
     collection_budget: int = 600
+    macro_report_years: int = 5
     trade_history_urls: tuple[str, ...] = (
         "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
         "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2017942&reg=48&lang=2",
@@ -71,6 +73,8 @@ class Settings:
             raise ValueError("Group intervals must be positive")
         if not 10 <= self.collection_budget <= 1800:
             raise ValueError("Collection job budget must be 10..1800 seconds")
+        if not 2 <= self.macro_report_years <= 20:
+            raise ValueError("Macro reporting window must be 2..20 completed years")
         if self.macro_groups is not None and not set(self.macro_groups) <= {
             "expenditure",
             "gst",
@@ -79,6 +83,15 @@ class Settings:
             "inflation_policy",
         }:
             raise ValueError("Unknown collection group")
+        policy = urlsplit(self.policy_url)
+        if (
+            policy.scheme != "https"
+            or policy.hostname != "egazette.gov.in"
+            or policy.username
+            or policy.port
+            or not policy.path.endswith(".pdf")
+        ):
+            raise ValueError("Policy must reference a reviewed official HTTPS Gazette PDF")
         origins = [urlsplit(self.frontend_origin), urlsplit(self.api_origin)]
         if any(o.path or o.query or o.fragment or o.username or not o.hostname for o in origins):
             raise ValueError("Origins must contain only scheme, host and optional port")
@@ -150,10 +163,14 @@ class Settings:
             trade_interval=integer("TRADE_COLLECTION_INTERVAL_SECONDS", 86400),
             cpi_interval=integer("CPI_COLLECTION_INTERVAL_SECONDS", 86400),
             policy_interval=integer("POLICY_COLLECTION_INTERVAL_SECONDS", 604800),
+            policy_url=os.getenv(
+                "INFLATION_POLICY_URL", "https://egazette.gov.in/WriteReadData/2026/271285.pdf"
+            ),
             macro_groups=tuple(g.strip() for g in os.environ["COLLECTION_GROUPS"].split(",") if g.strip())
             if "COLLECTION_GROUPS" in os.environ
             else None,
             collection_budget=integer("COLLECTION_JOB_BUDGET_SECONDS", 600),
+            macro_report_years=integer("MACRO_REPORT_YEARS", 5),
             trade_history_urls=tuple(os.environ["TRADE_HISTORY_URLS"].split("|"))
             if os.getenv("TRADE_HISTORY_URLS")
             else cls.__dataclass_fields__["trade_history_urls"].default,

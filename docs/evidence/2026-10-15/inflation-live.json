@@ -1,0 +1,514 @@
+{
+  "checked_at": "2026-10-15T16:19:57.044327+00:00",
+  "groups": {
+    "inflation": {
+      "collected": true,
+      "api_status": 200,
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-15T16:19:57.164534Z",
+          "last_success_at": "2026-10-15T16:19:59.943839Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "inflation",
+          "provider_id": "mospi",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        },
+        {
+          "last_attempt_at": null,
+          "last_success_at": null,
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "inflation_policy",
+          "provider_id": "gazette",
+          "next_request_not_before": null,
+          "interval_seconds": 604800
+        }
+      ],
+      "summaries": [
+        {
+          "current": {
+            "series_id": "cpi_yoy_2012",
+            "period_key": "2025-12"
+          },
+          "comparison": {
+            "series_id": "cpi_yoy_2012",
+            "period_key": "2025-11"
+          },
+          "kind": "percentage_points",
+          "value": "0.62"
+        },
+        {
+          "current": {
+            "series_id": "cpi_yoy_2024",
+            "period_key": "2026-09"
+          },
+          "comparison": {
+            "series_id": "cpi_yoy_2024",
+            "period_key": "2026-08"
+          },
+          "kind": "percentage_points",
+          "value": "0.71"
+        }
+      ],
+      "series": [
+        {
+          "id": "cpi_yoy_2012",
+          "unit": "percent",
+          "points": 72,
+          "first": {
+            "series_id": "cpi_yoy_2012",
+            "period": {
+              "key": "2020-01",
+              "label": "January 2020",
+              "kind": "month",
+              "start": "2020-01-01",
+              "end": "2020-01-31"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2012",
+              "status": "unspecified",
+              "published_at": "2026-01-12",
+              "publication_note": "Last 2012-base release. Historical finality unspecified except explicitly labelled months.",
+              "inputs": []
+            },
+            "value": "7.59",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1768213461321_53cd35fd-1bbc-4b43-b92d-8fb67474ee74_Press_Release_of_CPI_for_December_2025.pdf",
+            "retrieved_at": "2026-10-15T16:19:58.950205Z",
+            "response_sha256": "e00e487b37b100055014a59929d3ecff13e461c13d009b022e0402c23d05c61e",
+            "footnote": "All-India combined general CPI YoY. Pandemic non-compilation remains null; not food/rural/urban CPI.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "cpi_yoy_2012",
+            "period": {
+              "key": "2025-12",
+              "label": "December 2025",
+              "kind": "month",
+              "start": "2025-12-01",
+              "end": "2025-12-31"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2012",
+              "status": "provisional",
+              "published_at": "2026-01-12",
+              "publication_note": "Last 2012-base release. Historical finality unspecified except explicitly labelled months.",
+              "inputs": []
+            },
+            "value": "1.33",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1768213461321_53cd35fd-1bbc-4b43-b92d-8fb67474ee74_Press_Release_of_CPI_for_December_2025.pdf",
+            "retrieved_at": "2026-10-15T16:19:58.950205Z",
+            "response_sha256": "e00e487b37b100055014a59929d3ecff13e461c13d009b022e0402c23d05c61e",
+            "footnote": "All-India combined general CPI YoY. Pandemic non-compilation remains null; not food/rural/urban CPI.",
+            "retained": false
+          }
+        },
+        {
+          "id": "cpi_yoy_2024",
+          "unit": "percent",
+          "points": 9,
+          "first": {
+            "series_id": "cpi_yoy_2024",
+            "period": {
+              "key": "2026-01",
+              "label": "January 2026",
+              "kind": "month",
+              "start": "2026-01-01",
+              "end": "2026-01-31"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2024",
+              "status": "unspecified",
+              "published_at": "2026-10-12",
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "2.74",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf",
+            "retrieved_at": "2026-10-15T16:19:57.677390Z",
+            "response_sha256": "a6087e10a1bdb64ebdc9dc32f80605d2905d147602d41cce5879871b5ccefa37",
+            "footnote": "Published All-India combined general CPI YoY. Base 2024=100; not spliced to the 2012 series. Rates use unrounded source indices, not rounded displayed index arithmetic.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "cpi_yoy_2024",
+            "period": {
+              "key": "2026-09",
+              "label": "September 2026",
+              "kind": "month",
+              "start": "2026-09-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2024",
+              "status": "provisional",
+              "published_at": "2026-10-12",
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "5.54",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf",
+            "retrieved_at": "2026-10-15T16:19:57.677390Z",
+            "response_sha256": "a6087e10a1bdb64ebdc9dc32f80605d2905d147602d41cce5879871b5ccefa37",
+            "footnote": "Published All-India combined general CPI YoY. Base 2024=100; not spliced to the 2012 series. Rates use unrounded source indices, not rounded displayed index arithmetic.",
+            "retained": false
+          }
+        }
+      ]
+    },
+    "inflation_policy": {
+      "collected": true,
+      "api_status": 200,
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-15T16:19:57.164534Z",
+          "last_success_at": "2026-10-15T16:19:59.943839Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "inflation",
+          "provider_id": "mospi",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        },
+        {
+          "last_attempt_at": "2026-10-15T16:19:59.953740Z",
+          "last_success_at": "2026-10-15T16:20:00.745175Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "inflation_policy",
+          "provider_id": "gazette",
+          "next_request_not_before": null,
+          "interval_seconds": 604800
+        }
+      ],
+      "summaries": [
+        {
+          "current": {
+            "series_id": "cpi_yoy_2012",
+            "period_key": "2025-12"
+          },
+          "comparison": {
+            "series_id": "cpi_yoy_2012",
+            "period_key": "2025-11"
+          },
+          "kind": "percentage_points",
+          "value": "0.62"
+        },
+        {
+          "current": {
+            "series_id": "cpi_yoy_2024",
+            "period_key": "2026-09"
+          },
+          "comparison": {
+            "series_id": "cpi_yoy_2024",
+            "period_key": "2026-08"
+          },
+          "kind": "percentage_points",
+          "value": "0.71"
+        }
+      ],
+      "series": [
+        {
+          "id": "inflation_target",
+          "unit": "percent",
+          "points": 1,
+          "first": {
+            "series_id": "inflation_target",
+            "period": {
+              "key": "2026-04-01/2031-03-31",
+              "label": "01 April 2026\u201331 March 2031",
+              "kind": "policy_validity",
+              "start": "2026-04-01",
+              "end": "2031-03-31"
+            },
+            "definition": {
+              "group": "inflation_policy",
+              "provider": "gazette",
+              "unit": "percent",
+              "methodology": "india_inflation_target_rbi_act_45za",
+              "status": "final",
+              "published_at": "2026-03-25",
+              "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+              "inputs": []
+            },
+            "value": "4",
+            "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+            "retrieved_at": "2026-10-15T16:20:00.691801Z",
+            "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "inflation_target",
+            "period": {
+              "key": "2026-04-01/2031-03-31",
+              "label": "01 April 2026\u201331 March 2031",
+              "kind": "policy_validity",
+              "start": "2026-04-01",
+              "end": "2031-03-31"
+            },
+            "definition": {
+              "group": "inflation_policy",
+              "provider": "gazette",
+              "unit": "percent",
+              "methodology": "india_inflation_target_rbi_act_45za",
+              "status": "final",
+              "published_at": "2026-03-25",
+              "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+              "inputs": []
+            },
+            "value": "4",
+            "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+            "retrieved_at": "2026-10-15T16:20:00.691801Z",
+            "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "inflation_target_lower",
+          "unit": "percent",
+          "points": 1,
+          "first": {
+            "series_id": "inflation_target_lower",
+            "period": {
+              "key": "2026-04-01/2031-03-31",
+              "label": "01 April 2026\u201331 March 2031",
+              "kind": "policy_validity",
+              "start": "2026-04-01",
+              "end": "2031-03-31"
+            },
+            "definition": {
+              "group": "inflation_policy",
+              "provider": "gazette",
+              "unit": "percent",
+              "methodology": "india_inflation_target_rbi_act_45za",
+              "status": "final",
+              "published_at": "2026-03-25",
+              "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+              "inputs": []
+            },
+            "value": "2",
+            "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+            "retrieved_at": "2026-10-15T16:20:00.691801Z",
+            "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "inflation_target_lower",
+            "period": {
+              "key": "2026-04-01/2031-03-31",
+              "label": "01 April 2026\u201331 March 2031",
+              "kind": "policy_validity",
+              "start": "2026-04-01",
+              "end": "2031-03-31"
+            },
+            "definition": {
+              "group": "inflation_policy",
+              "provider": "gazette",
+              "unit": "percent",
+              "methodology": "india_inflation_target_rbi_act_45za",
+              "status": "final",
+              "published_at": "2026-03-25",
+              "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+              "inputs": []
+            },
+            "value": "2",
+            "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+            "retrieved_at": "2026-10-15T16:20:00.691801Z",
+            "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "inflation_target_upper",
+          "unit": "percent",
+          "points": 1,
+          "first": {
+            "series_id": "inflation_target_upper",
+            "period": {
+              "key": "2026-04-01/2031-03-31",
+              "label": "01 April 2026\u201331 March 2031",
+              "kind": "policy_validity",
+              "start": "2026-04-01",
+              "end": "2031-03-31"
+            },
+            "definition": {
+              "group": "inflation_policy",
+              "provider": "gazette",
+              "unit": "percent",
+              "methodology": "india_inflation_target_rbi_act_45za",
+              "status": "final",
+              "published_at": "2026-03-25",
+              "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+              "inputs": []
+            },
+            "value": "6",
+            "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+            "retrieved_at": "2026-10-15T16:20:00.691801Z",
+            "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "inflation_target_upper",
+            "period": {
+              "key": "2026-04-01/2031-03-31",
+              "label": "01 April 2026\u201331 March 2031",
+              "kind": "policy_validity",
+              "start": "2026-04-01",
+              "end": "2031-03-31"
+            },
+            "definition": {
+              "group": "inflation_policy",
+              "provider": "gazette",
+              "unit": "percent",
+              "methodology": "india_inflation_target_rbi_act_45za",
+              "status": "final",
+              "published_at": "2026-03-25",
+              "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+              "inputs": []
+            },
+            "value": "6",
+            "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+            "retrieved_at": "2026-10-15T16:20:00.691801Z",
+            "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "cpi_yoy_2012",
+          "unit": "percent",
+          "points": 72,
+          "first": {
+            "series_id": "cpi_yoy_2012",
+            "period": {
+              "key": "2020-01",
+              "label": "January 2020",
+              "kind": "month",
+              "start": "2020-01-01",
+              "end": "2020-01-31"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2012",
+              "status": "unspecified",
+              "published_at": "2026-01-12",
+              "publication_note": "Last 2012-base release. Historical finality unspecified except explicitly labelled months.",
+              "inputs": []
+            },
+            "value": "7.59",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1768213461321_53cd35fd-1bbc-4b43-b92d-8fb67474ee74_Press_Release_of_CPI_for_December_2025.pdf",
+            "retrieved_at": "2026-10-15T16:19:58.950205Z",
+            "response_sha256": "e00e487b37b100055014a59929d3ecff13e461c13d009b022e0402c23d05c61e",
+            "footnote": "All-India combined general CPI YoY. Pandemic non-compilation remains null; not food/rural/urban CPI.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "cpi_yoy_2012",
+            "period": {
+              "key": "2025-12",
+              "label": "December 2025",
+              "kind": "month",
+              "start": "2025-12-01",
+              "end": "2025-12-31"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2012",
+              "status": "provisional",
+              "published_at": "2026-01-12",
+              "publication_note": "Last 2012-base release. Historical finality unspecified except explicitly labelled months.",
+              "inputs": []
+            },
+            "value": "1.33",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1768213461321_53cd35fd-1bbc-4b43-b92d-8fb67474ee74_Press_Release_of_CPI_for_December_2025.pdf",
+            "retrieved_at": "2026-10-15T16:19:58.950205Z",
+            "response_sha256": "e00e487b37b100055014a59929d3ecff13e461c13d009b022e0402c23d05c61e",
+            "footnote": "All-India combined general CPI YoY. Pandemic non-compilation remains null; not food/rural/urban CPI.",
+            "retained": false
+          }
+        },
+        {
+          "id": "cpi_yoy_2024",
+          "unit": "percent",
+          "points": 9,
+          "first": {
+            "series_id": "cpi_yoy_2024",
+            "period": {
+              "key": "2026-01",
+              "label": "January 2026",
+              "kind": "month",
+              "start": "2026-01-01",
+              "end": "2026-01-31"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2024",
+              "status": "unspecified",
+              "published_at": "2026-10-12",
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "2.74",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf",
+            "retrieved_at": "2026-10-15T16:19:57.677390Z",
+            "response_sha256": "a6087e10a1bdb64ebdc9dc32f80605d2905d147602d41cce5879871b5ccefa37",
+            "footnote": "Published All-India combined general CPI YoY. Base 2024=100; not spliced to the 2012 series. Rates use unrounded source indices, not rounded displayed index arithmetic.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "cpi_yoy_2024",
+            "period": {
+              "key": "2026-09",
+              "label": "September 2026",
+              "kind": "month",
+              "start": "2026-09-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "inflation",
+              "provider": "mospi",
+              "unit": "percent",
+              "methodology": "all_india_combined_headline_yoy_base_2024",
+              "status": "provisional",
+              "published_at": "2026-10-12",
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "5.54",
+            "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf",
+            "retrieved_at": "2026-10-15T16:19:57.677390Z",
+            "response_sha256": "a6087e10a1bdb64ebdc9dc32f80605d2905d147602d41cce5879871b5ccefa37",
+            "footnote": "Published All-India combined general CPI YoY. Base 2024=100; not spliced to the 2012 series. Rates use unrounded source indices, not rounded displayed index arithmetic.",
+            "retained": false
+          }
+        }
+      ]
+    }
+  }
+}

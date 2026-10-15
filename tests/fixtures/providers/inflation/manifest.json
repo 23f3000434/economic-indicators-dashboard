@@ -1,0 +1,75 @@
+[
+  {
+    "url": "https://www.mospi.gov.in/api/latest-release/get-web-latest-release-list",
+    "method": "POST",
+    "payload": {
+      "page_no": 1,
+      "page_size": 100,
+      "search_term": "CPI",
+      "sort_field": "published_year",
+      "sort_order": "DESC",
+      "from_date": "",
+      "to_date": "",
+      "lang": "en"
+    },
+    "checked_at": "2026-10-15T15:54:55.096882+00:00",
+    "status": 200,
+    "bytes": 14886,
+    "sha256": "7130193cc3bc59a91490e0c5a44650b73b6d8719a30c80da87074ecdb79a62dc",
+    "name": "mospi_post_CPI"
+  },
+  {
+    "url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf",
+    "checked_at": "2026-10-15T15:55:46.957441+00:00",
+    "name": "cpi_2026-10-12",
+    "status": 200,
+    "final_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf",
+    "content_type": "application/pdf",
+    "retry_after": null,
+    "bytes": 561861,
+    "sha256": "a6087e10a1bdb64ebdc9dc32f80605d2905d147602d41cce5879871b5ccefa37",
+    "reviewed_values": {
+      "2026-01": "2.74",
+      "2026-08": "4.83",
+      "2026-09": "5.54"
+    }
+  },
+  {
+    "url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1768213461321_53cd35fd-1bbc-4b43-b92d-8fb67474ee74_Press_Release_of_CPI_for_December_2025.pdf",
+    "checked_at": "2026-10-15T15:55:46.958058+00:00",
+    "name": "cpi_2026-01-12",
+    "status": 200,
+    "final_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1768213461321_53cd35fd-1bbc-4b43-b92d-8fb67474ee74_Press_Release_of_CPI_for_December_2025.pdf",
+    "content_type": "application/pdf",
+    "retry_after": null,
+    "bytes": 947686,
+    "sha256": "e00e487b37b100055014a59929d3ecff13e461c13d009b022e0402c23d05c61e",
+    "reviewed_values": {
+      "2020-04": null,
+      "2020-05": null,
+      "2025-11": "0.71",
+      "2025-12": "1.33"
+    }
+  },
+  {
+    "url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+    "checked_at": "2026-10-15T16:17:06.744928+00:00",
+    "name": "policy_native",
+    "tls_verification": "native_system_store; hostname and certificate verification enabled",
+    "status": 200,
+    "final_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+    "content_type": "application/pdf",
+    "retry_after": null,
+    "bytes": 606925,
+    "sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+    "reviewed_values": {
+      "inflation_target": "4",
+      "inflation_target_upper": "6",
+      "inflation_target_lower": "2"
+    },
+    "validity": [
+      "2026-04-01",
+      "2031-03-31"
+    ]
+  }
+]

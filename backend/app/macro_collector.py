@@ -3,8 +3,12 @@
 import asyncio
 import logging
 from datetime import datetime, timezone
+from decimal import InvalidOperation
+from xml.etree.ElementTree import ParseError
+from zipfile import BadZipFile
 
 import httpx
+from pypdf.errors import PyPdfError
 
 from .collection import Deferred, GroupState, ProviderHTTP
 from .gdp import timestamp
@@ -36,14 +40,22 @@ class MacroCollector:
     async def collect_once(self):
         year = datetime.fromtimestamp(self.clock(), timezone.utc).year
         run = await asyncio.to_thread(
-            self.state.begin, timestamp(self.clock()), year - self.settings.report_years - 1, year
+            self.state.begin, timestamp(self.clock()), year - self.settings.macro_report_years - 1, year
         )
         if run is None:
             return False
         try:
+            verify = True
+            if getattr(self.adapter, "native_tls", False):
+                import ssl
+
+                import truststore
+
+                verify = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
             async with httpx.AsyncClient(
                 follow_redirects=False,
                 headers={"User-Agent": "EconomicIndicatorsDashboard/0.2", "Accept": "*/*"},
+                verify=verify,
             ) as owned:
                 http = ProviderHTTP(
                     self.state,
@@ -74,7 +86,20 @@ class MacroCollector:
                 else "network_error"
                 if isinstance(exc, httpx.RequestError)
                 else "invalid_payload"
-                if isinstance(exc, (ValueError, TypeError, KeyError, AttributeError))
+                if isinstance(
+                    exc,
+                    (
+                        ValueError,
+                        TypeError,
+                        KeyError,
+                        AttributeError,
+                        IndexError,
+                        InvalidOperation,
+                        ParseError,
+                        BadZipFile,
+                        PyPdfError,
+                    ),
+                )
                 else "storage_error"
             )
             await asyncio.to_thread(self.state.finish, run, timestamp(self.clock()), kind)
@@ -91,3 +116,16 @@ class MacroCollector:
             except Exception:
                 LOG.exception("%s supervisor will retry", self.group)
             await asyncio.sleep(min(30, self.interval))
+
+
+def build_jobs(settings, database, clock, client=None):
+    from .providers.cga import CGA
+    from .providers.cpi import CPI
+    from .providers.gst import GST
+    from .providers.policy import Policy
+    from .providers.trade import Trade
+
+    return {
+        a.group: MacroCollector(a, settings, database, clock, client)
+        for a in [CGA(settings), GST(settings), Trade(settings), CPI(settings), Policy(settings)]
+    }

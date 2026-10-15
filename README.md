@@ -1,6 +1,6 @@
 # Economic Indicators Dashboard
 
-Implemented local slice: scheduled World Bank GDP collection → validation → private SQLite → protected FastAPI → one React/TypeScript panel. Provider traffic is independent of browser reads. Five other panel positions and the ticker are reserved without invented observations. Other providers, public deployment and final Figma acceptance remain outside this stage.
+Implemented locally: independent scheduled GDP/CGA/GST/merchandise-trade/CPI/policy collection → strict validation → private persistent SQLite → protected FastAPI dashboard. The existing authenticated React GDP panel remains intact; other frontend panels/ticker positions are reserved for their later stage. Debt and market access remain explicit backend gates. [Source coverage and evidence](docs/multi-provider.md) distinguish completed paths from unavailable features. Public deployment and final Figma acceptance remain pending.
 
 ## Local setup
 
@@ -32,22 +32,34 @@ PYTHONPATH=backend .venv/bin/python -m uvicorn app.main:create_app --factory --h
 - Frontend: [localhost:5173](http://localhost:5173)
 - Health: [localhost:8010/healthz](http://localhost:8010/healthz)
 - API docs: [localhost:8010/docs](http://localhost:8010/docs), [OpenAPI schema](http://localhost:8010/openapi.json)
-- Protected data: `GET http://localhost:8010/api/v1/panels/gdp`
+- Protected data: `GET http://localhost:8010/api/v1/dashboard`; dedicated GDP/expenditure/GST/trade/inflation panel routes under `/api/v1/panels/`.
 
-The startup supervisor collects immediately when due; the first page can show reserved loading/empty space until that independent job finishes. Default collection is weekly; failures retry after the shorter of one hour or the configured interval. Outcomes persist. The browser polls stored data each minute while visible. “Refresh view” reads SQLite and never calls World Bank. Ctrl-C stops each server; restarting preserves users, sessions and observations. Run one worker/replica. Never serve `data/` statically.
+Independent startup supervisors collect when due: GDP weekly, CGA/GST/trade/CPI daily, policy weekly by default. Failures retry after the shorter of one hour or their configured interval, subject to durable provider cooldowns. Each group commits independently and keeps its own history/last success. The existing frontend polls stored GDP each minute while visible; “Refresh view” never triggers upstream work. Ctrl-C stops each server; restart preserves users, sessions and observations. Run one worker/replica. Never serve `data/` statically.
+
+If frontend port 5173 is occupied, leave unrelated services alone. For example, run Vite with `npm run dev -- --port 5175 --strictPort` and start this API with `FRONTEND_ORIGIN=http://localhost:5175` prefixed to its command. Both hosts must remain `localhost`. The current backend verification leaves the unrelated 5173 service untouched; its URL is not this repository's frontend.
 
 For an explicit diagnostic collection or stored projection (stop the API before manually collecting, so the supervisor remains the sole owner during normal operation):
 
 ```sh
 PYTHONPATH=backend .venv/bin/python -m app.cli collect-gdp
 PYTHONPATH=backend .venv/bin/python -m app.cli read-gdp
+PYTHONPATH=backend .venv/bin/python -m app.cli collect expenditure gst trade inflation inflation_policy
+PYTHONPATH=backend .venv/bin/python -m app.cli read-dashboard
 ```
+
+Manual collection exits nonzero on failure/defer without deleting valid data or bypassing a cooldown. `read-dashboard` is local private-database administration; HTTP dashboard reads always require a valid bearer/session.
 
 ## Configuration and security
 
 Server defaults/names are in `.env.example`; only `VITE_API_BASE_URL` is public. SQLite defaults to `data/dashboard.sqlite3` (0700 directory/0600 file), with numbered SQL migrations and `PRAGMA user_version`. Back it up consistently before schema changes; production backup/restore remains a deployment gate. Keep the file outside all frontend/static paths. Secrets, databases and generated output are ignored.
 
 GDP uses a rolling 12-year input window ending in the previous UTC year. `GDP_START_YEAR`/`GDP_END_YEAR` override it; `GDP_REPORT_YEARS=5` controls display. Include a comparison year; at most 100 input years, within 1960–2199. Source gaps remain null. Newly omitted previously valid values retain original provenance and are labelled stale. India fiscal years and World calendar-year aggregates are visibly different. Dataset update, collection and unknown observation-release freshness stay distinct.
+
+`MACRO_REPORT_YEARS=5` independently controls the additional macro reporting/history window (2–20; wider coverage is not guaranteed). Current verified CGA/trade/GST history supports five completed April–March FYs. `CGA/GST/TRADE/CPI/POLICY_COLLECTION_INTERVAL_SECONDS` configure each group; `COLLECTION_GROUPS` optionally selects implemented non-GDP groups (empty disables them). `COLLECTOR_ENABLED=false` disables all scheduling. Request attempts/timeouts and `COLLECTION_JOB_BUDGET_SECONDS` bound work. History retention is per group: latest 200 completed records plus last success and running records.
+
+GST's comparable primary series excludes compensation cess, preserving original totals/cess definitions separately. Annual sums/averages require 12 published months; FYTD averages use actual published-month counts. Trade compares matching merchandise periods and calculates exports minus imports. CPI 2012/2024 bases remain separate; dated policy validity is independent. Original source/hash/status/publication/period/retrieval metadata and canonical summary/input references support future cards/charts/tables without duplicated figures. Freshness assessment stays unknown where release calendars are not implemented.
+
+`INFLATION_POLICY_URL` selects the reviewed official Gazette notification; no policy extension is assumed after expiry. `TRADE_HISTORY_URLS` accepts pipe-separated reviewed official PIB bootstrap references for older completed FYs. These need maintenance as the rolling window advances on a fresh database. TLS verification is always enabled; policy uses native system trust to resolve the observed issuer-chain failure. Verify source egress and the CA chain on the eventual API host before deployment.
 
 Auth: 15-minute memory-only JWT, persistent server session with configurable absolute lifetime up to seven days, rotated HttpOnly refresh cookie, hashed token storage, session checks on every protected read. Pending/confirm delivery recovery and a 30-second settling window handle interrupted/concurrent refresh. Refresh never extends expiry. Valid bearer logout works without a cookie; conflicting identities are rejected. See [the complete auth/API contract](docs/contracts.md).
 
@@ -78,6 +90,14 @@ python3 scripts/probe_sources.py --environment local --output-dir .verification/
 python3 scripts/prove_gdp.py --input-dir .verification/local --output-dir .verification/gdp-local
 ```
 
+Reproduce current live source-to-private-SQLite-to-authenticated-API evidence separately from normal application storage:
+
+```sh
+.venv/bin/python scripts/verify_sources.py --groups gdp expenditure gst trade inflation inflation_policy
+```
+
+This uses actual public responses and an ignored private proof database with random local accounts; it imports no test fixtures. See `scripts/source_fetch.py --help` for bounded per-URL diagnostics, including native CA diagnosis. Network-restricted execution may need outbound network permission; a documentation link or cached search result never establishes a collector.
+
 ## Engineering and submission records
 
 - [Requirements and deliverables](docs/requirements.md)
@@ -87,5 +107,7 @@ python3 scripts/prove_gdp.py --input-dir .verification/local --output-dir .verif
 - [Source feasibility/access](docs/sources.md)
 - [Verification/limitations](docs/verification.md)
 - [Live GDP evidence](docs/evidence/2026-10-15/gdp-slice-live.json)
+- [Multi-provider evidence and source limitations](docs/multi-provider.md)
+- [Current backend/browser/build checks](docs/evidence/2026-10-15/multi-checks.json)
 
-Exact Figma access was denied. This slice uses the supplied SVG's navy/cyan/amber cards and grid with accurate GDP data/periods; fonts, states and final frame parity remain unverified. Market access and other extractors remain unresolved. Final submission still requires deployed frontend/API/health URLs, separately shared credentials, user-supplied portfolio/project roles and the post-assessment video. Rehearsal stays outside this repository.
+Exact Figma access was denied. The existing frontend follows the supplied SVG structure with accurate GDP data/periods; new panel UI, fonts/states and final frame parity remain later work. IMF debt routes return 403 and FRED mirror requests timed out; no debt adapter is promoted. NSE/BSE access and instrument resolution remain unresolved, with no invented quotes. Final submission still requires deployed frontend/API/health URLs, separately shared credentials, user-supplied portfolio/project roles and the post-assessment video. Rehearsal stays outside this repository.

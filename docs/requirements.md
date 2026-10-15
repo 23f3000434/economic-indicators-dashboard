@@ -32,7 +32,7 @@ The SVG is `1248 × 2193`, has outlined text and embedded images, and cannot pro
 
 | Deliverable | Verification/completion gate |
 | --- | --- |
-| Repository with frontend/backend, schema/migrations, README | Locked local setup, tests and GDP slice are implemented; full multi-provider delivery is still pending |
+| Repository with frontend/backend, schema/migrations, README | Locked local setup and authenticated GDP frontend implemented; remaining verified macro backends/aggregate implemented. Debt/market, remaining frontend and external acceptance gates remain pending |
 | Frontend URL, API/docs URL, health URL | Accessible during evaluation; production HTTPS/CORS/health checks pass |
 | Evaluation account or instructions shared separately | Login works; no passwords, signing keys, refresh tokens, or production credentials committed |
 | Portfolio URL and flagship project links | User supplies working links plus accurate role, technologies, and contribution summaries |

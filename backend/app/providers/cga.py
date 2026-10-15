@@ -120,7 +120,8 @@ class CGA:
         # Five completed FYs (configurable), plus matching current/prior FYTD.
         periods = {(year, m), (year - 1, m)}
         periods.update(
-            (y + 1, 3) for y in range(current.start.year - self.settings.report_years, current.start.year)
+            (y + 1, 3)
+            for y in range(current.start.year - self.settings.macro_report_years, current.start.year)
         )
         points = []
         for y, mo in sorted(periods):

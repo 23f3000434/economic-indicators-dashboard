@@ -12,15 +12,16 @@ from pydantic import Field, field_validator, model_validator
 from .models import Model
 
 Group = Literal["expenditure", "gst", "trade", "inflation", "inflation_policy", "debt"]
-Provider = Literal["cga", "gstn", "commerce", "mospi_pib", "gazette", "imf"]
-Unit = Literal["inr_crore", "usd_billion", "percent", "index_2012_100", "index_2024_100"]
+Provider = Literal["cga", "gstn", "commerce", "mospi", "gazette", "imf"]
+Unit = Literal["inr_crore", "usd_billion", "percent"]
 
 
 def number(text: str) -> str:
     """Accept published plain decimals only, without rounding or binary floats."""
-    cleaned = text.strip().replace(",", "")
-    if not re.fullmatch(r"-?\d+(?:\.\d+)?", cleaned):
+    original = text.strip()
+    if not re.fullmatch(r"-?(?:\d+|\d{1,3}(?:,\d{3})+|\d{1,2}(?:,\d{2})*,\d{3})(?:\.\d+)?", original):
         raise ValueError("Not a published decimal")
+    cleaned = original.replace(",", "")
     value = Decimal(cleaned)
     if not value.is_finite() or len(value.as_tuple().digits) > 100:
         raise ValueError("Invalid decimal precision")
@@ -55,6 +56,23 @@ class Period(Model):
             and self.end != date(self.start.year + 1, 3, 31)
         ):
             raise ValueError("Invalid April–March period")
+        if self.kind in {"fiscal_year", "fiscal_year_to_date"}:
+            base = f"FY{self.start.year}-{str(self.start.year + 1)[-2:]}"
+            key = base if self.kind == "fiscal_year" else f"{base}:{self.end.month:02}"
+            if (
+                self.key != key
+                or self.end.day != calendar.monthrange(self.end.year, self.end.month)[1]
+                or (self.kind == "fiscal_year_to_date" and self.end.month == 3)
+            ):
+                raise ValueError("Fiscal key/grain must match the complete published month window")
+        if self.kind == "calendar_year" and (
+            self.start != date(self.start.year, 1, 1)
+            or self.end != date(self.start.year, 12, 31)
+            or self.key != str(self.start.year)
+        ):
+            raise ValueError("Invalid calendar year")
+        if self.kind == "policy_validity" and self.key != f"{self.start.isoformat()}/{self.end.isoformat()}":
+            raise ValueError("Policy key must identify the effective dates")
         return self
 
 
@@ -84,6 +102,13 @@ class Reference(Model):
     series_id: str
     period_key: str
 
+    @field_validator("series_id")
+    @classmethod
+    def known_series(cls, value):
+        if value not in CATALOGUE:
+            raise ValueError("Unknown canonical reference")
+        return value
+
 
 class Definition(Model):
     group: Group
@@ -101,9 +126,9 @@ class Measurement(Model):
     period: Period
     definition: Definition
     value: str | None
-    source_url: str
-    retrieved_at: str
-    response_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    source_url: str | None
+    retrieved_at: str | None
+    response_sha256: str | None = Field(pattern=r"^[a-f0-9]{64}$")
     footnote: str = ""
     retained: bool = False
 
@@ -124,9 +149,17 @@ class Measurement(Model):
             raise ValueError("Unknown series or inconsistent source/unit")
         from urllib.parse import urlsplit
 
-        url = urlsplit(self.source_url)
-        if url.scheme != "https" or url.hostname not in HOSTS[self.definition.provider] or url.username:
-            raise ValueError("Unexpected source URL")
+        if self.value is not None and not all((self.source_url, self.retrieved_at, self.response_sha256)):
+            raise ValueError("A value requires original response provenance")
+        if self.source_url is not None:
+            url = urlsplit(self.source_url)
+            if (
+                url.scheme != "https"
+                or url.hostname not in HOSTS[self.definition.provider]
+                or url.username
+                or url.password
+            ):
+                raise ValueError("Unexpected source URL")
         return self
 
 
@@ -134,7 +167,7 @@ HOSTS = {
     "cga": {"cga.gov.in", "cga.nic.in", "www.cga.gov.in"},
     "gstn": {"www.gst.gov.in", "tutorial.gst.gov.in"},
     "commerce": {"www.commerce.gov.in", "commerce.gov.in", "www.pib.gov.in"},
-    "mospi_pib": {"www.pib.gov.in", "pib.gov.in", "www.mospi.gov.in"},
+    "mospi": {"www.mospi.gov.in"},
     "gazette": {"egazette.gov.in"},
     "imf": {"www.imf.org", "data.imf.org"},
 }
@@ -166,6 +199,16 @@ CATALOGUE = {
     "trade_exports": ("trade", "commerce", "usd_billion", "Merchandise exports"),
     "trade_imports": ("trade", "commerce", "usd_billion", "Merchandise imports"),
     "trade_balance": ("trade", "commerce", "usd_billion", "Merchandise balance (exports − imports)"),
+    "inflation_target": (
+        "inflation_policy",
+        "gazette",
+        "percent",
+        "Inflation target, dated Government notification",
+    ),
+    "inflation_target_lower": ("inflation_policy", "gazette", "percent", "Inflation target lower tolerance"),
+    "inflation_target_upper": ("inflation_policy", "gazette", "percent", "Inflation target upper tolerance"),
+    "cpi_yoy_2012": ("inflation", "mospi", "percent", "All-India combined headline CPI YoY, base 2012=100"),
+    "cpi_yoy_2024": ("inflation", "mospi", "percent", "All-India combined headline CPI YoY, base 2024=100"),
 }
 
 

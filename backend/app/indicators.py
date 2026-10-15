@@ -1,12 +1,12 @@
 """Durable canonical measurements and network-free projections for additional panels."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, localcontext
 from typing import Literal
 
 from .gdp import timestamp
-from .measurements import CATALOGUE, Measurement, Reference
+from .measurements import CATALOGUE, Measurement, Period, Reference, Unit, fiscal, month
 from .models import Collection, Model
 
 
@@ -20,7 +20,7 @@ class GroupCollection(Collection):
 class IndicatorSeries(Model):
     id: str
     label: str
-    unit: str
+    unit: Unit
     points: list[Measurement]
 
 
@@ -29,6 +29,7 @@ class IndicatorSummary(Model):
     comparison: Reference | None
     kind: Literal["relative_percent", "percentage_points", "none"]
     value: str | None
+    period_kind: Literal["month", "fiscal_year", "fiscal_year_to_date", "calendar_year"]
 
 
 class IndicatorPanel(Model):
@@ -41,6 +42,54 @@ class IndicatorPanel(Model):
     summaries: list[IndicatorSummary]
     notes: list[str]
     coverage: list[str]
+    policies: list["InflationPolicy"] = []
+    freshness_assessment: Literal["unknown"] = "unknown"
+    report_years: int = 5
+
+
+class InflationPolicy(Model):
+    validity: Period
+    target: Reference
+    lower: Reference
+    upper: Reference
+    active: bool
+
+
+def null_gaps(points):
+    result = list(points)
+    for sid in {p.series_id for p in points if p.period.kind == "month"}:
+        items = [p for p in points if p.series_id == sid and p.period.kind == "month"]
+        first, last = min(p.period.start for p in items), max(p.period.start for p in items)
+        lookup = {p.period.key for p in items}
+        y, m = first.year, first.month
+        while (y, m) <= (last.year, last.month):
+            period = month(y, m)
+            if period.key not in lookup:
+                template = items[0]
+                definition = template.definition.model_copy(
+                    update={
+                        "status": "unspecified",
+                        "published_at": None,
+                        "inputs": [],
+                        "publication_note": "No stored observation for this reporting month.",
+                    }
+                )
+                result.append(
+                    template.model_copy(
+                        update={
+                            "period": period,
+                            "definition": definition,
+                            "value": None,
+                            "source_url": None,
+                            "retrieved_at": None,
+                            "response_sha256": None,
+                            "retained": False,
+                            "footnote": "No stored observation; gap is not zero or interpolated.",
+                        }
+                    )
+                )
+            y, m = (y + 1, 1) if m == 12 else (y, m + 1)
+    return result
 
 
 def store_batch(database, state, run, rows: list[Measurement]):
@@ -87,6 +136,45 @@ def store_batch(database, state, run, rows: list[Measurement]):
                 ),
             )
         state.finish_in(db, run, timestamp(state.clock()))
+
+
+def annual_gaps(points, years):
+    if not points:
+        return points
+    result = list(points)
+    last = max(p.period.end for p in points)
+    fiscal_start = last.year - (last.month <= 3)
+    completed = fiscal_start if last.month == 3 else fiscal_start - 1
+    for sid in {p.series_id for p in points}:
+        items = [p for p in points if p.series_id == sid]
+        known = {p.period.key for p in items}
+        for year in range(completed - years + 1, completed + 1):
+            period = fiscal(year)
+            if period.key not in known:
+                template = items[0]
+                definition = template.definition.model_copy(
+                    update={
+                        "status": "unspecified",
+                        "published_at": None,
+                        "inputs": [],
+                        "publication_note": "No stored observation for this requested completed fiscal year.",
+                    }
+                )
+                result.append(
+                    template.model_copy(
+                        update={
+                            "period": period,
+                            "definition": definition,
+                            "value": None,
+                            "source_url": None,
+                            "retrieved_at": None,
+                            "response_sha256": None,
+                            "retained": False,
+                            "footnote": definition.publication_note,
+                        }
+                    )
+                )
+    return result
 
 
 def read_measurements(db, groups):
@@ -146,6 +234,22 @@ def collection_status(db, group, provider, interval, now):
 
 def summaries(points):
     result = []
+    for sid in sorted({p.series_id for p in points}):
+        items = sorted(
+            (p for p in points if p.series_id == sid), key=lambda p: (p.period.end, p.period.start)
+        )
+        if items[-1].period.kind == "policy_validity":
+            continue
+        # First summary is the most recent reporting grain; additional summaries
+        # support FYTD cards and completed-FY tables without recomputing arithmetic.
+        kinds = [items[-1].period.kind] + sorted({p.period.kind for p in items} - {items[-1].period.kind})
+        for kind in kinds:
+            result += _summaries_for_grain([p for p in items if p.period.kind == kind])
+    return result
+
+
+def _summaries_for_grain(points):
+    result = []
     for series_id in sorted({p.series_id for p in points}):
         items = sorted(
             (p for p in points if p.series_id == series_id), key=lambda p: (p.period.end, p.period.start)
@@ -191,6 +295,7 @@ def summaries(points):
                 comparison=Reference(series_id=series_id, period_key=prior.period.key) if prior else None,
                 kind=kind,
                 value=delta,
+                period_kind=current.period.kind,
             )
         )
     return result
@@ -206,14 +311,37 @@ def read_indicator(database, panel_id, jobs, now, report_years=5):
         from .derived import gst_aggregates
 
         points += gst_aggregates(points, report_years)
+    points = null_gaps(points)
+    if panel_id in {"trade", "expenditure"}:
+        points = annual_gaps(points, report_years)
+    for status in statuses:
+        if not status.last_error_kind and any(
+            p.retained and p.definition.group == status.group_id for p in points
+        ):
+            status.last_error_kind = "provider_missing_retained"
     points.sort(key=lambda p: (p.period.end, p.period.start))
     series = [
         IndicatorSeries(id=key, label=spec[3], unit=spec[2], points=[p for p in points if p.series_id == key])
         for key, spec in CATALOGUE.items()
         if any(p.series_id == key for p in points)
     ]
-    has_data = any(p.value is not None for p in points)
+    has_data = any(p.value is not None and p.definition.group != "inflation_policy" for p in points)
     failed = any(s.last_error_kind for s in statuses) or any(p.retained for p in points)
+    policies = []
+    # The statutory window is an Indian civil-date interval; retrieval timestamps
+    # remain UTC. IST has a fixed +05:30 offset throughout these modern policies.
+    today = datetime.fromtimestamp(now, timezone(timedelta(hours=5, minutes=30))).date()
+    targets = [p for p in points if p.series_id == "inflation_target"]
+    for p in targets:
+        policies.append(
+            InflationPolicy(
+                validity=p.period,
+                target=Reference(series_id=p.series_id, period_key=p.period.key),
+                lower=Reference(series_id="inflation_target_lower", period_key=p.period.key),
+                upper=Reference(series_id="inflation_target_upper", period_key=p.period.key),
+                active=p.period.start <= today <= p.period.end,
+            )
+        )
     return IndicatorPanel(
         id=panel_id,
         state=("stale" if failed else "ready") if has_data else ("unavailable" if failed else "empty"),
@@ -222,4 +350,6 @@ def read_indicator(database, panel_id, jobs, now, report_years=5):
         summaries=summaries(points),
         notes=[note for job in groups for note in job.notes],
         coverage=[note for job in groups for note in job.coverage(points)],
+        policies=policies,
+        report_years=report_years,
     )

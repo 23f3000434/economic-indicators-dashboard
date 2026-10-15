@@ -1,0 +1,20 @@
+{
+  "baseline_commit": "03aa914",
+  "date": "2026-10-15",
+  "backend_tests_passed": 73,
+  "backend_subtests_passed": 9,
+  "frontend_tests_passed": 2,
+  "browser_scenarios_passed": 5,
+  "production_frontend_build": "passed",
+  "ruff_backend_tests": "passed",
+  "frontend_prettier": "passed",
+  "live_collectors_and_authenticated_aggregate": "passed; see multi-provider-live.json",
+  "browser_note": "Restricted runtime initially could not bind ::1:8001; rerun with local binding permission passed. Existing GDP/auth browser suite only; new panels remain backend-only.",
+  "remaining": [
+    "Debt source access and metadata",
+    "Market accepted source",
+    "Frontend remaining panels",
+    "Production source egress/TLS, DNS/HTTPS and persistence/backup/restore",
+    "Exact Figma acceptance"
+  ]
+}

@@ -25,9 +25,10 @@ def gst_aggregates(points, years):
                 "methodology": method,
                 "inputs": [Reference(series_id=p.series_id, period_key=p.period.key) for p in inputs],
                 "publication_note": f"Calculated from {len(inputs)} published months; no missing month is zero-filled.",
+                "published_at": None,
             }
         )
-        return template.model_copy(
+        result = template.model_copy(
             update={
                 "series_id": series_id,
                 "period": period,
@@ -37,6 +38,11 @@ def gst_aggregates(points, years):
                 "footnote": definition.publication_note,
             }
         )
+        if not inputs:
+            result = result.model_copy(
+                update={"source_url": None, "response_sha256": None, "retrieved_at": None}
+            )
+        return result
 
     last_completed = current_fy if latest.period.end.month == 3 else current_fy - 1
     for y in range(last_completed - years + 1, last_completed + 1):

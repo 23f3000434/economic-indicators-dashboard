@@ -12,14 +12,12 @@ from fastapi.security import APIKeyCookie, HTTPAuthorizationCredentials, HTTPBea
 
 from .auth import Auth, AuthError
 from .config import Settings
+from .dashboard import Dashboard, read_dashboard
 from .db import Database
 from .gdp import Collector, read_panel
 from .indicators import IndicatorPanel, read_indicator
-from .macro_collector import MacroCollector
+from .macro_collector import build_jobs
 from .models import EmptyBody, ErrorEnvelope, Health, Login, Panel, SessionInfo, Tokens, User
-from .providers.cga import CGA
-from .providers.gst import GST
-from .providers.trade import Trade
 
 
 def create_app(settings: Settings | None = None, clock=time.time, upstream_client=None):
@@ -27,10 +25,7 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     database = Database(settings.database)
     auth = Auth(settings, database, clock)
     collector = Collector(settings, database, clock, upstream_client)
-    jobs = {
-        a.group: MacroCollector(a, settings, database, clock, upstream_client)
-        for a in [CGA(settings), GST(settings), Trade(settings)]
-    }
+    jobs = build_jobs(settings, database, clock, upstream_client)
     enabled = set(
         settings.macro_groups
         if settings.macro_groups is not None
@@ -60,7 +55,7 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
         title="Economic Indicators API",
         version="0.1.0",
         lifespan=lifespan,
-        description="Authenticated GDP slice. Data reads use private SQLite only. Upstream collection runs independently.",
+        description="Authenticated economic dashboard. Data reads use private SQLite only; independent provider groups collect upstream. Debt and market access remain explicit gates.",
         responses={status: {"model": ErrorEnvelope} for status in (401, 403, 409, 422, 429, 503)},
     )
     app.state.db, app.state.auth, app.state.collector = database, auth, collector
@@ -267,14 +262,22 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
 
     @app.get("/api/v1/panels/expenditure", response_model=IndicatorPanel, tags=["dashboard"])
     def expenditure(user=Depends(current_user)):
-        return read_indicator(database, "expenditure", jobs, clock(), settings.report_years)
+        return read_indicator(database, "expenditure", jobs, clock(), settings.macro_report_years)
 
     @app.get("/api/v1/panels/gst", response_model=IndicatorPanel, tags=["dashboard"])
     def gst(user=Depends(current_user)):
-        return read_indicator(database, "gst", jobs, clock(), settings.report_years)
+        return read_indicator(database, "gst", jobs, clock(), settings.macro_report_years)
 
     @app.get("/api/v1/panels/trade", response_model=IndicatorPanel, tags=["dashboard"])
     def trade(user=Depends(current_user)):
-        return read_indicator(database, "trade", jobs, clock(), settings.report_years)
+        return read_indicator(database, "trade", jobs, clock(), settings.macro_report_years)
+
+    @app.get("/api/v1/panels/inflation", response_model=IndicatorPanel, tags=["dashboard"])
+    def inflation(user=Depends(current_user)):
+        return read_indicator(database, "inflation", jobs, clock(), settings.macro_report_years)
+
+    @app.get("/api/v1/dashboard", response_model=Dashboard, tags=["dashboard"])
+    def dashboard(user=Depends(current_user)):
+        return read_dashboard(database, settings, jobs, clock())
 
     return app

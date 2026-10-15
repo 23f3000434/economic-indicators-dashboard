@@ -8,6 +8,7 @@ from urllib.parse import unquote
 
 import httpx
 import pytest
+from app.indicators import read_indicator
 from app.main import create_app
 from app.providers.trade import parse_historical_html, parse_pdf
 from fastapi.testclient import TestClient
@@ -59,6 +60,10 @@ def test_trade_live_discovery_fixture_to_authenticated_api(settings, clock):
         series = {s["id"]: s for s in data["series"]}
         lookup = {(s["id"], p["period"]["key"]): p for s in data["series"] for p in s["points"]}
         for p in series["trade_balance"]["points"]:
+            if p["value"] is None:
+                assert lookup["trade_exports", p["period"]["key"]]["value"] is None
+                assert lookup["trade_imports", p["period"]["key"]]["value"] is None
+                continue
             assert Decimal(p["value"]) == Decimal(
                 lookup["trade_exports", p["period"]["key"]]["value"]
             ) - Decimal(lookup["trade_imports", p["period"]["key"]]["value"])
@@ -70,6 +75,16 @@ def test_trade_live_discovery_fixture_to_authenticated_api(settings, clock):
         assert (
             lookup["trade_exports", "FY2022-23"]["value"] == "451.07"
         )  # newer 2024 vintage replaces 2023's 447.46
+        wider = read_indicator(app.state.db, "trade", app.state.jobs, clock(), 8)
+        years = [
+            p
+            for s in wider.series
+            if s.id == "trade_exports"
+            for p in s.points
+            if p.period.kind == "fiscal_year"
+        ]
+        assert len(years) == 8 and sum(p.value is None for p in years) == 3
+        assert all(p.source_url is None for p in years if p.value is None)
         monthly = next(s for s in data["summaries"] if s["current"]["series_id"] == "trade_exports")
         assert monthly["comparison"]["period_key"] == "2025-08"
         with localcontext() as ctx:

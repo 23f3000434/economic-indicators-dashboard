@@ -11,14 +11,23 @@ import httpx
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def fetch(url, name, output, limit=32 * 1024 * 1024):
+def fetch(url, name, output, limit=32 * 1024 * 1024, native_ca=False):
     at = datetime.now(timezone.utc).isoformat()
     report = {"url": url, "checked_at": at, "name": name}
     try:
+        verify = True
+        if native_ca:
+            import ssl
+
+            import truststore
+
+            verify = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            report["tls_verification"] = "native_system_store; hostname and certificate verification enabled"
         with httpx.Client(
             timeout=30,
             follow_redirects=True,
             headers={"User-Agent": "EconomicIndicatorsAssignment/0.2", "Accept": "*/*"},
+            verify=verify,
         ) as client:
             with client.stream("GET", url) as response:
                 report.update(
@@ -45,9 +54,10 @@ if __name__ == "__main__":
     parser.add_argument("--url", required=True)
     parser.add_argument("--name", required=True)
     parser.add_argument("--output", default=".verification/multi")
+    parser.add_argument("--native-ca", action="store_true")
     args = parser.parse_args()
     path = (ROOT / args.output).resolve()
     if not path.is_relative_to(ROOT) or "/" in args.name or ".." in args.name:
         parser.error("Output must stay inside the workspace")
     path.mkdir(parents=True, exist_ok=True)
-    print(json.dumps(fetch(args.url, args.name, path)))
+    print(json.dumps(fetch(args.url, args.name, path, native_ca=args.native_ca)))

@@ -234,7 +234,10 @@ def read_panel(database: Database, settings: Settings, now: float) -> Panel:
     # A read transaction guarantees a consistent run/observation snapshot.
     with database.connect() as db:
         db.execute("BEGIN")
-        records = [dict(row) for row in db.execute("SELECT * FROM observations ORDER BY period_key")]
+        records = [
+            dict(row)
+            for row in db.execute("SELECT * FROM observations WHERE group_id='gdp' ORDER BY period_key")
+        ]
         latest = db.execute(
             "SELECT * FROM collection_runs WHERE group_id='gdp' ORDER BY id DESC LIMIT 1"
         ).fetchone()

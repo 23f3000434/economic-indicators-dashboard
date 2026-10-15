@@ -19,6 +19,35 @@ def test_retry_after_seconds_http_date_and_invalid():
         assert retry_after(invalid, now) is None
 
 
+def test_overall_budget_closes_slow_dripping_stream(settings, clock):
+    database = Database(settings.database)
+    database.migrate()
+    state = GroupState(database, clock, "slow_source", "test")
+
+    class Drip(httpx.AsyncByteStream):
+        closed = False
+
+        async def __aiter__(self):
+            for _ in range(100):
+                await asyncio.sleep(0.02)
+                yield b"piece"
+
+        async def aclose(self):
+            self.closed = True
+
+    stream = Drip()
+
+    async def run():
+        async with httpx.AsyncClient(
+            transport=httpx.MockTransport(lambda r: httpx.Response(200, stream=stream))
+        ) as client:
+            with pytest.raises(TimeoutError):
+                await ProviderHTTP(state, client, timeout=0.05, attempts=1).fetch("https://example.com/slow")
+
+    asyncio.run(run())
+    assert stream.closed
+
+
 @pytest.mark.parametrize("header_kind", ["seconds", "date"])
 def test_long_cooldown_persists_across_attempts_and_restart(settings, clock, header_kind):
     database = Database(settings.database)

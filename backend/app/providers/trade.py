@@ -227,7 +227,7 @@ class Trade:
             candidates += await asyncio.to_thread(parse_historical_html, await fetch(url), url, at())
         chosen = {}
         for p in candidates:
-            if p.period.start.year < latest_year - self.settings.report_years - 1:
+            if p.period.start.year < latest_year - self.settings.macro_report_years - 1:
                 continue
             key = p.series_id, p.period.key
             if key not in chosen or p.definition.published_at > chosen[key].definition.published_at:

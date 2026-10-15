@@ -30,7 +30,8 @@ def main():
         collector_enabled=False,
     )
     app = create_app(settings)
-    unknown = set(args.groups) - set(app.state.jobs)
+    available = {"gdp": app.state.collector, **app.state.jobs}
+    unknown = set(args.groups) - set(available)
     if unknown:
         parser.error(f"No implemented adapter: {sorted(unknown)}")
     report = {"checked_at": datetime.now(timezone.utc).isoformat(), "groups": {}}
@@ -45,9 +46,10 @@ def main():
         ).json()
         bearer = {"Authorization": f"Bearer {tokens['access_token']}"}
         for group in args.groups:
-            job = app.state.jobs[group]
+            job = available[group]
             ok = asyncio.run(job.collect_once())
-            response = client.get(f"/api/v1/panels/{job.panel}", headers=bearer)
+            panel_id = "gdp" if group == "gdp" else job.panel
+            response = client.get(f"/api/v1/panels/{panel_id}", headers=bearer)
             panel = response.json()
             report["groups"][group] = {
                 "collected": ok,
@@ -66,6 +68,23 @@ def main():
                     for s in panel.get("series", [])
                 ],
             }
+        aggregate = client.get("/api/v1/dashboard", headers=bearer)
+        data = aggregate.json()
+        report["dashboard"] = {
+            "api_status": aggregate.status_code,
+            "schema_version": data.get("schema_version"),
+            "panels": [
+                {
+                    "id": p["id"],
+                    "state": p["state"],
+                    "availability": p.get("availability", "implemented"),
+                    "canonical_points": sum(len(s["points"]) for s in p["series"]),
+                }
+                for p in data.get("panels", [])
+            ],
+            "ticker": data.get("ticker"),
+            "collection_groups": data.get("collection_groups"),
+        }
         # Proof accounts are ephemeral; never leave their sessions active.
         client.post(
             "/api/v1/auth/logout",
