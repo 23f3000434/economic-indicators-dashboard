@@ -1,6 +1,14 @@
 import { Component, type ReactNode } from 'react';
 import { ist, published, type PanelId } from './contracts';
 import { periodKeys, valueOf, type ViewPoint, type ViewSeries } from './presentation';
+import { artwork } from './artwork';
+
+const imageSources: Record<string, string> = {
+  exports: 'trade',
+  imports: 'trade',
+  total: 'expenditure',
+  capital: 'expenditure',
+};
 
 export const titles: Record<PanelId, [string, string, string]> = {
   gdp: ['01', 'GDP Growth · India vs World', 'Annual real growth'],
@@ -81,7 +89,11 @@ export function Kpi({
       <div className="kpi-value" data-testid={`card-${series.id}`}>
         {valueOf(point, series)}
       </div>
-      {image && <span className={`card-art ${image}`} aria-hidden="true" />}
+      {image && (
+        <span className={`card-art ${image}`} aria-hidden="true">
+          <img {...artwork[imageSources[image] || image]} alt="" loading="lazy" decoding="async" />
+        </span>
+      )}
       <div className="kpi-foot">
         <span>{point?.label || 'Reporting period —'}</span>
         {delta && (

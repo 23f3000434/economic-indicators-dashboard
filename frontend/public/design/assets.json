@@ -1,101 +1,258 @@
-[
-  {
-    "file": "frontend/public/design/background.webp",
-    "id": "image0_0_1",
-    "width": 4096,
-    "height": 2305,
-    "source_sha256": "40bf2875e51b884586c16b89346e32dbc8bbbc7b233ac8b8df94ddf682d8829c",
-    "sha256": "fcf06565abf07b3a4359da7c04818faad05343914d0b6faadb2e3fe0c8dec5da",
-    "byte_length": 750144
-  },
-  {
-    "file": "frontend/public/design/masthead.webp",
-    "id": "image2_0_1",
-    "width": 740,
-    "height": 447,
-    "source_sha256": "48a684354cb2792330a09d7f48d59dbf8d31972fd686672171275a7ad5b3e7b9",
-    "sha256": "ea2516234e6867226d7ed94f96b8f7a65bb736e67892aa2e938947f33a772d5f",
-    "byte_length": 74386
-  },
-  {
-    "file": "frontend/public/design/india.webp",
-    "id": "image3_0_1",
-    "width": 1254,
-    "height": 1254,
-    "source_sha256": "e26c3115f9e9ca2957c70284d8b6fa7deb2919cc2ee985553aa8dcc0a7698dc7",
-    "sha256": "de126822ddbd967cb44d50202a472a6d776bb88271ce120681153b053e112968",
-    "byte_length": 1172120
-  },
-  {
-    "file": "frontend/public/design/world.webp",
-    "id": "image4_0_1",
-    "width": 1266,
-    "height": 1243,
-    "source_sha256": "708c87451ab4ec764360ec2108008aa86fb7deabc322c5b9b578ab4e4acf0ccd",
-    "sha256": "b19bbba7828628f993687cf754b9eb870f848e5feaac52797d72ea5e878f968a",
-    "byte_length": 1405128
-  },
-  {
-    "file": "frontend/public/design/trade.webp",
-    "id": "image5_0_1",
-    "width": 1983,
-    "height": 793,
-    "source_sha256": "9ecded6c9439e31338d487c2d65d9aebdda0ddea025629bad909b9af5ae0f8a6",
-    "sha256": "122a919aec33332b4532ae4b862e7c4390333f2d9c0a7bcd24daf3f3ce2b43da",
-    "byte_length": 1188520
-  },
-  {
-    "file": "frontend/public/design/inflation.webp",
-    "id": "image6_0_1",
-    "width": 1385,
-    "height": 1136,
-    "source_sha256": "f97906b7a10f1b5709617befa4c2dd5c71cac069bfc257997058780f15db5d5e",
-    "sha256": "9faf538a6b78d15f2e13a14d92f246847d8916e2086c13b6516650fbebb7dc3e",
-    "byte_length": 1141236
-  },
-  {
-    "file": "frontend/public/design/target.webp",
-    "id": "image7_0_1",
-    "width": 1774,
-    "height": 887,
-    "source_sha256": "20e8d25642bcf4ce87196196b8ae85d3cd4539d8a94b0717638162521ed2419d",
-    "sha256": "d4cad66f7ecb09f4155b080f68844e94ecbe9bdd3b31fa77a9e5f54317f398dd",
-    "byte_length": 981176
-  },
-  {
-    "file": "frontend/public/design/us.webp",
-    "id": "image8_0_1",
-    "width": 1254,
-    "height": 1254,
-    "source_sha256": "d76966a40582f70d78f96f1316b744eb23d0f9e67965437ca58d2f095b7e0851",
-    "sha256": "ae876bd67d2166b11f130f6dab46a8e98cfbf79e6c05d05afe9e21529bb62376",
-    "byte_length": 1020382
-  },
-  {
-    "file": "frontend/public/design/gst.webp",
-    "id": "image9_0_1",
-    "width": 1254,
-    "height": 1254,
-    "source_sha256": "023a581e99eac9d1cb24fa2137957be916384d49c69585cc2426ec4f9c0ef6b1",
-    "sha256": "f1e6599699ee9dd5bdc80e35b55a1cf7ccf36fabc9e267d46295f34626d29523",
-    "byte_length": 954376
-  },
-  {
-    "file": "frontend/public/design/gst-average.webp",
-    "id": "image10_0_1",
-    "width": 1312,
-    "height": 1199,
-    "source_sha256": "27413c7bbf71f5bc55abda936a719c46c3c7a163db584c88360c63062141d1e9",
-    "sha256": "6a5b4c86c43261e1d50ebafedb6123d2327c2ae483e465678c8c723f3b551d09",
-    "byte_length": 1095184
-  },
-  {
-    "file": "frontend/public/design/expenditure.webp",
-    "id": "image11_0_1",
-    "width": 1774,
-    "height": 887,
-    "source_sha256": "7fc8605269c724c7f7d1f134871e75b3409d7a01845466f9fd294c9d0ee4eca2",
-    "sha256": "b86e7d5b20ae7aaa5414ae78caebe7d16e352069854c7453dc2f0cedadc07504",
-    "byte_length": 1108472
-  }
-]
+{
+  "source_svg_sha256": "dd84037be981dbcfb33dac67eebf28ea483e93c3f905cb6fbec83cad598bbc59",
+  "source_dimensions": [
+    "1248",
+    "2193"
+  ],
+  "pillow": "12.1.1",
+  "libwebp": "1.6.0",
+  "encoding": "RGBA; proportional LANCZOS; lossless WebP exact=True method=6; no crop",
+  "assets": [
+    {
+      "name": "background",
+      "id": "image0_0_1",
+      "source_width": 4096,
+      "source_height": 2305,
+      "source_sha256": "40bf2875e51b884586c16b89346e32dbc8bbbc7b233ac8b8df94ddf682d8829c",
+      "variants": [
+        {
+          "file": "frontend/public/design/background-1600-bb9503751be5.webp",
+          "width": 1600,
+          "height": 900,
+          "byte_length": 199710,
+          "sha256": "bb9503751be5df6aa3e4e6c437fa1869b66e049cf1a3d42b98e4d99dbfd7c945"
+        },
+        {
+          "file": "frontend/public/design/background-2400-44533bead9ad.webp",
+          "width": 2400,
+          "height": 1351,
+          "byte_length": 361596,
+          "sha256": "44533bead9ad5d079a458a10454e3ac12ef17c7919ec0887cbe5bfa1d3b864ad"
+        }
+      ]
+    },
+    {
+      "name": "masthead",
+      "id": "image2_0_1",
+      "source_width": 740,
+      "source_height": 447,
+      "source_sha256": "48a684354cb2792330a09d7f48d59dbf8d31972fd686672171275a7ad5b3e7b9",
+      "variants": [
+        {
+          "file": "frontend/public/design/masthead-740-ea2516234e68.webp",
+          "width": 740,
+          "height": 447,
+          "byte_length": 74386,
+          "sha256": "ea2516234e6867226d7ed94f96b8f7a65bb736e67892aa2e938947f33a772d5f"
+        }
+      ]
+    },
+    {
+      "name": "india",
+      "id": "image3_0_1",
+      "source_width": 1254,
+      "source_height": 1254,
+      "source_sha256": "e26c3115f9e9ca2957c70284d8b6fa7deb2919cc2ee985553aa8dcc0a7698dc7",
+      "variants": [
+        {
+          "file": "frontend/public/design/india-48-a71bbb8cc921.webp",
+          "width": 48,
+          "height": 48,
+          "byte_length": 3616,
+          "sha256": "a71bbb8cc9210d998c5850efbc322f45c52f4a4395aa493a2744db8e27ec52d9"
+        },
+        {
+          "file": "frontend/public/design/india-96-93d86d877cce.webp",
+          "width": 96,
+          "height": 96,
+          "byte_length": 10914,
+          "sha256": "93d86d877cce4ae926e4469b3ba80f021ea25b12ccf103861420e8450f8975a2"
+        }
+      ]
+    },
+    {
+      "name": "world",
+      "id": "image4_0_1",
+      "source_width": 1266,
+      "source_height": 1243,
+      "source_sha256": "708c87451ab4ec764360ec2108008aa86fb7deabc322c5b9b578ab4e4acf0ccd",
+      "variants": [
+        {
+          "file": "frontend/public/design/world-48-69141010909b.webp",
+          "width": 48,
+          "height": 47,
+          "byte_length": 4422,
+          "sha256": "69141010909b84163c66ee26b5a25d90b8e6bae3cbd43d20261fcc6d747a1b84"
+        },
+        {
+          "file": "frontend/public/design/world-96-54e408409514.webp",
+          "width": 96,
+          "height": 94,
+          "byte_length": 14092,
+          "sha256": "54e4084095149dcede9ca374f5a1853ff93387ab951d11628fb81e5c89803b6a"
+        }
+      ]
+    },
+    {
+      "name": "trade",
+      "id": "image5_0_1",
+      "source_width": 1983,
+      "source_height": 793,
+      "source_sha256": "9ecded6c9439e31338d487c2d65d9aebdda0ddea025629bad909b9af5ae0f8a6",
+      "variants": [
+        {
+          "file": "frontend/public/design/trade-192-51fc15ef6593.webp",
+          "width": 192,
+          "height": 77,
+          "byte_length": 21680,
+          "sha256": "51fc15ef65939f813573a7c640d98446206192eb1e26ee26d90e3e81fc3a42b8"
+        },
+        {
+          "file": "frontend/public/design/trade-384-df1a88c2f41b.webp",
+          "width": 384,
+          "height": 154,
+          "byte_length": 67172,
+          "sha256": "df1a88c2f41b4718f3894d83a17d6eb6fad92bac87b735df305a7cb2e24cfd53"
+        }
+      ]
+    },
+    {
+      "name": "inflation",
+      "id": "image6_0_1",
+      "source_width": 1385,
+      "source_height": 1136,
+      "source_sha256": "f97906b7a10f1b5709617befa4c2dd5c71cac069bfc257997058780f15db5d5e",
+      "variants": [
+        {
+          "file": "frontend/public/design/inflation-96-9ce1601e8e33.webp",
+          "width": 96,
+          "height": 79,
+          "byte_length": 11944,
+          "sha256": "9ce1601e8e33bbd9b2b9c6b0bfc274e53ac106c3d1e35a1972f68d19b2eea94d"
+        },
+        {
+          "file": "frontend/public/design/inflation-192-a2869ac751f9.webp",
+          "width": 192,
+          "height": 157,
+          "byte_length": 36466,
+          "sha256": "a2869ac751f9c54d524b7c6528b87e766b829edccd7937f9cfeb59d507733b09"
+        }
+      ]
+    },
+    {
+      "name": "target",
+      "id": "image7_0_1",
+      "source_width": 1774,
+      "source_height": 887,
+      "source_sha256": "20e8d25642bcf4ce87196196b8ae85d3cd4539d8a94b0717638162521ed2419d",
+      "variants": [
+        {
+          "file": "frontend/public/design/target-192-8be17220ea79.webp",
+          "width": 192,
+          "height": 96,
+          "byte_length": 22942,
+          "sha256": "8be17220ea79043563b065ea0827c5d152db78304bb160b0d038b17b715b094f"
+        },
+        {
+          "file": "frontend/public/design/target-384-6401e6b282f7.webp",
+          "width": 384,
+          "height": 192,
+          "byte_length": 72578,
+          "sha256": "6401e6b282f76330212f21cc611a617d9d476192e2ea18da41353956d161256d"
+        }
+      ]
+    },
+    {
+      "name": "us",
+      "id": "image8_0_1",
+      "source_width": 1254,
+      "source_height": 1254,
+      "source_sha256": "d76966a40582f70d78f96f1316b744eb23d0f9e67965437ca58d2f095b7e0851",
+      "variants": [
+        {
+          "file": "frontend/public/design/us-48-c8c208a4222e.webp",
+          "width": 48,
+          "height": 48,
+          "byte_length": 3332,
+          "sha256": "c8c208a4222e4774293751fe52fae4a9c8ed484205eb8241c96753ecc1b6c157"
+        },
+        {
+          "file": "frontend/public/design/us-96-c130e0cee877.webp",
+          "width": 96,
+          "height": 96,
+          "byte_length": 10584,
+          "sha256": "c130e0cee8774465078537db0b223e0f065260096353519bb7089bed6df69ef9"
+        }
+      ]
+    },
+    {
+      "name": "gst",
+      "id": "image9_0_1",
+      "source_width": 1254,
+      "source_height": 1254,
+      "source_sha256": "023a581e99eac9d1cb24fa2137957be916384d49c69585cc2426ec4f9c0ef6b1",
+      "variants": [
+        {
+          "file": "frontend/public/design/gst-96-4f4dc885680d.webp",
+          "width": 96,
+          "height": 96,
+          "byte_length": 8742,
+          "sha256": "4f4dc885680d17e54ea92a2837d7a6a5477d49d90c1c2057a1a5c9b7213cfe42"
+        },
+        {
+          "file": "frontend/public/design/gst-192-eae7f03b7596.webp",
+          "width": 192,
+          "height": 192,
+          "byte_length": 25336,
+          "sha256": "eae7f03b7596d57136881d44a00b4b1f7fc4494ce65ca42d9c34e44f31f933f5"
+        }
+      ]
+    },
+    {
+      "name": "gst-average",
+      "id": "image10_0_1",
+      "source_width": 1312,
+      "source_height": 1199,
+      "source_sha256": "27413c7bbf71f5bc55abda936a719c46c3c7a163db584c88360c63062141d1e9",
+      "variants": [
+        {
+          "file": "frontend/public/design/gst-average-96-1e7774e3a906.webp",
+          "width": 96,
+          "height": 88,
+          "byte_length": 13032,
+          "sha256": "1e7774e3a9068e5590e132ad34fed258dd54626b7c31269cf2314b1254f9f74d"
+        },
+        {
+          "file": "frontend/public/design/gst-average-192-99b8721538a2.webp",
+          "width": 192,
+          "height": 175,
+          "byte_length": 39116,
+          "sha256": "99b8721538a2759c7e509b49726f6daf85e42ed5bd715632403060262731c0b2"
+        }
+      ]
+    },
+    {
+      "name": "expenditure",
+      "id": "image11_0_1",
+      "source_width": 1774,
+      "source_height": 887,
+      "source_sha256": "7fc8605269c724c7f7d1f134871e75b3409d7a01845466f9fd294c9d0ee4eca2",
+      "variants": [
+        {
+          "file": "frontend/public/design/expenditure-192-74f6f1196fb0.webp",
+          "width": 192,
+          "height": 96,
+          "byte_length": 22910,
+          "sha256": "74f6f1196fb0fe067d178b4a2c9128d9a896f1d96ec1e670074ecec180cfa8dd"
+        },
+        {
+          "file": "frontend/public/design/expenditure-384-27e64ebf40e4.webp",
+          "width": 384,
+          "height": 192,
+          "byte_length": 73312,
+          "sha256": "27e64ebf40e4c161f59747e671acdd1b82a8d964d573eb4eaa489cccb916cbaa"
+        }
+      ]
+    }
+  ]
+}

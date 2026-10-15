@@ -1,3 +1,4 @@
+@import './artwork.css';
 @font-face {
   font-family: 'Barlow Condensed';
   font-style: normal;
@@ -44,7 +45,7 @@ body::before {
   inset: 0;
   background:
     linear-gradient(#000000ef, #000000f2),
-    url('/design/background.webp') center / cover;
+    var(--background-image) center / cover;
   z-index: -1;
   pointer-events: none;
 }
@@ -105,7 +106,7 @@ summary:hover {
   align-items: center;
   background:
     linear-gradient(90deg, #0005, #02070ccc 40%, #02070ccc 60%, #0006),
-    url('/design/masthead.webp') center 52% / cover;
+    var(--masthead-image) center 52% / cover;
 }
 .masthead h1 {
   font-size: 30px;
@@ -346,10 +347,15 @@ summary:hover {
   right: 4px;
   top: 24px;
   opacity: 0.9;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: right center;
+  overflow: hidden;
   pointer-events: none;
+}
+.card-art img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right center;
 }
 .card-art.india,
 .card-art.world,
@@ -360,60 +366,53 @@ summary:hover {
   top: 8px;
   right: 8px;
 }
-.card-art.india {
-  background-image: url('/design/india.webp');
-  background-size: 125%;
-  background-position: center;
-}
-.card-art.world {
-  background-image: url('/design/world.webp');
-  background-size: 125%;
-  background-position: center;
-}
-.card-art.us {
-  background-image: url('/design/us.webp');
-  background-size: 125%;
-  background-position: center;
+.card-art.india img,
+.card-art.world img,
+.card-art.us img {
+  width: 125%;
+  height: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .card-art.exports,
 .card-art.imports {
   width: 76px;
   height: 55px;
-  background-image: url('/design/trade.webp');
-  background-size: 175px auto;
 }
-.card-art.exports {
-  background-position: left center;
+.card-art.exports img,
+.card-art.imports img {
+  width: 175px;
+  height: auto;
+  top: 50%;
+  transform: translateY(-50%);
 }
-.card-art.imports {
-  background-position: right center;
+.card-art.exports img,
+.card-art.total img {
+  left: 0;
 }
-.card-art.gst {
-  background-image: url('/design/gst.webp');
+.card-art.imports img,
+.card-art.capital img,
+.card-art.target img {
+  right: 0;
 }
-.card-art.gst-average {
-  background-image: url('/design/gst-average.webp');
-}
-.card-art.inflation {
-  background-image: url('/design/inflation.webp');
-}
-.card-art.target {
-  background-image: url('/design/target.webp');
-  background-size: 155px auto;
-  background-position: right center;
+.card-art.target img {
+  width: 155px;
+  height: auto;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .card-art.total,
 .card-art.capital {
   width: 75px;
   height: 66px;
-  background-image: url('/design/expenditure.webp');
-  background-size: 154px auto;
 }
-.card-art.total {
-  background-position: left center;
-}
-.card-art.capital {
-  background-position: right center;
+.card-art.total img,
+.card-art.capital img {
+  width: 154px;
+  height: auto;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .chart-controls {
   display: flex;
@@ -990,12 +989,18 @@ footer p {
   .card-art.total,
   .card-art.capital {
     width: 58px;
-    background-size: 120px auto;
+  }
+  .card-art.total img,
+  .card-art.capital img {
+    width: 120px;
   }
   .card-art.exports,
   .card-art.imports {
     width: 57px;
-    background-size: 132px auto;
+  }
+  .card-art.exports img,
+  .card-art.imports img {
+    width: 132px;
   }
   .chart-controls {
     min-height: 41px;

@@ -91,14 +91,15 @@ test('complete interface agrees with canonical API and uses supplied artwork at 
       .locator('.kpi-value')
       .evaluateAll((nodes) => nodes.every((n) => n.scrollWidth <= n.clientWidth)),
   ).toBe(true);
+  for (const image of await page.locator('.card-art img').all()) {
+    await image.scrollIntoViewIfNeeded();
+    await image.evaluate((n) => (n as HTMLImageElement).decode());
+  }
   const assets = await page.locator('.card-art').evaluateAll(async (nodes) => {
     return await Promise.all(
       nodes.map(async (n) => {
-        const bg = getComputedStyle(n).backgroundImage;
-        const url = bg.match(/url\(["']?(.*?)["']?\)/)?.[1];
-        if (!url) return false;
-        const image = new Image();
-        image.src = url;
+        const image = n.querySelector('img');
+        if (!image || image.loading !== 'lazy') return false;
         await image.decode();
         const r = n.getBoundingClientRect(),
           card = n.parentElement!.getBoundingClientRect();

@@ -1,0 +1,106 @@
+{
+  "measured_at": "2026-10-15T19:22:22.584Z",
+  "browser": "155.0.8059.40",
+  "method": "Fresh Chrome contexts, HTTP cache disabled; unthrottled local HTTP preview. CDP encodedDataLength includes response overhead. No production/CDN performance claim.",
+  "baseline_artwork_file_bytes": 10891124,
+  "optimised_all_variant_file_bytes": 1097882,
+  "comparison": "Same private stored observations and default controls; full-page screenshot after visiting each panel; resized RGBA identity verified independently. Local timing is not a production speed guarantee.",
+  "runs": [
+    {
+      "viewport": {
+        "width": 1214,
+        "height": 2159,
+        "dpr": 1
+      },
+      "name": "desktop",
+      "baseline_initial_artwork_bytes": 10894106,
+      "optimised_initial_artwork_bytes": 331058,
+      "optimised_scrolled_artwork_bytes": 389658,
+      "baseline_scrolled_total_bytes": 11486490,
+      "optimised_scrolled_total_bytes": 982908,
+      "initial_deferred_card_images": 0,
+      "geometry_equal": true,
+      "screenshot_pixels": [
+        1214,
+        2204
+      ],
+      "mean_absolute_rgb_difference_0_to_255": 0.2778071371406987,
+      "before_sha256": "ca46b0dab6ab393261768315825a79ca717fd4359cbbdb9c995118cac25522df",
+      "after_sha256": "2c3e885e2725b81d96b900fa7462806ad5ae3cff9451d71e33555ef1f35d85cd",
+      "dashboard_ready_ms_before": 2901,
+      "dashboard_ready_ms_after": 2767
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "name": "mobile",
+      "baseline_initial_artwork_bytes": 10894106,
+      "optimised_initial_artwork_bytes": 308750,
+      "optimised_scrolled_artwork_bytes": 389658,
+      "baseline_scrolled_total_bytes": 11471333,
+      "optimised_scrolled_total_bytes": 967751,
+      "initial_deferred_card_images": 6,
+      "geometry_equal": true,
+      "screenshot_pixels": [
+        390,
+        4490
+      ],
+      "mean_absolute_rgb_difference_0_to_255": 0.1452546018693012,
+      "before_sha256": "aa500aa0577de4029cac9aea377b40af95e76d02ed8d85b0730ebb93eeee907c",
+      "after_sha256": "22ca6bb0590df18df88dd9709d7d5789b00af33d79360a1f21de01ac87b1dc5c",
+      "dashboard_ready_ms_before": 1068,
+      "dashboard_ready_ms_after": 1381
+    },
+    {
+      "viewport": {
+        "width": 1214,
+        "height": 2159,
+        "dpr": 2
+      },
+      "name": "desktop-retina",
+      "baseline_initial_artwork_bytes": 10894106,
+      "optimised_initial_artwork_bytes": 788502,
+      "optimised_scrolled_artwork_bytes": 788502,
+      "baseline_scrolled_total_bytes": 11486333,
+      "optimised_scrolled_total_bytes": 1381595,
+      "initial_deferred_card_images": 0,
+      "geometry_equal": true,
+      "screenshot_pixels": [
+        2428,
+        4408
+      ],
+      "mean_absolute_rgb_difference_0_to_255": 0.24122766529030637,
+      "before_sha256": "985a080309fe03e08d6227cd2f98bde1c04f10831b9b42ee35b279afd3cbf502",
+      "after_sha256": "b03a69b01db1cad6a7864dddf087d058a8e52d6ad2de0a081eb9f6125f68675f",
+      "dashboard_ready_ms_before": 823,
+      "dashboard_ready_ms_after": 894
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "name": "mobile-retina",
+      "baseline_initial_artwork_bytes": 10894106,
+      "optimised_initial_artwork_bytes": 540354,
+      "optimised_scrolled_artwork_bytes": 788502,
+      "baseline_scrolled_total_bytes": 11471333,
+      "optimised_scrolled_total_bytes": 1366595,
+      "initial_deferred_card_images": 6,
+      "geometry_equal": true,
+      "screenshot_pixels": [
+        780,
+        8980
+      ],
+      "mean_absolute_rgb_difference_0_to_255": 0.09929791749947652,
+      "before_sha256": "11b8e1d13a6abeee2e54e8e411a568c500e1693e5138106f04666408b063533b",
+      "after_sha256": "6b34eb127b5274f2b2eb9ce302d3ee50ebff50953d52a4a13eb98c397d683454",
+      "dashboard_ready_ms_before": 820,
+      "dashboard_ready_ms_after": 824
+    }
+  ]
+}

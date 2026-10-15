@@ -1,0 +1,116 @@
+{
+  "source_svg_sha256": "dd84037be981dbcfb33dac67eebf28ea483e93c3f905cb6fbec83cad598bbc59",
+  "source_dimensions": [
+    "1248",
+    "2193"
+  ],
+  "checks": [
+    {
+      "asset": "background-1600-bb9503751be5.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "background-2400-44533bead9ad.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "masthead-740-ea2516234e68.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "india-48-a71bbb8cc921.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "india-96-93d86d877cce.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "world-48-69141010909b.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "world-96-54e408409514.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "trade-192-51fc15ef6593.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "trade-384-df1a88c2f41b.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "inflation-96-9ce1601e8e33.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "inflation-192-a2869ac751f9.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "target-192-8be17220ea79.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "target-384-6401e6b282f7.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "us-48-c8c208a4222e.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "us-96-c130e0cee877.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "gst-96-4f4dc885680d.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "gst-192-eae7f03b7596.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "gst-average-96-1e7774e3a906.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "gst-average-192-99b8721538a2.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "expenditure-192-74f6f1196fb0.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    },
+    {
+      "asset": "expenditure-384-27e64ebf40e4.webp",
+      "hashes_dimensions_callsite": "passed",
+      "resized_pixel_identity": "passed"
+    }
+  ],
+  "total_asset_bytes": 1097882,
+  "omitted_asset": "image1_0_1 is the LIVE dot; no accepted market feed."
+}

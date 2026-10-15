@@ -31,13 +31,16 @@ The implementation follows the export's centred title/candlestick header, dark b
 
 Deliberate differences: accurate annual monetary axes replace copied percent axes; correct labels replace inconsistent legends; negative trade balances have a visible zero crossing; CPI bases/target validity stay explicit; unavailable debt replaces the illustrative daily curve; market access status replaces invented live quotes. DM Sans is self-hosted with its existing OFL licence; exact original typography cannot be verified from outlined SVG text. Metadata uses compact type and expandable details. No pixel-perfect Figma claim is made.
 
-Eleven original embedded raster assets are served locally as lossless WebP, with original/output hashes, intrinsic dimensions and byte counts in `frontend/public/design/assets.json`. Decoded RGBA identity was verified; paired trade/target/expenditure illustrations use CSS crops corresponding to their SVG pattern slots. The export's red LIVE-dot asset is deliberately omitted because there is no accepted feed. No screenshot of the design is an application asset. Total original-resolution artwork is about 10.4 MiB; the small header loads at sign-in, card art loads with the dashboard. Further resizing would need a new visual-quality review.
+The hardening stage replaces original-resolution public artwork with 21 deterministic display variants from the same eleven SVG images. Pillow is a locked development dependency; whole-image LANCZOS resizing plus lossless WebP preserves alpha and CSS crops. Generated source/output provenance and hashes are in `frontend/public/design/assets.json`; hashed filenames and 1×/2× selection reduce loading costs. Card images use native lazy loading. See [current measurements and design differences](hardening.md).
 
-Reproduce asset identity checks (Pillow is a verification tool, not an application dependency):
+Reproduce (after locked Python and frontend dependency installation):
 
 ```sh
-python3 scripts/verify_design.py '/path/to/Economic Indicator Assignment.svg' --pixels
+.venv/bin/python scripts/prepare_artwork.py '/path/to/Economic Indicator Assignment.svg'
+.venv/bin/python scripts/verify_design.py '/path/to/Economic Indicator Assignment.svg' --pixels
 ```
+
+The source SVG is external/read-only and not copied into application code. CI can check output hashes/dimensions/callsites without the external reference; exact resized-pixel verification needs the supplied SVG.
 
 ## Verification and limits
 
