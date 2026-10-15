@@ -18,6 +18,7 @@ class AuthClient {
   message = '';
   private listeners = new Set<Listener>();
   private flight: Promise<void> | null = null;
+  private generation = 0;
   private channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('economic-session') : null;
 
   constructor() {
@@ -39,10 +40,19 @@ class AuthClient {
     this.listeners.forEach((listener) => listener());
   }
   private clear(state: typeof this.state = 'signed-out') {
+    this.invalidate();
     this.tokens = null;
     this.state = state;
     this.message = '';
     this.emit();
+  }
+  private invalidate() {
+    this.generation++;
+    this.flight = null;
+  }
+  private current(generation: number) {
+    if (generation !== this.generation)
+      throw new DOMException('The session changed while the request was pending.', 'AbortError');
   }
   private async lock<T>(operation: () => Promise<T>): Promise<T> {
     if (navigator.locks) return navigator.locks.request('economic-session-mutation', operation);
@@ -83,26 +93,36 @@ class AuthClient {
     };
   }
   async login(username: string, password: string) {
-    await this.lock(async () => {
-      const tokens = await this.call<Tokens>('/api/v1/auth/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: this.action(),
-        body: JSON.stringify({ username, password }),
+    this.clear('checking');
+    const generation = this.generation;
+    try {
+      await this.lock(async () => {
+        this.current(generation);
+        const tokens = await this.call<Tokens>('/api/v1/auth/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: this.action(),
+          body: JSON.stringify({ username, password }),
+        });
+        this.current(generation);
+        this.tokens = tokens;
+        this.state = 'signed-in';
+        this.message = '';
+        this.emit();
       });
-      this.tokens = tokens;
-      this.state = 'signed-in';
-      this.message = '';
-      this.emit();
-    });
+    } catch (error) {
+      if (generation === this.generation) this.clear();
+      throw error;
+    }
+    this.current(generation);
     this.channel?.postMessage({ type: 'login' });
   }
   async bootstrap() {
+    const generation = this.generation;
     try {
       await this.renew();
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) this.clear();
-      else {
+      if (generation === this.generation) {
         this.state = 'connection-error';
         this.message = (error as Error).message;
         this.emit();
@@ -111,15 +131,19 @@ class AuthClient {
   }
   async renew(): Promise<void> {
     if (this.flight) return this.flight;
-    this.flight = this.lock(async () => {
+    const generation = this.generation;
+    const flight = this.lock(async () => {
+      this.current(generation);
       // Bootstrap from the actual shared cookie inside the lock, never an old tab's CSRF/session identity.
       const info = await this.call<SessionInfo>('/api/v1/auth/session', { credentials: 'include' });
+      this.current(generation);
       const tokens = await this.call<Tokens>('/api/v1/auth/refresh', {
         method: 'POST',
         credentials: 'include',
         headers: this.action(info.csrf_token),
         body: '{}',
       });
+      this.current(generation);
       // Set-Cookie has arrived before this body resolves. Confirmation is idempotent, including after loss.
       try {
         await this.call('/api/v1/auth/confirm', {
@@ -129,6 +153,7 @@ class AuthClient {
           body: '{}',
         });
       } catch (error) {
+        this.current(generation);
         if (!(error instanceof ApiError) || error.status !== 0) throw error;
         await this.call('/api/v1/auth/confirm', {
           method: 'POST',
@@ -137,54 +162,72 @@ class AuthClient {
           body: '{}',
         });
       }
+      this.current(generation);
       this.tokens = tokens;
       this.state = 'signed-in';
       this.message = '';
       this.emit();
     })
       .catch((error) => {
-        if (error instanceof ApiError && error.status === 401) this.clear();
+        if (generation === this.generation && error instanceof ApiError && error.status === 401) this.clear();
         throw error;
       })
       .finally(() => {
-        this.flight = null;
+        if (this.flight === flight) this.flight = null;
       });
-    return this.flight;
+    this.flight = flight;
+    return flight;
   }
   async read<T>(path: string, signal?: AbortSignal): Promise<T> {
+    signal?.throwIfAborted();
+    const generation = this.generation;
     if (!this.tokens || Date.parse(this.tokens.access_expires_at) <= Date.now() + 30000) await this.renew();
-    const request = () =>
-      this.call<T>(path, {
-        signal,
-        credentials: 'omit',
-        headers: { Authorization: `Bearer ${this.tokens?.access_token}` },
-      });
-    try {
-      return await request();
-    } catch (error) {
-      if (error instanceof ApiError && error.code === 'access_token_expired') {
-        await this.renew();
-        return request();
+    for (let attempt = 0; attempt < 2; attempt++) {
+      signal?.throwIfAborted();
+      this.current(generation);
+      try {
+        const result = await this.call<T>(path, {
+          signal,
+          credentials: 'omit',
+          headers: { Authorization: `Bearer ${this.tokens?.access_token}` },
+        });
+        signal?.throwIfAborted();
+        this.current(generation);
+        return result;
+      } catch (error) {
+        signal?.throwIfAborted();
+        this.current(generation);
+        if (attempt === 0 && error instanceof ApiError && error.code === 'access_token_expired') {
+          await this.renew();
+          continue;
+        }
+        if (error instanceof ApiError && error.status === 401) this.clear();
+        throw error;
       }
-      if (error instanceof ApiError && error.status === 401) this.clear();
-      throw error;
     }
+    throw new Error('Unreachable request state');
   }
   async logout() {
+    this.invalidate();
+    const generation = this.generation;
+    const tokens = this.tokens;
     await this.lock(async () => {
-      const validBearer = this.tokens && Date.parse(this.tokens.access_expires_at) > Date.now();
+      this.current(generation);
+      const validBearer = tokens && Date.parse(tokens.access_expires_at) > Date.now();
       const info = validBearer
-        ? this.tokens!
+        ? tokens!
         : await this.call<SessionInfo>('/api/v1/auth/session', { credentials: 'include' });
+      this.current(generation);
       await this.call('/api/v1/auth/logout', {
         method: 'POST',
         credentials: 'include',
         headers: {
           ...this.action(info.csrf_token),
-          ...(validBearer ? { Authorization: `Bearer ${this.tokens!.access_token}` } : {}),
+          ...(validBearer ? { Authorization: `Bearer ${tokens!.access_token}` } : {}),
         },
         body: '{}',
       });
+      this.current(generation);
       this.clear();
     });
     this.channel?.postMessage({ type: 'logout' });

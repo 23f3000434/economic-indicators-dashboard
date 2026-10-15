@@ -68,3 +68,10 @@ None of these inputs blocks independent backend sources. The current frontend st
 | D28 Scoped recovery and omissions | Implemented; focused checks pass | Retry only exact known-finished failed run IDs after writes return, never age-expire active work. Join SQL workers on cancellation. Explicit expected response keys define omissions; untouched older history is outside that scope. No migration/dependency required. |
 | D29 Accurate presentation/control scope | Implemented | Aggregate-only browser reads; periods select canonical grains, legends toggle chart/table/tooltip, CPI bases stay separate and policy applies only inside validity. Debt/market show blocked states. No arithmetic moves from the API. |
 | D30 SVG artwork/geometry | Implemented; SVG/browser verified | Eleven original embedded rasters converted losslessly with decoded pixel equality and source/output hashes. Supplied LIVE dot omitted. Horizontal proportions follow the SVG; extra controls/tables/provenance increase panel height. Exact Figma typography/constraints/revision parity remain unverified. |
+
+## Hardening stage decisions (16 October 2026 IST)
+
+| Decision | Status | Basis/consequence |
+| --- | --- | --- |
+| D34 Hardening and deployment readiness | Authorised from 42d9d4a | Focused reproduced correctness/security fixes, deterministic artwork optimisation, bounded source reassessment, isolated recovery and locked separate-environment delivery/CI. Public deployment remains later. |
+| D35 Authentication response authority | Implemented; reproduced then verified | Client generations prevent delayed renewal/read failures from changing newer logout/account state. Cancellation precedes session mutation; either read attempt handles revocation. Pending/confirm server semantics and memory-only access JWT remain intact. |

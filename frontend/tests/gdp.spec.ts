@@ -190,3 +190,44 @@ test('mobile layout stays within viewport', async ({ page }) => {
   await expect(page.getByTestId('card-gdp_world')).toBeVisible();
   await page.screenshot({ path: '../.verification/browser-mobile.png', fullPage: true });
 });
+
+test('a late confirmed renewal cannot undo another tab logout or account change', async ({
+  page,
+  context,
+}) => {
+  await context.addInitScript(() => Object.defineProperty(navigator, 'locks', { value: undefined }));
+  await signIn(page);
+  const other = await context.newPage();
+  await other.goto('/');
+  await expect(other.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  let release!: () => void;
+  let reached!: () => void;
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const confirmed = new Promise<void>((resolve) => {
+    reached = resolve;
+  });
+  await page.route(
+    '**/api/v1/auth/confirm',
+    async (route) => {
+      const response = await route.fetch();
+      reached();
+      await held;
+      await route.fulfill({ response });
+    },
+    { times: 1 },
+  );
+  await page.reload();
+  await confirmed;
+  await other.getByRole('button', { name: /Sign out/ }).click();
+  await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
+  release();
+  await expect(page.getByTestId('card-gdp_india')).toHaveCount(0);
+  await other.getByLabel('Username').fill('reviewer');
+  await other.getByLabel('Password', { exact: true }).fill(PASSWORD);
+  await other.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(page.locator('.account')).toContainText('reviewer');
+  await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  await expect(other.locator('.account')).toContainText('reviewer');
+});

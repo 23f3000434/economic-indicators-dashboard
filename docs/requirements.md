@@ -1,6 +1,6 @@
 # Requirements and verification
 
-The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope from b3ca864 is complete frontend integration and design, plus safe collector recovery after database write outages and scoped omission retention. Preserve GDP/authentication, canonical measurements and independent collection. Connect all available panels through the protected dashboard, verify canonical agreement, controls, accessibility and failure recovery at 1214 × 2159 and mobile. Deployment remains later. A blocked source must be reported honestly and must not stop independent work.
+The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope from 42d9d4a is hardening and deployment readiness: reproduce/fix concrete defects, reduce artwork cost with deterministic variants and lazy loading, measure desktop/mobile cold loads, reassess design/source gates, verify migrations and isolated backup/restore, and prepare locked separate frontend/API deployment and offline CI. Preserve GDP/authentication, canonical measurements and independent collection. Public deployment remains a later stage. Unavailable debt/market states do not fulfil those required data features.
 
 References read without modification:
 - `Interview_Round_2_Full_Stack_Application_Challenge.docx` supplied from Downloads.

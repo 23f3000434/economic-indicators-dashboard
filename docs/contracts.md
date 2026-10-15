@@ -1,6 +1,6 @@
 # API and data contracts
 
-GDP version 1 remains a compatibility boundary. The authorised next stage adds the multi-provider backend and protected dashboard, with strict measurement/provenance/period/status contracts for new adapters. Frontend redesign and deployment remain later stages. Historical proof examples are evidence, never application inputs.
+GDP version 1 remains a compatibility boundary. The multi-provider backend and complete frontend are implemented. The authorised hardening/deployment-readiness stage preserves strict measurement/provenance/period/status contracts; public deployment remains later. Historical proof examples are evidence, never application inputs.
 
 ## Data read boundary
 
