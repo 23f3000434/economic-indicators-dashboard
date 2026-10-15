@@ -1,5 +1,6 @@
 """Commerce merchandise trade, monthly and matching FYTD/completed fiscal years."""
 
+import asyncio
 import calendar
 import re
 from datetime import date, datetime
@@ -192,7 +193,7 @@ class Trade:
         first = await fetch(INDEX)
         nodes = monthly_nodes(first)
         pdf, _ = attachment(await fetch(nodes[0]))
-        latest = parse_pdf(await fetch(pdf), pdf, at())
+        latest = await asyncio.to_thread(parse_pdf, await fetch(pdf), pdf, at())
         latest_year = max(p.period.start.year for p in latest)
         current_fy = max(
             p.period.start.year for p in latest if p.period.kind in {"fiscal_year", "fiscal_year_to_date"}
@@ -211,7 +212,7 @@ class Trade:
                 attachment_url, listed = attachment(await fetch(node))
                 if listed.month != 4 or listed.year < current_fy:
                     continue
-                rows = parse_pdf(await fetch(attachment_url), attachment_url, at())
+                rows = await asyncio.to_thread(parse_pdf, await fetch(attachment_url), attachment_url, at())
                 if any(p.period.kind == "fiscal_year" for p in rows):
                     candidates += rows
                     annual = True
@@ -223,7 +224,7 @@ class Trade:
         for url in self.settings.trade_history_urls:
             if urlsplit(url).hostname != "www.pib.gov.in":
                 raise ValueError("Unexpected historical trade host")
-            candidates += parse_historical_html(await fetch(url), url, at())
+            candidates += await asyncio.to_thread(parse_historical_html, await fetch(url), url, at())
         chosen = {}
         for p in candidates:
             if p.period.start.year < latest_year - self.settings.report_years - 1:

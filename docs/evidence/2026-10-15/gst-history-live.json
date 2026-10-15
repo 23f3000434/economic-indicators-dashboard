@@ -1,0 +1,700 @@
+{
+  "checked_at": "2026-10-15T16:13:12.729549+00:00",
+  "groups": {
+    "gst": {
+      "collected": true,
+      "api_status": 200,
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-15T16:13:12.877846Z",
+          "last_success_at": "2026-10-15T16:13:19.964301Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "gst",
+          "provider_id": "gstn",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        }
+      ],
+      "summaries": [
+        {
+          "current": {
+            "series_id": "gst_cess",
+            "period_key": "2026-03"
+          },
+          "comparison": {
+            "series_id": "gst_cess",
+            "period_key": "2025-03"
+          },
+          "kind": "relative_percent",
+          "value": "-99.157014527079163513278349500486582078022179341328332441308080318914886113749645"
+        },
+        {
+          "current": {
+            "series_id": "gst_fy_average",
+            "period_key": "FY2025-26"
+          },
+          "comparison": {
+            "series_id": "gst_fy_average",
+            "period_key": "FY2024-25"
+          },
+          "kind": "relative_percent",
+          "value": "8.3473949254455301101080719095243861051895595226649917584878844856793031832463700"
+        },
+        {
+          "current": {
+            "series_id": "gst_fy_total",
+            "period_key": "FY2025-26"
+          },
+          "comparison": {
+            "series_id": "gst_fy_total",
+            "period_key": "FY2024-25"
+          },
+          "kind": "relative_percent",
+          "value": "8.3473949254455301101080719095243861051895595226649917584878844856793031832463600"
+        },
+        {
+          "current": {
+            "series_id": "gst_fytd_average",
+            "period_key": "FY2026-27:09"
+          },
+          "comparison": {
+            "series_id": "gst_fytd_average",
+            "period_key": "FY2025-26:09"
+          },
+          "kind": "relative_percent",
+          "value": "11.564873060782505226935185456439901630955154890162451084575107524172473991023680"
+        },
+        {
+          "current": {
+            "series_id": "gst_gross_ex_cess",
+            "period_key": "2026-09"
+          },
+          "comparison": {
+            "series_id": "gst_gross_ex_cess",
+            "period_key": "2025-09"
+          },
+          "kind": "relative_percent",
+          "value": "14.746990668959490316578806416147492459053364530769881318185662334733459250697710"
+        },
+        {
+          "current": {
+            "series_id": "gst_reported_gross",
+            "period_key": "2026-09"
+          },
+          "comparison": {
+            "series_id": "gst_reported_gross",
+            "period_key": "2025-09"
+          },
+          "kind": "relative_percent",
+          "value": "14.746990668959490316578806416147492459053364530769881318185662334733459250697710"
+        }
+      ],
+      "series": [
+        {
+          "id": "gst_gross_ex_cess",
+          "unit": "inr_crore",
+          "points": 78,
+          "first": {
+            "series_id": "gst_gross_ex_cess",
+            "period": {
+              "key": "2020-04",
+              "label": "April 2020",
+              "kind": "month",
+              "start": "2020-04-01",
+              "end": "2020-04-30"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_cgst_sgst_igst_before_refunds",
+              "status": "unspecified",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": [
+                {
+                  "series_id": "gst_reported_gross",
+                  "period_key": "2020-04"
+                },
+                {
+                  "series_id": "gst_cess",
+                  "period_key": "2020-04"
+                }
+              ]
+            },
+            "value": "31047",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/9YearsReport.pdf",
+            "retrieved_at": "2026-10-15T16:13:16.305901Z",
+            "response_sha256": "b41be540213165661dfa9ea48ae30bc34340e2291aafe6de12146ad4b8053639",
+            "footnote": "Source-reported gross less compensation cess when included. No refunds deducted. CGST+SGST+IGST reconciliation checked at publication precision.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "gst_gross_ex_cess",
+            "period": {
+              "key": "2026-09",
+              "label": "September 2026",
+              "kind": "month",
+              "start": "2026-09-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_cgst_sgst_igst_before_refunds",
+              "status": "provisional",
+              "published_at": "2026-10-01",
+              "publication_note": "",
+              "inputs": [
+                {
+                  "series_id": "gst_reported_gross",
+                  "period_key": "2026-09"
+                }
+              ]
+            },
+            "value": "203521",
+            "source_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+            "retrieved_at": "2026-10-15T16:13:13.700477Z",
+            "response_sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+            "footnote": "Source-reported gross less compensation cess when included. No refunds deducted. CGST+SGST+IGST reconciliation checked at publication precision.",
+            "retained": false
+          }
+        },
+        {
+          "id": "gst_reported_gross",
+          "unit": "inr_crore",
+          "points": 78,
+          "first": {
+            "series_id": "gst_reported_gross",
+            "period": {
+              "key": "2020-04",
+              "label": "April 2020",
+              "kind": "month",
+              "start": "2020-04-01",
+              "end": "2020-04-30"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_including_compensation_cess",
+              "status": "unspecified",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "32172",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/9YearsReport.pdf",
+            "retrieved_at": "2026-10-15T16:13:16.305901Z",
+            "response_sha256": "b41be540213165661dfa9ea48ae30bc34340e2291aafe6de12146ad4b8053639",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "gst_reported_gross",
+            "period": {
+              "key": "2026-09",
+              "label": "September 2026",
+              "kind": "month",
+              "start": "2026-09-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_excluding_compensation_cess",
+              "status": "provisional",
+              "published_at": "2026-10-01",
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "203521",
+            "source_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+            "retrieved_at": "2026-10-15T16:13:13.700477Z",
+            "response_sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "gst_cess",
+          "unit": "inr_crore",
+          "points": 72,
+          "first": {
+            "series_id": "gst_cess",
+            "period": {
+              "key": "2020-04",
+              "label": "April 2020",
+              "kind": "month",
+              "start": "2020-04-01",
+              "end": "2020-04-30"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "compensation_cess_before_refunds",
+              "status": "unspecified",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "1125",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/9YearsReport.pdf",
+            "retrieved_at": "2026-10-15T16:13:16.305901Z",
+            "response_sha256": "b41be540213165661dfa9ea48ae30bc34340e2291aafe6de12146ad4b8053639",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "gst_cess",
+            "period": {
+              "key": "2026-03",
+              "label": "March 2026",
+              "kind": "month",
+              "start": "2026-03-01",
+              "end": "2026-03-31"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "compensation_cess_before_refunds",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "",
+              "inputs": []
+            },
+            "value": "103.2869534",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+            "retrieved_at": "2026-10-15T16:13:13.267541Z",
+            "response_sha256": "9ce073771b89fc367b0beaccf25becef73704cc9d27a4e333488b1701a6de1d0",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "gst_fy_total",
+          "unit": "inr_crore",
+          "points": 5,
+          "first": {
+            "series_id": "gst_fy_total",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_ex_cess_completed_fy_total",
+              "status": "unspecified",
+              "published_at": null,
+              "publication_note": "Calculated from 12 published months; no missing month is zero-filled.",
+              "inputs": [
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-04"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-05"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-06"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-07"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-08"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-09"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-10"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-11"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-12"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2022-01"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2022-02"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2022-03"
+                }
+              ]
+            },
+            "value": "1380519",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/9YearsReport.pdf",
+            "retrieved_at": "2026-10-15T16:13:16.305901Z",
+            "response_sha256": "b41be540213165661dfa9ea48ae30bc34340e2291aafe6de12146ad4b8053639",
+            "footnote": "Calculated from 12 published months; no missing month is zero-filled.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "gst_fy_total",
+            "period": {
+              "key": "FY2025-26",
+              "label": "FY 2025\u201326",
+              "kind": "fiscal_year",
+              "start": "2025-04-01",
+              "end": "2026-03-31"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_ex_cess_completed_fy_total",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "Calculated from 12 published months; no missing month is zero-filled.",
+              "inputs": [
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-04"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-05"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-06"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-07"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-08"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-09"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-10"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-11"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-12"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-01"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-02"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-03"
+                }
+              ]
+            },
+            "value": "2227096.6644980370398",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+            "retrieved_at": "2026-10-15T16:13:13.267541Z",
+            "response_sha256": "9ce073771b89fc367b0beaccf25becef73704cc9d27a4e333488b1701a6de1d0",
+            "footnote": "Calculated from 12 published months; no missing month is zero-filled.",
+            "retained": false
+          }
+        },
+        {
+          "id": "gst_fy_average",
+          "unit": "inr_crore",
+          "points": 5,
+          "first": {
+            "series_id": "gst_fy_average",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_ex_cess_completed_fy_total_divided_by_12",
+              "status": "unspecified",
+              "published_at": null,
+              "publication_note": "Calculated from 12 published months; no missing month is zero-filled.",
+              "inputs": [
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-04"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-05"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-06"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-07"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-08"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-09"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-10"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-11"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2021-12"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2022-01"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2022-02"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2022-03"
+                }
+              ]
+            },
+            "value": "115043.25",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/9YearsReport.pdf",
+            "retrieved_at": "2026-10-15T16:13:16.305901Z",
+            "response_sha256": "b41be540213165661dfa9ea48ae30bc34340e2291aafe6de12146ad4b8053639",
+            "footnote": "Calculated from 12 published months; no missing month is zero-filled.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "gst_fy_average",
+            "period": {
+              "key": "FY2025-26",
+              "label": "FY 2025\u201326",
+              "kind": "fiscal_year",
+              "start": "2025-04-01",
+              "end": "2026-03-31"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_ex_cess_completed_fy_total_divided_by_12",
+              "status": "provisional",
+              "published_at": null,
+              "publication_note": "Calculated from 12 published months; no missing month is zero-filled.",
+              "inputs": [
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-04"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-05"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-06"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-07"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-08"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-09"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-10"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-11"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-12"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-01"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-02"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-03"
+                }
+              ]
+            },
+            "value": "185591.38870816975331666666666666666666666666666666666666666666666666666666666667",
+            "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+            "retrieved_at": "2026-10-15T16:13:13.267541Z",
+            "response_sha256": "9ce073771b89fc367b0beaccf25becef73704cc9d27a4e333488b1701a6de1d0",
+            "footnote": "Calculated from 12 published months; no missing month is zero-filled.",
+            "retained": false
+          }
+        },
+        {
+          "id": "gst_fytd_average",
+          "unit": "inr_crore",
+          "points": 2,
+          "first": {
+            "series_id": "gst_fytd_average",
+            "period": {
+              "key": "FY2025-26:09",
+              "label": "FY 2025\u201326 April\u2013September",
+              "kind": "fiscal_year_to_date",
+              "start": "2025-04-01",
+              "end": "2025-09-30"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_ex_cess_average_published_months_04_05_06_07_08_09",
+              "status": "provisional",
+              "published_at": "2026-10-01",
+              "publication_note": "Calculated from 6 published months; no missing month is zero-filled.",
+              "inputs": [
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-04"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-05"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-06"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-07"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-08"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2025-09"
+                }
+              ]
+            },
+            "value": "186181.42118333334",
+            "source_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+            "retrieved_at": "2026-10-15T16:13:13.700477Z",
+            "response_sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+            "footnote": "Calculated from 6 published months; no missing month is zero-filled.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "gst_fytd_average",
+            "period": {
+              "key": "FY2026-27:09",
+              "label": "FY 2026\u201327 April\u2013September",
+              "kind": "fiscal_year_to_date",
+              "start": "2026-04-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "gst",
+              "provider": "gstn",
+              "unit": "inr_crore",
+              "methodology": "gross_ex_cess_average_published_months_04_05_06_07_08_09",
+              "status": "provisional",
+              "published_at": "2026-10-01",
+              "publication_note": "Calculated from 6 published months; no missing month is zero-filled.",
+              "inputs": [
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-04"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-05"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-06"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-07"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-08"
+                },
+                {
+                  "series_id": "gst_gross_ex_cess",
+                  "period_key": "2026-09"
+                }
+              ]
+            },
+            "value": "207713.06620594667",
+            "source_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+            "retrieved_at": "2026-10-15T16:13:13.700477Z",
+            "response_sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+            "footnote": "Calculated from 6 published months; no missing month is zero-filled.",
+            "retained": false
+          }
+        }
+      ]
+    }
+  }
+}

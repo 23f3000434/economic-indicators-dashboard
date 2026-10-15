@@ -1,5 +1,6 @@
 """CGA published actual/provisional accounts, never BE/RE or COPPY percentages."""
 
+import asyncio
 import re
 from decimal import Decimal
 
@@ -124,7 +125,7 @@ class CGA:
         points = []
         for y, mo in sorted(periods):
             url = release_url(y, mo)
-            points.extend(parse(await fetch(url), url, at(), y, mo))
+            points.extend(await asyncio.to_thread(parse, await fetch(url), url, at(), y, mo))
         return points
 
     def coverage(self, points):

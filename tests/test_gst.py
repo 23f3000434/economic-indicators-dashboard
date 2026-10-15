@@ -9,7 +9,13 @@ import httpx
 import pytest
 from app.derived import gst_aggregates
 from app.main import create_app
-from app.providers.gst import discover_release, discover_workbook, parse_pdf, parse_workbook
+from app.providers.gst import (
+    discover_release,
+    discover_workbook,
+    parse_history_report,
+    parse_pdf,
+    parse_workbook,
+)
 from fastapi.testclient import TestClient
 
 from tests.conftest import PASSWORD, login
@@ -89,10 +95,16 @@ def test_gst_path_protected_persistent_and_failure_retains(settings, clock):
         assert asyncio.run(app.state.jobs["gst"].collect_once())
         response = client.get("/api/v1/panels/gst", headers=bearer).json()
         assert response["state"] == "ready"
-        assert len(next(s for s in response["series"] if s["id"] == "gst_gross_ex_cess")["points"]) == 42
+        assert len(next(s for s in response["series"] if s["id"] == "gst_gross_ex_cess")["points"]) == 78
+        assert all(
+            p["value"] is not None
+            for s in response["series"]
+            if s["id"] == "gst_fy_total"
+            for p in s["points"]
+        )
         assert asyncio.run(app.state.jobs["gst"].collect_once())
         with app.state.db.connect() as db:
-            assert db.execute("SELECT count(*) FROM observations WHERE group_id='gst'").fetchone()[0] == 120
+            assert db.execute("SELECT count(*) FROM observations WHERE group_id='gst'").fetchone()[0] == 228
 
         async def reject(request):
             return httpx.Response(503)
@@ -112,3 +124,15 @@ def test_gst_rejects_wrong_period_and_error_page():
         parse_pdf(body("gst_pdf"), url, "2026-10-15T12:00:00Z", (2026, 8), published)
     with pytest.raises(ValueError):
         parse_pdf(b"<html>access denied</html>", url, "2026-10-15T12:00:00Z", ym, published)
+
+
+def test_revised_historical_gstn_months():
+    m = MANIFEST[-1]
+    rows = parse_history_report(body("gst_9years"), m["url"], m["checked_at"], 2020, 2022)
+    lookup = {f"{p.series_id}:{p.period.key}": p for p in rows}
+    assert len(rows) == 108
+    for key, value in m["reviewed_values"].items():
+        assert lookup[key].value == value
+    assert lookup["gst_reported_gross:2022-01"].value == "140986"
+    assert lookup["gst_gross_ex_cess:2022-01"].value == "131290"
+    assert all(p.definition.published_at is None and p.definition.status == "unspecified" for p in rows)

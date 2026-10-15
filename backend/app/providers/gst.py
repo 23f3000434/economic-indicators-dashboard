@@ -1,5 +1,6 @@
 """Official GSTN workbook + discovered monthly PDF; consistent cess treatment."""
 
+import asyncio
 import calendar
 import json
 import re
@@ -29,19 +30,21 @@ def parse_month(text):
     return 2000 + int(match[2]) if len(match[2]) == 2 else int(match[2]), names[match[1][:3].lower()]
 
 
-def definition(methodology, published=None, inputs=()):
+def definition(methodology, published=None, inputs=(), status="provisional"):
     return Definition(
         group="gst",
         provider="gstn",
         unit="inr_crore",
         methodology=methodology,
-        status="provisional",
+        status=status,
         published_at=published,
         inputs=list(inputs),
     )
 
 
-def gross_points(values, period, body, url, at, published=None, tolerance=Decimal("0.02")):
+def gross_points(
+    values, period, body, url, at, published=None, tolerance=Decimal("0.02"), status="provisional"
+):
     total = Decimal(values["Total Gross GST Revenue"])
     cess = Decimal(values["CESS"]) if "CESS" in values else None
     components = sum(Decimal(values[k]) for k in ("CGST", "SGST", "IGST"))
@@ -56,6 +59,7 @@ def gross_points(values, period, body, url, at, published=None, tolerance=Decima
         definition(
             "gross_including_compensation_cess" if cess is not None else "gross_excluding_compensation_cess",
             published,
+            status=status,
         ),
         body,
         url,
@@ -66,7 +70,7 @@ def gross_points(values, period, body, url, at, published=None, tolerance=Decima
         raw += measurements(
             {"gst_cess": format(cess, "f")},
             period,
-            definition("compensation_cess_before_refunds", published),
+            definition("compensation_cess_before_refunds", published, status=status),
             body,
             url,
             at,
@@ -75,7 +79,7 @@ def gross_points(values, period, body, url, at, published=None, tolerance=Decima
     raw += measurements(
         {"gst_gross_ex_cess": format(total - (cess or 0), "f")},
         period,
-        definition("gross_cgst_sgst_igst_before_refunds", published, refs),
+        definition("gross_cgst_sgst_igst_before_refunds", published, refs, status),
         body,
         url,
         at,
@@ -173,6 +177,69 @@ def discover_release(body):
     return max(candidates)
 
 
+def discover_history(body):
+    soup = BeautifulSoup(body, "html.parser")
+    candidates = []
+    for a in soup.select("a[href]"):
+        url = urljoin(INDEX, a["href"])
+        match = re.fullmatch(
+            r"https://tutorial\.gst\.gov\.in/offlineutilities/gst_statistics/(\d+)Years?Report\.pdf", url
+        )
+        if match:
+            candidates.append((int(match[1]), url))
+    if not candidates:
+        raise ValueError("GST historical report discovery missing")
+    return max(candidates)[1]
+
+
+def parse_history_report(body, url, at, minimum_year, maximum_year):
+    result = []
+    for text in pdf_pages(body, limit=100, layout=True):
+        match = re.search(r"Payments\s*[—–-]\s*FY\s+(20\d\d)-(\d{2})", text)
+        if not match:
+            continue
+        year = int(match[1])
+        if not minimum_year <= year <= maximum_year:
+            continue
+        if int(match[2]) != (year + 1) % 100 or "₹CRORE" not in re.sub(r"\s+", "", text).upper():
+            raise ValueError("GST historical FY/units changed")
+        header = re.search(r"Months?\s+((?:[A-Za-z]{3}-\d{2}\s+){12})TOTAL", text, re.I)
+        if not header:
+            raise ValueError("GST historical monthly headings missing")
+        dates = [parse_month(v) for v in header[1].split()]
+        expected = [(year, m) for m in range(4, 13)] + [(year + 1, m) for m in range(1, 4)]
+        if dates != expected:
+            raise ValueError("GST historical months do not form a completed FY")
+        data = {}
+        for label, pattern in [
+            ("CGST", "CGST"),
+            ("SGST", "SGST"),
+            ("IGST", r"IGST\s*\*"),
+            ("CESS", r"Comp\s+Cess\s*\*"),
+            ("Total Gross GST Revenue", "Total"),
+        ]:
+            lines = re.findall(r"^\s*" + pattern + r"\s+([\d, ]+)\s*$", text, re.M)
+            if len(lines) != 1:
+                raise ValueError("GST historical tax row missing/duplicate")
+            values = [number(v) for v in lines[0].split()]
+            if len(values) != 13 or abs(sum(Decimal(v) for v in values[:12]) - Decimal(values[12])) > 6:
+                raise ValueError("GST historical monthly/annual totals do not reconcile within rounding")
+            data[label] = values
+        for i, ym in enumerate(dates):
+            result += gross_points(
+                {k: v[i] for k, v in data.items()},
+                month(*ym),
+                body,
+                url,
+                at,
+                tolerance=Decimal("2"),
+                status="unspecified",
+            )
+    if len(result) != (maximum_year - minimum_year + 1) * 36:
+        raise ValueError("GST history report lacks required fiscal years")
+    return result
+
+
 def parse_pdf(body, url, at, ym, published):
     text = pdf_pages(body, limit=12)[0]
     if "Amount in crores" not in text or not re.search(r"provisional", text, re.I):
@@ -218,14 +285,21 @@ class GST:
         self.interval = settings.gst_interval
 
     async def collect(self, fetch, at):
-        url = discover_workbook(await fetch(INDEX))
-        points = parse_workbook(await fetch(url), url, at())
+        index = await fetch(INDEX)
+        url = discover_workbook(index)
+        points = await asyncio.to_thread(parse_workbook, await fetch(url), url, at())
         ym, pdf, published = discover_release(await fetch(NEWS))
-        latest = parse_pdf(await fetch(pdf), pdf, at(), ym, published)
+        latest = await asyncio.to_thread(parse_pdf, await fetch(pdf), pdf, at(), ym, published)
+        earliest = ym[0] - self.settings.report_years - 1
+        first = min(p.period.start.year for p in points)
+        if earliest < first:
+            history = discover_history(index)
+            points += await asyncio.to_thread(
+                parse_history_report, await fetch(history), history, at(), earliest, first - 1
+            )
         lookup = {(p.series_id, p.period.key): p for p in points}
         for p in latest:
             lookup[p.series_id, p.period.key] = p
-        earliest = ym[0] - self.settings.report_years - 1
         return [p for p in lookup.values() if p.period.start.year >= earliest]
 
     def coverage(self, points):
@@ -234,5 +308,5 @@ class GST:
             f"Monthly workbook/release coverage {months[0]}–{months[-1]} ({len(months)} published months)."
             if months
             else "No published months stored.",
-            "Workbook history starts April 2023; earlier FYs are unverified and are not reconstructed from state-only tables.",
+            "Earlier monthly history comes from the discovered GSTN year report, including imports/cess; no state-only substitution. Historical finality/publication date is unspecified.",
         ]

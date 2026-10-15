@@ -64,5 +64,30 @@
       "year": "2026",
       "month": "9"
     }
+  },
+  {
+    "url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/9YearsReport.pdf",
+    "checked_at": "2026-10-15T16:08:58.771483+00:00",
+    "name": "gst_9years",
+    "status": 200,
+    "final_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/9YearsReport.pdf",
+    "content_type": "application/pdf",
+    "retry_after": null,
+    "bytes": 3341134,
+    "sha256": "b41be540213165661dfa9ea48ae30bc34340e2291aafe6de12146ad4b8053639",
+    "reviewed_values": {
+      "gst_reported_gross:2021-04": "139708",
+      "gst_cess:2021-04": "9372",
+      "gst_gross_ex_cess:2021-04": "130336",
+      "gst_reported_gross:2022-01": "140986",
+      "gst_cess:2022-01": "9696",
+      "gst_gross_ex_cess:2022-01": "131290",
+      "gst_reported_gross:2022-04": "167540",
+      "gst_cess:2022-04": "10649",
+      "gst_gross_ex_cess:2022-04": "156891",
+      "gst_reported_gross:2023-03": "160122",
+      "gst_cess:2023-03": "10355",
+      "gst_gross_ex_cess:2023-03": "149767"
+    }
   }
 ]
