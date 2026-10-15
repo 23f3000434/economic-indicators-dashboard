@@ -196,12 +196,16 @@ def summaries(points):
     return result
 
 
-def read_indicator(database, panel_id, jobs, now):
+def read_indicator(database, panel_id, jobs, now, report_years=5):
     groups = [job for job in jobs.values() if job.panel == panel_id]
     with database.connect() as db:
         db.execute("BEGIN")
         points = read_measurements(db, [job.group for job in groups])
         statuses = [collection_status(db, job.group, job.provider, job.interval, now) for job in groups]
+    if panel_id == "gst":
+        from .derived import gst_aggregates
+
+        points += gst_aggregates(points, report_years)
     points.sort(key=lambda p: (p.period.end, p.period.start))
     series = [
         IndicatorSeries(id=key, label=spec[3], unit=spec[2], points=[p for p in points if p.series_id == key])

@@ -1,0 +1,68 @@
+[
+  {
+    "url": "https://www.gst.gov.in/download/gststatistics",
+    "checked_at": "2026-10-15T15:31:33.058328+00:00",
+    "name": "gst_index",
+    "status": 200,
+    "final_url": "https://www.gst.gov.in/download/gststatistics",
+    "content_type": "text/html;charset=UTF-8",
+    "retry_after": null,
+    "bytes": 23079,
+    "sha256": "ac6dba64e7572494a830dc2dc4a4e5a854cc9fe9af28de82954500d16951e6fa"
+  },
+  {
+    "url": "https://www.gst.gov.in/fomessage/newsupdates",
+    "checked_at": "2026-10-15T15:54:54.308796+00:00",
+    "name": "gst_news_api",
+    "status": 200,
+    "final_url": "https://www.gst.gov.in/fomessage/newsupdates",
+    "content_type": "application/json",
+    "retry_after": null,
+    "bytes": 33173,
+    "sha256": "1c91c6b5f96abb109d0d539140197d7c5eadeea5c8c7e96afa81732ae03f895d"
+  },
+  {
+    "url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+    "checked_at": "2026-10-15T15:34:55.360335+00:00",
+    "name": "gst_gross_net",
+    "status": 200,
+    "final_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+    "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "retry_after": null,
+    "bytes": 192489,
+    "sha256": "9ce073771b89fc367b0beaccf25becef73704cc9d27a4e333488b1701a6de1d0",
+    "reviewed_values": {
+      "gst_reported_gross:2023-04": "187034.75949999999",
+      "gst_cess:2023-04": "12024.986700000001",
+      "gst_gross_ex_cess:2023-04": "175009.772799999989",
+      "gst_reported_gross:2025-01": "195505.9405",
+      "gst_cess:2025-01": "13411.982800000002",
+      "gst_gross_ex_cess:2025-01": "182093.957699999998",
+      "gst_reported_gross:2024-01": "174106.13130000001",
+      "gst_cess:2024-01": "11976.2963",
+      "gst_gross_ex_cess:2024-01": "162129.83500000001",
+      "gst_reported_gross:2025-09": "189016.52513109098",
+      "gst_cess:2025-09": "11651.950835600001",
+      "gst_gross_ex_cess:2025-09": "177364.574295490979",
+      "gst_reported_gross:2026-08": "199852.73997940001",
+      "gst_gross_ex_cess:2026-08": "199852.73997940001"
+    }
+  },
+  {
+    "url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+    "checked_at": "2026-10-15T15:31:33.182527+00:00",
+    "name": "gst_pdf",
+    "status": 200,
+    "final_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+    "content_type": "application/pdf",
+    "retry_after": null,
+    "bytes": 670451,
+    "sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+    "reviewed_values": {
+      "prior_month_ex_cess": "177365",
+      "current_month_ex_cess": "203521",
+      "year": "2026",
+      "month": "9"
+    }
+  }
+]

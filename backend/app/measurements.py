@@ -22,7 +22,7 @@ def number(text: str) -> str:
     if not re.fullmatch(r"-?\d+(?:\.\d+)?", cleaned):
         raise ValueError("Not a published decimal")
     value = Decimal(cleaned)
-    if not value.is_finite() or len(value.as_tuple().digits) > 40:
+    if not value.is_finite() or len(value.as_tuple().digits) > 100:
         raise ValueError("Invalid decimal precision")
     return format(value, "f")
 
@@ -142,6 +142,27 @@ CATALOGUE = {
     "expenditure_revenue": ("expenditure", "cga", "inr_crore", "Revenue expenditure, actual"),
     "expenditure_capital": ("expenditure", "cga", "inr_crore", "Capital expenditure, actual"),
     "expenditure_total": ("expenditure", "cga", "inr_crore", "Total expenditure, actual"),
+    "gst_gross_ex_cess": (
+        "gst",
+        "gstn",
+        "inr_crore",
+        "Gross GST excluding compensation cess, before refunds",
+    ),
+    "gst_reported_gross": (
+        "gst",
+        "gstn",
+        "inr_crore",
+        "Source-reported gross GST (see per-point cess definition)",
+    ),
+    "gst_cess": ("gst", "gstn", "inr_crore", "Gross compensation cess, where separately published"),
+    "gst_fy_total": ("gst", "gstn", "inr_crore", "Gross GST excluding cess, completed FY total"),
+    "gst_fy_average": ("gst", "gstn", "inr_crore", "Gross GST excluding cess, completed FY monthly average"),
+    "gst_fytd_average": (
+        "gst",
+        "gstn",
+        "inr_crore",
+        "Gross GST excluding cess, average of published FY months",
+    ),
 }
 
 

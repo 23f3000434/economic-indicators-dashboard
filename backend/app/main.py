@@ -18,6 +18,7 @@ from .indicators import IndicatorPanel, read_indicator
 from .macro_collector import MacroCollector
 from .models import EmptyBody, ErrorEnvelope, Health, Login, Panel, SessionInfo, Tokens, User
 from .providers.cga import CGA
+from .providers.gst import GST
 
 
 def create_app(settings: Settings | None = None, clock=time.time, upstream_client=None):
@@ -25,7 +26,10 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     database = Database(settings.database)
     auth = Auth(settings, database, clock)
     collector = Collector(settings, database, clock, upstream_client)
-    jobs = {a.group: MacroCollector(a, settings, database, clock, upstream_client) for a in [CGA(settings)]}
+    jobs = {
+        a.group: MacroCollector(a, settings, database, clock, upstream_client)
+        for a in [CGA(settings), GST(settings)]
+    }
     enabled = set(
         settings.macro_groups
         if settings.macro_groups is not None
@@ -262,6 +266,10 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
 
     @app.get("/api/v1/panels/expenditure", response_model=IndicatorPanel, tags=["dashboard"])
     def expenditure(user=Depends(current_user)):
-        return read_indicator(database, "expenditure", jobs, clock())
+        return read_indicator(database, "expenditure", jobs, clock(), settings.report_years)
+
+    @app.get("/api/v1/panels/gst", response_model=IndicatorPanel, tags=["dashboard"])
+    def gst(user=Depends(current_user)):
+        return read_indicator(database, "gst", jobs, clock(), settings.report_years)
 
     return app
