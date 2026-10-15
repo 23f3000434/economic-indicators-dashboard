@@ -1,0 +1,251 @@
+{
+  "checked_at": "2026-10-15T16:06:37.929227+00:00",
+  "groups": {
+    "trade": {
+      "collected": true,
+      "api_status": 200,
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-15T16:06:38.050381Z",
+          "last_success_at": "2026-10-15T16:06:41.107159Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "trade",
+          "provider_id": "commerce",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        }
+      ],
+      "summaries": [
+        {
+          "current": {
+            "series_id": "trade_balance",
+            "period_key": "2026-08"
+          },
+          "comparison": {
+            "series_id": "trade_balance",
+            "period_key": "2025-08"
+          },
+          "kind": "relative_percent",
+          "value": "-1.3225569434239529757531227038941954445260837619397501836884643644379132990448200"
+        },
+        {
+          "current": {
+            "series_id": "trade_exports",
+            "period_key": "2026-08"
+          },
+          "comparison": {
+            "series_id": "trade_exports",
+            "period_key": "2025-08"
+          },
+          "kind": "relative_percent",
+          "value": "26.108232584916522740356937248128957973517559009786989061600460564191134139320670"
+        },
+        {
+          "current": {
+            "series_id": "trade_imports",
+            "period_key": "2026-08"
+          },
+          "comparison": {
+            "series_id": "trade_imports",
+            "period_key": "2025-08"
+          },
+          "kind": "relative_percent",
+          "value": "14.057456423499031633311814073595868302130406714009038089089735313105229180116200"
+        }
+      ],
+      "series": [
+        {
+          "id": "trade_exports",
+          "unit": "usd_billion",
+          "points": 11,
+          "first": {
+            "series_id": "trade_exports",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2023-04-13",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "inputs": []
+            },
+            "value": "422.00",
+            "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+            "retrieved_at": "2026-10-15T16:06:40.906997Z",
+            "response_sha256": "9872214f7c7337a59919db37d66389ba324f41d1fbc86f19c5b78f1709482f78",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "trade_exports",
+            "period": {
+              "key": "2026-08",
+              "label": "August 2026",
+              "kind": "month",
+              "start": "2026-08-01",
+              "end": "2026-08-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2026-09-15",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "inputs": []
+            },
+            "value": "43.81",
+            "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20August%202026.pdf",
+            "retrieved_at": "2026-10-15T16:06:38.588577Z",
+            "response_sha256": "8be478d8c9cc61f4fc70dc7000f784847402b1d9a7a99680eab023013f5f107f",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "trade_imports",
+          "unit": "usd_billion",
+          "points": 11,
+          "first": {
+            "series_id": "trade_imports",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2023-04-13",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "inputs": []
+            },
+            "value": "613.05",
+            "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+            "retrieved_at": "2026-10-15T16:06:40.906997Z",
+            "response_sha256": "9872214f7c7337a59919db37d66389ba324f41d1fbc86f19c5b78f1709482f78",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "trade_imports",
+            "period": {
+              "key": "2026-08",
+              "label": "August 2026",
+              "kind": "month",
+              "start": "2026-08-01",
+              "end": "2026-08-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2026-09-15",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "inputs": []
+            },
+            "value": "70.67",
+            "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20August%202026.pdf",
+            "retrieved_at": "2026-10-15T16:06:38.588577Z",
+            "response_sha256": "8be478d8c9cc61f4fc70dc7000f784847402b1d9a7a99680eab023013f5f107f",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "trade_balance",
+          "unit": "usd_billion",
+          "points": 11,
+          "first": {
+            "series_id": "trade_balance",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2023-04-13",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "inputs": [
+                {
+                  "series_id": "trade_exports",
+                  "period_key": "FY2021-22"
+                },
+                {
+                  "series_id": "trade_imports",
+                  "period_key": "FY2021-22"
+                }
+              ]
+            },
+            "value": "-191.05",
+            "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+            "retrieved_at": "2026-10-15T16:06:40.906997Z",
+            "response_sha256": "9872214f7c7337a59919db37d66389ba324f41d1fbc86f19c5b78f1709482f78",
+            "footnote": "Calculated merchandise exports \u2212 imports; negative values are deficits. Combined goods/services balance excluded.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "trade_balance",
+            "period": {
+              "key": "2026-08",
+              "label": "August 2026",
+              "kind": "month",
+              "start": "2026-08-01",
+              "end": "2026-08-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2026-09-15",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "inputs": [
+                {
+                  "series_id": "trade_exports",
+                  "period_key": "2026-08"
+                },
+                {
+                  "series_id": "trade_imports",
+                  "period_key": "2026-08"
+                }
+              ]
+            },
+            "value": "-26.86",
+            "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20August%202026.pdf",
+            "retrieved_at": "2026-10-15T16:06:38.588577Z",
+            "response_sha256": "8be478d8c9cc61f4fc70dc7000f784847402b1d9a7a99680eab023013f5f107f",
+            "footnote": "Calculated merchandise exports \u2212 imports; negative values are deficits. Combined goods/services balance excluded.",
+            "retained": false
+          }
+        }
+      ]
+    }
+  }
+}

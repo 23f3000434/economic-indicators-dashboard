@@ -37,6 +37,10 @@ class Settings:
     policy_interval: int = 604800
     macro_groups: tuple[str, ...] | None = None
     collection_budget: int = 600
+    trade_history_urls: tuple[str, ...] = (
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2017942&reg=48&lang=2",
+    )
 
     def __post_init__(self):
         if self.environment not in {"development", "production", "test"}:
@@ -150,4 +154,7 @@ class Settings:
             if "COLLECTION_GROUPS" in os.environ
             else None,
             collection_budget=integer("COLLECTION_JOB_BUDGET_SECONDS", 600),
+            trade_history_urls=tuple(os.environ["TRADE_HISTORY_URLS"].split("|"))
+            if os.getenv("TRADE_HISTORY_URLS")
+            else cls.__dataclass_fields__["trade_history_urls"].default,
         )

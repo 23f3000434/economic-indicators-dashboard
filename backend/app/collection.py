@@ -133,7 +133,15 @@ class ProviderHTTP:
         self.state, self.client = state, client
         self.timeout, self.attempts, self.sleep, self.monotonic = timeout, attempts, sleep, monotonic
 
-    async def fetch(self, url, max_bytes=4 * 1024 * 1024):
+    async def fetch(self, url, max_bytes=4 * 1024 * 1024, *, method="GET", json=None):
+        if method not in {"GET", "POST"}:
+            raise ValueError("Unsupported public provider request method")
+        # HTTPX read timeouts reset between chunks. This outer deadline also
+        # bounds slow/dripping streams and mock transports that ignore timeouts.
+        async with asyncio.timeout(self.timeout * self.attempts):
+            return await self._fetch(url, max_bytes, method, json)
+
+    async def _fetch(self, url, max_bytes, method, payload):
         deadline = self.monotonic() + self.timeout * self.attempts
         for attempt in range(self.attempts):
             # Recheck before every request: a different request/group may have extended this provider's cooldown.
@@ -153,7 +161,10 @@ class ProviderHTTP:
                 raise TimeoutError("Request budget exhausted")
             try:
                 async with self.client.stream(
-                    "GET", url, timeout=httpx.Timeout(min(self.timeout, remaining), connect=min(5, remaining))
+                    method,
+                    url,
+                    json=payload,
+                    timeout=httpx.Timeout(min(self.timeout, remaining), connect=min(5, remaining)),
                 ) as response:
                     until = (
                         retry_after(response.headers.get("retry-after"), self.state.clock())

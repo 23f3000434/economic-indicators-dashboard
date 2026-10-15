@@ -52,8 +52,8 @@ class MacroCollector:
                     self.settings.upstream_attempts,
                 )
 
-                async def fetch(url):
-                    return await http.fetch(url, max_bytes=32 * 1024 * 1024)
+                async def fetch(url, **kwargs):
+                    return await http.fetch(url, max_bytes=32 * 1024 * 1024, **kwargs)
 
                 async with asyncio.timeout(self.settings.collection_budget):
                     rows = await self.adapter.collect(fetch, lambda: timestamp(self.clock()))

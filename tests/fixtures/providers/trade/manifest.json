@@ -1,0 +1,178 @@
+[
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/taxonomy/term/530",
+    "checked_at": "2026-10-15T15:34:55.360702+00:00",
+    "name": "commerce_releases",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/taxonomy/term/530",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 29189,
+    "sha256": "3712110dc080cd3c2b4a499aea3255d45a800c11e664b746d4a5826beab48142"
+  },
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/taxonomy/term/530?page=1",
+    "checked_at": "2026-10-15T15:53:40.971019+00:00",
+    "name": "commerce_page1",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/taxonomy/term/530?page=1",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 29760,
+    "sha256": "49687bf42a03106baf2aa43e30b4c41b852a6180b451ccc50196e35b397ca7d9"
+  },
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/node/5157",
+    "checked_at": "2026-10-15T16:07:13.438512+00:00",
+    "name": "commerce_node5157",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/node/5157",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 23884,
+    "sha256": "06c8c617257b9099ea79c1e41a1479b42124c52b40f96ea058ec4d21c5ad494a"
+  },
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/node/4990",
+    "checked_at": "2026-10-15T16:07:13.438951+00:00",
+    "name": "commerce_node4990",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/node/4990",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 23879,
+    "sha256": "d1977de357856ee694db2561df223036c9921ac514dc05e46ded1e682edb8d64"
+  },
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/node/4931",
+    "checked_at": "2026-10-15T16:07:13.439117+00:00",
+    "name": "commerce_node4931",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/node/4931",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 23886,
+    "sha256": "4d874c9c9777ce738767e15bdf9d89aa8969ea5283bd35520f0cc5479f302054"
+  },
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/node/4867",
+    "checked_at": "2026-10-15T16:07:13.439223+00:00",
+    "name": "commerce_node4867",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/node/4867",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 23879,
+    "sha256": "8b06db8ae38180962e2fbf00be138ce14b7b60ac513dfa8d3b52a30877418b0c"
+  },
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/node/4836",
+    "checked_at": "2026-10-15T16:07:13.561973+00:00",
+    "name": "commerce_node4836",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/node/4836",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 24079,
+    "sha256": "d672bcc18b842a2eaba102744af91492c266f605961024e828ff571ddf1fd630"
+  },
+  {
+    "url": "https://www.commerce.gov.in/ministryofcommerce/node/4677",
+    "checked_at": "2026-10-15T15:54:54.309200+00:00",
+    "name": "commerce_node4677",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/ministryofcommerce/node/4677",
+    "content_type": "text/html; charset=UTF-8",
+    "retry_after": null,
+    "bytes": 23646,
+    "sha256": "f14258d71c9e8ae4827e414a8376ed1681eea54708728191e992e7b0710c7b56"
+  },
+  {
+    "url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20August%202026.pdf",
+    "checked_at": "2026-10-15T15:34:55.491872+00:00",
+    "name": "commerce_pdf",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20August%202026.pdf",
+    "content_type": "application/pdf",
+    "retry_after": null,
+    "bytes": 493476,
+    "sha256": "8be478d8c9cc61f4fc70dc7000f784847402b1d9a7a99680eab023013f5f107f",
+    "reviewed_values": {
+      "trade_exports:2026-08": "43.81",
+      "trade_imports:2026-08": "70.67",
+      "trade_balance:2026-08": "-26.86",
+      "trade_exports:2025-08": "34.74",
+      "trade_imports:2025-08": "61.96",
+      "trade_balance:2025-08": "-27.22",
+      "trade_exports:FY2026-27:08": "215.91",
+      "trade_imports:FY2026-27:08": "363.00",
+      "trade_balance:FY2026-27:08": "-147.09",
+      "trade_exports:FY2025-26:08": "183.21",
+      "trade_imports:FY2025-26:08": "307.09",
+      "trade_balance:FY2025-26:08": "-123.88"
+    }
+  },
+  {
+    "url": "https://www.commerce.gov.in/files/d-m-y/PIBRelease.pdf",
+    "checked_at": "2026-10-15T15:55:46.958180+00:00",
+    "name": "commerce_mar2026_pdf",
+    "status": 200,
+    "final_url": "https://www.commerce.gov.in/files/d-m-y/PIBRelease.pdf",
+    "content_type": "application/pdf",
+    "retry_after": null,
+    "bytes": 501081,
+    "sha256": "f51dc7d939940e8539672ba4ed892a33306d61ae2cff5e9283a7aa3fe6e3801d",
+    "reviewed_values": {
+      "trade_exports:2026-03": "38.92",
+      "trade_imports:2026-03": "59.59",
+      "trade_balance:2026-03": "-20.67",
+      "trade_exports:2025-03": "42.05",
+      "trade_imports:2025-03": "63.74",
+      "trade_balance:2025-03": "-21.69",
+      "trade_exports:FY2025-26": "441.78",
+      "trade_imports:FY2025-26": "774.98",
+      "trade_balance:FY2025-26": "-333.20",
+      "trade_exports:FY2024-25": "437.70",
+      "trade_imports:FY2024-25": "721.20",
+      "trade_balance:FY2024-25": "-283.50"
+    }
+  },
+  {
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2017942",
+    "checked_at": "2026-10-15T16:03:29.969478+00:00",
+    "name": "commerce_pib2017942",
+    "status": 200,
+    "final_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2017942&reg=48&lang=2",
+    "content_type": "text/html; charset=utf-8",
+    "retry_after": null,
+    "bytes": 318104,
+    "sha256": "88e6c101f5ac23ef9a43e526bb630a6c096e70b129685883a758f2ce07422a7f",
+    "reviewed_values": {
+      "trade_exports:FY2023-24": "437.06",
+      "trade_imports:FY2023-24": "677.24",
+      "trade_balance:FY2023-24": "-240.18",
+      "trade_exports:FY2022-23": "451.07",
+      "trade_imports:FY2022-23": "715.97",
+      "trade_balance:FY2022-23": "-264.90"
+    }
+  },
+  {
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220",
+    "checked_at": "2026-10-15T16:03:29.970335+00:00",
+    "name": "commerce_pib1916220",
+    "status": 200,
+    "final_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+    "content_type": "text/html; charset=utf-8",
+    "retry_after": null,
+    "bytes": 312915,
+    "sha256": "dda1370b21a3e31deb3eb3b53c4a24cf42a46e6a1f08dcd74d9de32e72b3b1ed",
+    "reviewed_values": {
+      "trade_exports:FY2022-23": "447.46",
+      "trade_imports:FY2022-23": "714.24",
+      "trade_balance:FY2022-23": "-266.78",
+      "trade_exports:FY2021-22": "422.00",
+      "trade_imports:FY2021-22": "613.05",
+      "trade_balance:FY2021-22": "-191.05"
+    }
+  }
+]

@@ -133,7 +133,7 @@ class Measurement(Model):
 HOSTS = {
     "cga": {"cga.gov.in", "cga.nic.in", "www.cga.gov.in"},
     "gstn": {"www.gst.gov.in", "tutorial.gst.gov.in"},
-    "commerce": {"www.commerce.gov.in", "commerce.gov.in"},
+    "commerce": {"www.commerce.gov.in", "commerce.gov.in", "www.pib.gov.in"},
     "mospi_pib": {"www.pib.gov.in", "pib.gov.in", "www.mospi.gov.in"},
     "gazette": {"egazette.gov.in"},
     "imf": {"www.imf.org", "data.imf.org"},
@@ -163,6 +163,9 @@ CATALOGUE = {
         "inr_crore",
         "Gross GST excluding cess, average of published FY months",
     ),
+    "trade_exports": ("trade", "commerce", "usd_billion", "Merchandise exports"),
+    "trade_imports": ("trade", "commerce", "usd_billion", "Merchandise imports"),
+    "trade_balance": ("trade", "commerce", "usd_billion", "Merchandise balance (exports − imports)"),
 }
 
 

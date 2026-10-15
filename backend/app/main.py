@@ -19,6 +19,7 @@ from .macro_collector import MacroCollector
 from .models import EmptyBody, ErrorEnvelope, Health, Login, Panel, SessionInfo, Tokens, User
 from .providers.cga import CGA
 from .providers.gst import GST
+from .providers.trade import Trade
 
 
 def create_app(settings: Settings | None = None, clock=time.time, upstream_client=None):
@@ -28,7 +29,7 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     collector = Collector(settings, database, clock, upstream_client)
     jobs = {
         a.group: MacroCollector(a, settings, database, clock, upstream_client)
-        for a in [CGA(settings), GST(settings)]
+        for a in [CGA(settings), GST(settings), Trade(settings)]
     }
     enabled = set(
         settings.macro_groups
@@ -271,5 +272,9 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     @app.get("/api/v1/panels/gst", response_model=IndicatorPanel, tags=["dashboard"])
     def gst(user=Depends(current_user)):
         return read_indicator(database, "gst", jobs, clock(), settings.report_years)
+
+    @app.get("/api/v1/panels/trade", response_model=IndicatorPanel, tags=["dashboard"])
+    def trade(user=Depends(current_user)):
+        return read_indicator(database, "trade", jobs, clock(), settings.report_years)
 
     return app
