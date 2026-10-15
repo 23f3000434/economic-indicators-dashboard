@@ -9,7 +9,7 @@ from decimal import Decimal, localcontext
 
 import httpx
 
-from .collection import Deferred, GroupState, ProviderHTTP
+from .collection import Deferred, GroupState, ProviderHTTP, joined_thread
 from .config import Settings
 from .db import Database
 from .models import Panel
@@ -133,7 +133,12 @@ class Collector:
 
     async def collect_once(self) -> bool:
         start, end = self.settings.window(datetime.fromtimestamp(self.clock(), timezone.utc).year)
-        run = await asyncio.to_thread(self.begin, start, end)
+        run = await joined_thread(
+            self.begin,
+            start,
+            end,
+            cancelled_result=lambda r: self.fail(r, "interrupted") if r else None,
+        )
         if run is None:
             return False
         try:
@@ -176,7 +181,7 @@ class Collector:
                             hashlib.sha256(body).hexdigest(),
                         )
                     )
-            await asyncio.to_thread(self.store, run, prepared)
+            await joined_thread(self.store, run, prepared)
             LOG.info("GDP collection %s succeeded", run)
             return True
         except asyncio.CancelledError:
@@ -216,7 +221,7 @@ class Collector:
             self.state.finish_in(db, run, timestamp(self.clock()))
 
     def fail(self, run, kind):
-        self.state.finish(run, timestamp(self.clock()), kind)
+        self.state.fail_safely(run, timestamp(self.clock()), kind)
 
     async def supervise(self):
         while True:

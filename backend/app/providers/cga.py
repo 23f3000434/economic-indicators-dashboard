@@ -6,6 +6,7 @@ from decimal import Decimal
 
 from bs4 import BeautifulSoup
 
+from ..batches import MeasurementBatch, scope
 from ..measurements import Definition, fiscal, measurements, number
 
 HOME = "https://cga.gov.in/Index.aspx"
@@ -127,7 +128,11 @@ class CGA:
         for y, mo in sorted(periods):
             url = release_url(y, mo)
             points.extend(await asyncio.to_thread(parse, await fetch(url), url, at(), y, mo))
-        return points
+        expected = scope(
+            ("expenditure_revenue", "expenditure_capital", "expenditure_total"),
+            [fiscal(y - 1 if mo <= 3 else y, mo) for y, mo in periods],
+        )
+        return MeasurementBatch(points, expected)
 
     def coverage(self, points):
         years = {p.period.key for p in points if p.period.kind == "fiscal_year"}

@@ -1,6 +1,9 @@
 """Per-group collection history and durable provider-wide HTTP cooldowns."""
 
 import asyncio
+import logging
+import sqlite3
+import threading
 import time
 from datetime import timezone
 from email.utils import parsedate_to_datetime
@@ -8,6 +11,22 @@ from email.utils import parsedate_to_datetime
 import httpx
 
 from .db import Database
+
+
+async def joined_thread(function, *args, cancelled_result=None):
+    """Do not classify cancelled work as abandoned while its SQL worker is active."""
+    task = asyncio.create_task(asyncio.to_thread(function, *args))
+    try:
+        return await asyncio.shield(task)
+    except asyncio.CancelledError:
+        try:
+            result = await task
+        except Exception:
+            pass  # the caller records interruption after the worker has settled
+        else:
+            if cancelled_result:
+                await asyncio.to_thread(cancelled_result, result)
+        raise
 
 
 def retry_after(value: str | None, now: float) -> float | None:
@@ -46,6 +65,24 @@ class GroupState:
     ):
         self.database, self.clock = database, clock
         self.group, self.provider, self.interval, self.retention = group, provider, interval, retention
+        # Only this instance's definitively finished work is eligible for recovery.
+        # Never expire a run merely because it is old: HTTP/parsing work may still be active.
+        self.pending_failures = {}
+        self.pending_lock = threading.RLock()
+
+    def fail_safely(self, run, at, error):
+        with self.pending_lock:
+            self.pending_failures[run] = (at, error)
+            try:
+                self.retry_failures()
+            except sqlite3.Error:
+                logging.getLogger(__name__).warning("%s run %s awaits storage recovery", self.group, run)
+
+    def retry_failures(self):
+        with self.pending_lock:
+            for run, (at, error) in list(self.pending_failures.items()):
+                self.finish(run, at, error)
+                del self.pending_failures[run]
 
     def cooldown(self):
         with self.database.connect() as db:
@@ -69,6 +106,7 @@ class GroupState:
             )
 
     def due(self):
+        self.retry_failures()
         if self.clock() < self.cooldown():
             return False
         with self.database.connect() as db:
@@ -88,6 +126,7 @@ class GroupState:
         )
 
     def begin(self, at, start, end):
+        self.retry_failures()
         with self.database.connect(write=True) as db:
             cooldown = db.execute(
                 "SELECT not_before FROM provider_cooldowns WHERE provider_id=?", (self.provider,)
@@ -103,7 +142,7 @@ class GroupState:
 
     def finish_in(self, db, run, at, error=None):
         db.execute(
-            "UPDATE collection_runs SET outcome=?, error_kind=?, completed_at=? WHERE id=? AND group_id=?",
+            "UPDATE collection_runs SET outcome=?, error_kind=?, completed_at=? WHERE id=? AND group_id=? AND outcome='running'",
             ("error" if error else "ok", error, at, run, self.group),
         )
         # Retain this group's recent completed records plus its last success and all running records.

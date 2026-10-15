@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 from decimal import Decimal, localcontext
 from typing import Literal
 
+from .batches import MeasurementBatch
 from .gdp import timestamp
 from .measurements import CATALOGUE, Measurement, Period, Reference, Unit, fiscal, month
 from .models import Collection, Model
@@ -93,13 +94,28 @@ def null_gaps(points):
 
 
 def store_batch(database, state, run, rows: list[Measurement]):
-    if not rows or len({(p.series_id, p.period.key) for p in rows}) != len(rows):
+    if (not rows and not isinstance(rows, MeasurementBatch)) or len(
+        {(p.series_id, p.period.key) for p in rows}
+    ) != len(rows):
         raise ValueError("Empty or duplicate measurement batch")
     if any(p.definition.group != state.group or p.definition.provider != state.provider for p in rows):
         raise ValueError("Collection identity mismatch")
     # Revalidate even programmatically created/copied models before crossing SQL boundary.
+    expected = (
+        rows.expected if isinstance(rows, MeasurementBatch) else {(p.series_id, p.period.key) for p in rows}
+    )
+    if any(CATALOGUE[sid][:2] != (state.group, state.provider) for sid, _ in expected):
+        raise ValueError("Response scope identity mismatch")
     rows = [Measurement.model_validate(p.model_dump()) for p in rows]
+    if any((p.series_id, p.period.key) not in expected for p in rows):
+        raise ValueError("Observation outside expected response scope")
     with database.connect(write=True) as db:
+        # Mark only advertised/requested keys before replacing accepted values. An
+        # absent or null value keeps every byte of its original provenance.
+        db.executemany(
+            "UPDATE observations SET retained=1 WHERE group_id=? AND series_id=? AND period_key=?",
+            [(state.group, sid, key) for sid, key in expected],
+        )
         for point in rows:
             if point.value is None:
                 db.execute(

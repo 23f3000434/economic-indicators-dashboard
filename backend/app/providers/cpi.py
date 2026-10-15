@@ -7,6 +7,7 @@ import re
 from datetime import date, datetime
 from urllib.parse import quote, urljoin, urlsplit
 
+from ..batches import MeasurementBatch, scope
 from ..measurements import Definition, measurements, month, number
 from .files import pdf_pages
 
@@ -219,14 +220,26 @@ class CPI:
         published, _, url = max(rows)
         current = await asyncio.to_thread(parse_current, await fetch(url), url, at(), published)
         minimum = max(p.period.start.year for p in current) - self.settings.macro_report_years - 1
+        expected = scope(
+            ("cpi_yoy_2024",),
+            [
+                month(y, m)
+                for y in range(2026, published.year + 1)
+                for m in range(1, 13)
+                if month(y, m).end < published
+            ],
+        )
         if minimum > 2025:
-            return current
+            return MeasurementBatch(current, expected)
         history = [r for r in rows if r[1] == HISTORY_TITLE]
         if len(history) != 1:
             raise ValueError("Last 2012-base release not discovered")
         hp, _, hu = history[0]
         old = await asyncio.to_thread(parse_old, await fetch(hu), hu, at(), hp, minimum)
-        return old + current
+        expected |= scope(
+            ("cpi_yoy_2012",), [month(y, m) for y in range(minimum, 2026) for m in range(1, 13)]
+        )
+        return MeasurementBatch(old + current, expected)
 
     def coverage(self, points):
         result = []

@@ -9,6 +9,7 @@ from urllib.parse import quote, urljoin, urlsplit
 
 from bs4 import BeautifulSoup
 
+from ..batches import MeasurementBatch, scope
 from ..measurements import Definition, Reference, fiscal, measurements, month, number
 from .files import pdf_pages
 
@@ -232,7 +233,16 @@ class Trade:
             key = p.series_id, p.period.key
             if key not in chosen or p.definition.published_at > chosen[key].definition.published_at:
                 chosen[key] = p
-        return list(chosen.values())
+        # Each validated release advertises complete paired merchandise tables.
+        # Deliberately do not cover intervening months absent from these releases.
+        periods = {
+            p.period.key: p.period
+            for p in candidates
+            if p.period.start.year >= latest_year - self.settings.macro_report_years - 1
+        }
+        return MeasurementBatch(
+            chosen.values(), scope(("trade_exports", "trade_imports", "trade_balance"), periods.values())
+        )
 
     def coverage(self, points):
         years = sorted({p.period.key for p in points if p.period.kind == "fiscal_year"})

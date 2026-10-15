@@ -10,7 +10,8 @@ from zipfile import BadZipFile
 import httpx
 from pypdf.errors import PyPdfError
 
-from .collection import Deferred, GroupState, ProviderHTTP
+from .batches import MeasurementBatch
+from .collection import Deferred, GroupState, ProviderHTTP, joined_thread
 from .gdp import timestamp
 from .indicators import store_batch
 
@@ -39,8 +40,14 @@ class MacroCollector:
 
     async def collect_once(self):
         year = datetime.fromtimestamp(self.clock(), timezone.utc).year
-        run = await asyncio.to_thread(
-            self.state.begin, timestamp(self.clock()), year - self.settings.macro_report_years - 1, year
+        run = await joined_thread(
+            self.state.begin,
+            timestamp(self.clock()),
+            year - self.settings.macro_report_years - 1,
+            year,
+            cancelled_result=lambda r: (
+                self.state.fail_safely(r, timestamp(self.clock()), "interrupted") if r else None
+            ),
         )
         if run is None:
             return False
@@ -69,11 +76,13 @@ class MacroCollector:
 
                 async with asyncio.timeout(self.settings.collection_budget):
                     rows = await self.adapter.collect(fetch, lambda: timestamp(self.clock()))
-            await asyncio.to_thread(store_batch, self.db, self.state, run, rows)
+            if not isinstance(rows, MeasurementBatch):
+                raise ValueError("Adapter must declare its expected response scope")
+            await joined_thread(store_batch, self.db, self.state, run, rows)
             LOG.info("%s collection %s succeeded (%s points)", self.group, run, len(rows))
             return True
         except asyncio.CancelledError:
-            await asyncio.to_thread(self.state.finish, run, timestamp(self.clock()), "interrupted")
+            await asyncio.to_thread(self.state.fail_safely, run, timestamp(self.clock()), "interrupted")
             raise
         except Exception as exc:
             kind = (
@@ -102,7 +111,7 @@ class MacroCollector:
                 )
                 else "storage_error"
             )
-            await asyncio.to_thread(self.state.finish, run, timestamp(self.clock()), kind)
+            await asyncio.to_thread(self.state.fail_safely, run, timestamp(self.clock()), kind)
             LOG.warning("%s collection %s failed (%s)", self.group, run, kind)
             return False
 

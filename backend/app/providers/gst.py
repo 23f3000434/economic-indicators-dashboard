@@ -10,6 +10,7 @@ from urllib.parse import urljoin, urlsplit
 
 from bs4 import BeautifulSoup
 
+from ..batches import MeasurementBatch, scope
 from ..measurements import Definition, Reference, measurements, month, number
 from .files import pdf_pages, workbook
 
@@ -312,7 +313,30 @@ class GST:
         lookup = {(p.series_id, p.period.key): p for p in points}
         for p in latest:
             lookup[p.series_id, p.period.key] = p
-        return [p for p in lookup.values() if p.period.start.year >= earliest]
+        rows = [p for p in lookup.values() if p.period.start.year >= earliest]
+        expected = scope(
+            ("gst_gross_ex_cess", "gst_reported_gross"),
+            [
+                month(y, m)
+                for y in range(earliest, ym[0] + 1)
+                for m in range(1, 13)
+                if (y, m) >= (earliest, 4) and (y, m) <= ym
+            ],
+        )
+        # Cess is optional after its published discontinuation; never claim later
+        # months were requested for it. Cover gaps within its advertised range.
+        cess = [p.period for p in rows if p.series_id == "gst_cess"]
+        if cess:
+            expected |= scope(
+                ("gst_cess",),
+                [
+                    month(y, m)
+                    for y in range(earliest, ym[0] + 1)
+                    for m in range(1, 13)
+                    if min(p.start for p in cess) <= month(y, m).start <= max(p.start for p in cess)
+                ],
+            )
+        return MeasurementBatch(rows, expected)
 
     def coverage(self, points):
         months = sorted(p.period.key for p in points if p.series_id == "gst_gross_ex_cess")

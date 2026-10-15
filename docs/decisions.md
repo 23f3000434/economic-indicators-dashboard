@@ -58,3 +58,7 @@ Committed public evidence is linked from `sources.md`; ignored raw bodies/privat
 - **Submission:** portfolio/project links and role summaries; evaluation credentials shared separately; deployed frontend/API/docs/health URLs once deployed.
 
 None of these inputs blocks independent backend sources. No rehearsal, portfolio construction, unrelated folder edits, frontend redesign or public deployment belongs to this stage.
+
+| D26 Full frontend/design stage | Authorised by user from b3ca864 | Complete aggregate integration, accurate controls/presentation, SVG/Figma comparison, resilience/accessibility/browser checks; first repair collector write-outage recovery and scoped omissions. Deployment remains later. GDP/auth/contracts and independent collection remain regression boundaries. |
+| D27 Exact Figma access recheck | Blocked; SVG fallback authorised | Both get_design_context (screenshot requested) and get_screenshot for brsbeMh0t7dB6ibf3cJN4D frame 1:2 deny access. Debug IDs 790325f0-aed4-43db-9cc5-d9d7caa7d9b0 and 7c689846-2c01-43a3-a896-770c5a1590a5. Continue from supplied SVG, recording typography/constraints/states/revision limits. |
+| D28 Scoped recovery and omissions | Implemented; focused checks pass | Retry only exact known-finished failed run IDs after writes return, never age-expire active work. Join SQL workers on cancellation. Explicit expected response keys define omissions; untouched older history is outside that scope. No migration/dependency required. |

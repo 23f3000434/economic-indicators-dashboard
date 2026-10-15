@@ -5,6 +5,7 @@ import re
 from datetime import datetime
 from decimal import Decimal
 
+from ..batches import MeasurementBatch, scope
 from ..measurements import Definition, Period, measurements
 from .files import pdf_pages
 
@@ -103,8 +104,12 @@ class Policy:
         self.interval = settings.policy_interval
 
     async def collect(self, fetch, at):
-        return await asyncio.to_thread(
+        rows = await asyncio.to_thread(
             parse, await fetch(self.settings.policy_url), self.settings.policy_url, at()
+        )
+        return MeasurementBatch(
+            rows,
+            scope(("inflation_target", "inflation_target_lower", "inflation_target_upper"), [rows[0].period]),
         )
 
     def coverage(self, points):
