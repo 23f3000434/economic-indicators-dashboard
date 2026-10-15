@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-10-15T13:39:56.308700Z",
+  "environment": "sandbox",
+  "python": "3.12.14",
+  "scope": "local source probe; not a cloud deployment test",
+  "results": [
+    {
+      "source": "control",
+      "url": "https://example.com/",
+      "attempted_at": "2026-10-15T13:39:56.306024Z",
+      "status": "blocked",
+      "stage": "dns",
+      "error_kind": "dns_error",
+      "detail": "[Errno 8] nodename nor servname provided, or not known",
+      "request_sent": false
+    },
+    {
+      "source": "world_bank_india",
+      "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025&per_page=100&footnote=y",
+      "attempted_at": "2026-10-15T13:39:56.306638Z",
+      "status": "blocked",
+      "stage": "dns",
+      "error_kind": "dns_error",
+      "detail": "[Errno 8] nodename nor servname provided, or not known",
+      "request_sent": false
+    },
+    {
+      "source": "world_bank_world",
+      "url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025&per_page=100&footnote=y",
+      "attempted_at": "2026-10-15T13:39:56.306720Z",
+      "status": "blocked",
+      "stage": "dns",
+      "error_kind": "dns_error",
+      "detail": "[Errno 8] nodename nor servname provided, or not known",
+      "request_sent": false
+    },
+    {
+      "source": "imf_debt",
+      "url": "https://www.imf.org/external/datamapper/api/v2/GGXWDG_NGDP/IND/USA?periods=2020,2021,2022,2023,2024,2025",
+      "attempted_at": "2026-10-15T13:39:56.306794Z",
+      "status": "blocked",
+      "stage": "dns",
+      "error_kind": "dns_error",
+      "detail": "[Errno 8] nodename nor servname provided, or not known",
+      "request_sent": false
+    },
+    {
+      "source": "mospi_cpi",
+      "url": "https://esankhyiki.mospi.gov.in/",
+      "attempted_at": "2026-10-15T13:39:56.308542Z",
+      "status": "blocked",
+      "stage": "dns",
+      "error_kind": "dns_error",
+      "detail": "[Errno 8] nodename nor servname provided, or not known",
+      "request_sent": false
+    }
+  ]
+}

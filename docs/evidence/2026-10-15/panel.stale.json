@@ -1,0 +1,166 @@
+{
+  "schema_version": "1",
+  "id": "gdp",
+  "state": "stale",
+  "collection": {
+    "last_attempt_at": "2026-10-15T13:55:46.601816Z",
+    "last_success_at": "2026-10-15T13:55:46.601015Z",
+    "last_error_kind": "simulated_timeout"
+  },
+  "series": [
+    {
+      "id": "gdp_india",
+      "label": "India",
+      "unit": "percent",
+      "reporting_basis": "fiscal_year_apr_mar",
+      "points": [
+        {
+          "period_key": "2021",
+          "period_label": "FY 2021–22",
+          "period_start": "2021-04-01",
+          "period_end": "2022-03-31",
+          "value": "9.68959249191741",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2022",
+          "period_label": "FY 2022–23",
+          "period_start": "2022-04-01",
+          "period_end": "2023-03-31",
+          "value": "7.6093649776932",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2023",
+          "period_label": "FY 2023–24",
+          "period_start": "2023-04-01",
+          "period_end": "2024-03-31",
+          "value": "7.210224629335",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2024",
+          "period_label": "FY 2024–25",
+          "period_start": "2024-04-01",
+          "period_end": "2025-03-31",
+          "value": "7.09927893176518",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2025",
+          "period_label": "FY 2025–26",
+          "period_start": "2025-04-01",
+          "period_end": "2026-03-31",
+          "value": "7.56666179284244",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        }
+      ],
+      "source": {
+        "id": "world_bank_wdi",
+        "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025&per_page=100&footnote=y",
+        "published_at": null,
+        "dataset_updated_on": "2026-10-08",
+        "retrieved_at": "2026-10-15T13:53:47.169779Z"
+      }
+    },
+    {
+      "id": "gdp_world",
+      "label": "World",
+      "unit": "percent",
+      "reporting_basis": "calendar_year_aggregate",
+      "points": [
+        {
+          "period_key": "2021",
+          "period_label": "CY 2021",
+          "period_start": "2021-01-01",
+          "period_end": "2021-12-31",
+          "value": "6.48508887596732",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2022",
+          "period_label": "CY 2022",
+          "period_start": "2022-01-01",
+          "period_end": "2022-12-31",
+          "value": "3.44001097265658",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2023",
+          "period_label": "CY 2023",
+          "period_start": "2023-01-01",
+          "period_end": "2023-12-31",
+          "value": "2.85938493335971",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2024",
+          "period_label": "CY 2024",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "value": "2.90001340156711",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        },
+        {
+          "period_key": "2025",
+          "period_label": "CY 2025",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "value": "2.92127318539153",
+          "estimate_status": "unspecified",
+          "provider_status": "",
+          "footnote": ""
+        }
+      ],
+      "source": {
+        "id": "world_bank_wdi",
+        "url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025&per_page=100&footnote=y",
+        "published_at": null,
+        "dataset_updated_on": "2026-10-08",
+        "retrieved_at": "2026-10-15T13:53:47.232093Z"
+      }
+    }
+  ],
+  "summaries": [
+    {
+      "series_id": "gdp_india",
+      "current_period_key": "2025",
+      "comparison_period_key": "2024",
+      "change": {
+        "kind": "percentage_points",
+        "value": "0.46738286107726"
+      }
+    },
+    {
+      "series_id": "gdp_world",
+      "current_period_key": "2025",
+      "comparison_period_key": "2024",
+      "change": {
+        "kind": "percentage_points",
+        "value": "0.02125978382442"
+      }
+    }
+  ],
+  "notes": [
+    "India uses April–March fiscal years; World is the published annual aggregate. They are not identical reporting windows.",
+    "WDI lastupdated is dataset metadata, not an observation publication date. Blank provider status does not establish finality."
+  ]
+}

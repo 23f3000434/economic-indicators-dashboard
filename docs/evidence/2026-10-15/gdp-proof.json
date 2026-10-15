@@ -1,0 +1,34 @@
+{
+  "recorded_at": "2026-10-15T13:55:46.602859Z",
+  "status": "proven",
+  "scope": "public HTTP responses -> validation -> private local SQLite -> stored-data panel contract; no API server/UI/cloud deployment yet",
+  "probe_environment": "network-enabled",
+  "observations_stored": 12,
+  "idempotent_reingestion": true,
+  "replayed_same_http_batch_not_refetched": true,
+  "reopen_readback_matches": true,
+  "injected_failure_preserves_observations": true,
+  "injected_failure_is_not_a_provider_incident": true,
+  "sources": {
+    "world_bank_india": {
+      "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025&per_page=100&footnote=y",
+      "sha256": "597e8f0d00b115945a1cc62c0e001d778e176d41b9c3d691c0cd5a8e3dc2f44f",
+      "retrieved_at": "2026-10-15T13:53:47.169779Z"
+    },
+    "world_bank_world": {
+      "url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025&per_page=100&footnote=y",
+      "sha256": "cfa61b0c44498e7a99b88bea52907b8f13243bc767f02db74c3bdea822a47efb",
+      "retrieved_at": "2026-10-15T13:53:47.232093Z"
+    },
+    "world_bank_india_metadata": {
+      "url": "https://api.worldbank.org/v2/sources/2/country/IND/metadata?format=json",
+      "sha256": "aa5400831825645c2d24524ff67e4e66fd6d59c717550f27c65ead252410ceba",
+      "retrieved_at": "2026-10-15T13:53:47.250616Z"
+    },
+    "world_bank_indicator": {
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.KD.ZG?format=json",
+      "sha256": "ed7703d841d4dde2d1cb858f0dd53229fe3e841f72abb17dbc8c950ad20c88ce",
+      "retrieved_at": "2026-10-15T13:53:47.161553Z"
+    }
+  }
+}

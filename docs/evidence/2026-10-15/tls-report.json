@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-10-15T13:53:50.470199Z",
+  "method": "GET",
+  "tls_verification_disabled": false,
+  "python": {
+    "source": "inflation_target",
+    "url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+    "attempted_at": "2026-10-15T13:53:49.874659Z",
+    "status": "blocked",
+    "dns": "resolved",
+    "stage": "transport",
+    "error_kind": "tls_verification_error",
+    "detail": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>",
+    "request_sent": false,
+    "finished_at": "2026-10-15T13:53:49.941809Z"
+  },
+  "curl": {
+    "exit_code": 0,
+    "http_status": 200,
+    "ssl_verify_result": 0,
+    "content_type": "application/pdf",
+    "url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+    "sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+    "detail": ""
+  },
+  "coverage": "unverified; successful PDF transport is not a policy observation parser"
+}

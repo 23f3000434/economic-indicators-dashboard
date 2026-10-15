@@ -1,0 +1,109 @@
+{
+  "recorded_at": "2026-10-15T13:55:46.602859Z",
+  "scope": "workstation verification only; policy source reachable through verified curl but no parser",
+  "sources": [
+    {
+      "source": "world_bank_india",
+      "status": "proven",
+      "transport_stage": "observations_validated",
+      "http_status": 200,
+      "error_kind": null,
+      "evidence": "gdp-proof.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "world_bank_world",
+      "status": "proven",
+      "transport_stage": "observations_validated",
+      "http_status": 200,
+      "error_kind": null,
+      "evidence": "gdp-proof.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "imf_debt",
+      "status": "blocked",
+      "transport_stage": "http",
+      "http_status": 403,
+      "error_kind": "http_rejection",
+      "evidence": "network-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "mospi_cpi",
+      "status": "unverified",
+      "transport_stage": "http",
+      "http_status": 200,
+      "error_kind": null,
+      "evidence": "network-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "gst",
+      "status": "unverified",
+      "transport_stage": "http",
+      "http_status": 200,
+      "error_kind": null,
+      "evidence": "network-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "trade",
+      "status": "unverified",
+      "transport_stage": "http",
+      "http_status": 200,
+      "error_kind": null,
+      "evidence": "network-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "cga",
+      "status": "unverified",
+      "transport_stage": "http",
+      "http_status": 200,
+      "error_kind": null,
+      "evidence": "network-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "inflation_target",
+      "status": "unverified",
+      "transport_stage": "transport",
+      "http_status": null,
+      "error_kind": "tls_verification_error",
+      "evidence": "tls-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "nse_indices",
+      "status": "blocked",
+      "transport_stage": "access_gate",
+      "http_status": null,
+      "error_kind": null,
+      "evidence": "network-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "bse_sensex",
+      "status": "blocked",
+      "transport_stage": "access_gate",
+      "http_status": null,
+      "error_kind": null,
+      "evidence": "network-report.json",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "mospi_gdp_alternative",
+      "status": "unverified",
+      "evidence": "network-report.json",
+      "detail": "Portal HTML reachable; no NAS observation extractor validated.",
+      "cloud_host_verified": false
+    },
+    {
+      "source": "figma_frame_1_2",
+      "status": "blocked",
+      "evidence": "../../sources.md",
+      "detail": "Figma connection denied access during planning; sharing restoration not verified."
+    }
+  ]
+}

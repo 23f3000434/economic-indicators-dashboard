@@ -1,0 +1,40 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local data and probe outputs; commit only reviewed public evidence/fixtures.
+.verification/
+data/
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*
+*.db
+*.db-*
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Frontend and verification output
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+
+# Local editor/OS files
+.DS_Store
+.idea/
+.vscode/
+*.log
