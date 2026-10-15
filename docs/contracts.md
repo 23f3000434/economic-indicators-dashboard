@@ -105,7 +105,7 @@ Cookie/security basis: [MDN cookie scope and SameSite](https://developer.mozilla
 - Data: invalid/partial required batches do not overwrite valid observations; repeat ingestion is idempotent; reopen preserves values; failed refresh changes status/times correctly; missing historical points stay null; API reads have no network dependency.
 - UI: reserved panel geometry, one-source failure isolation, consistent values/units/periods across card/chart/tooltip/table, and explicit FY/CY/source/freshness notes.
 
-Cloud persistence, HTTPS/DNS cookies and Figma fidelity remain external acceptance gates. The multi-provider backend stage implements the dashboard read boundary while keeping the existing frontend and GDP v1 payload unchanged.
+Cloud persistence, HTTPS/DNS cookies and Figma fidelity remain external acceptance gates. The completed multi-provider backend stage established the dashboard read boundary; the current frontend stage consumes that aggregate while preserving GDP v1.
 
 ## Additional indicator measurements
 

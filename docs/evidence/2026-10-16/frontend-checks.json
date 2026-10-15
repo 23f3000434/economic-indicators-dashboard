@@ -1,0 +1,65 @@
+{
+  "baseline_commit": "b3ca864",
+  "date": "2026-10-16",
+  "collector_reliability_commit": "a6dba8f",
+  "backend_tests_passed": 77,
+  "backend_subtests_passed": 9,
+  "frontend_unit_tests_passed": 6,
+  "production_browser_scenarios_passed": 17,
+  "browser_duration": "2.5 minutes",
+  "browser_mode": "Vite compiled production bundle against isolated test-only API on 5174/8001",
+  "production_frontend_build": "passed",
+  "typescript_strict_and_unused_checks": "passed",
+  "ruff_lint_backend_tests_and_new_asset_script": "passed",
+  "ruff_format_changed_python_files": "passed",
+  "frontend_prettier": "passed",
+  "design_assets_pixel_identity": 11,
+  "viewports": [
+    {
+      "width": 1214,
+      "height": 2159
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "panel_loading_heights": {
+    "desktop": 630,
+    "mobile": 680,
+    "maximum_loading_to_ready_delta_px": 1
+  },
+  "figma_frame": "brsbeMh0t7dB6ibf3cJN4D/1:2",
+  "figma_inspection": "design context and screenshot denied; supplied SVG fallback used",
+  "known_test_warning": "Existing Starlette HTTPX adapter deprecation; no new compatibility dependency added",
+  "screenshots": [
+    {
+      "path": ".verification/live-full-desktop.png",
+      "width": 1214,
+      "height": 2204,
+      "sha256": "e39a741483ab53d7dafc25681c23fc942801c33a681fb44b08801d2ab7d27ed8"
+    },
+    {
+      "path": ".verification/live-full-mobile.png",
+      "width": 390,
+      "height": 4490,
+      "sha256": "eebfa80d89d8ec36449c108114a76a7eb97b1168af29eab64abc3f697c9bad0c"
+    },
+    {
+      "path": ".verification/frontend-mobile-inflation.png",
+      "width": 362,
+      "height": 680,
+      "sha256": "e071a673c7869220a94f488c1999209bf2ba9633257a722e2b7e99131cfa73b0"
+    }
+  ],
+  "remaining": [
+    "Exact Figma editable frame/typography/state/revision acceptance",
+    "Comparable debt source access and accepted market feeds",
+    "Production hosting/domain/HTTPS cookies/source egress/private persistence/backups/restore",
+    "Submission URLs, separately shared evaluation credentials, portfolio/project roles and post-assessment video"
+  ],
+  "final_presentation_followup": "Four focused production-browser checks passed after explicit GDP FY/CY table headers and all-available-year labelling",
+  "normal_application_checks_passed": 11,
+  "normal_application_canonical_values_checked": 10,
+  "test_bundle_directory": ".verification/browser-dist; normal dist remains separate"
+}

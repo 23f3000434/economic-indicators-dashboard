@@ -1,258 +1,114 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ReferenceLine,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
-import { ist, metric, plotValue, pointAt, type Panel } from './contracts';
+import { useState } from 'react';
+import { CanonicalChart } from './CanonicalChart';
+import { change, ist, pointAt, type Panel } from './contracts';
+import { Kpi, Legend, ObservationTable, PanelHeading } from './PanelParts';
+import { gdpPoint, sliceSeries, type ViewSeries } from './presentation';
 
-function Detail({ panel, year }: { panel: Panel; year: string }) {
-  return (
-    <div className="chart-tooltip">
-      <strong>Reporting year {year}</strong>
-      {panel.series.map((series) => {
-        const point = pointAt(series, year);
-        return (
-          <div key={series.id}>
-            <span className={`dot ${series.id}`} />
-            {series.label} · {point?.period_label}
-            <b>{metric(point?.value)}</b>
-            <small>
-              {point?.period_start} → {point?.period_end}
-              {point?.retained ? ' · retained' : ''}
-            </small>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-export function GdpPanel({
-  panel,
-  error,
-  loading,
-  retry,
-}: {
-  panel: Panel | null;
-  error: string;
-  loading: boolean;
-  retry: () => void;
-}) {
-  const chart =
-    panel?.series[0]?.points.map((point) => ({
-      year: point.period_key,
-      ...Object.fromEntries(
-        panel.series.map((series) => [series.id, plotValue(pointAt(series, point.period_key))]),
-      ),
-    })) || [];
+export function GdpPanel({ panel, loading }: { panel: Panel | null; loading: boolean }) {
+  const [count, setCount] = useState(5);
+  const [hidden, setHidden] = useState(new Set<string>());
+  const toggle = (id: string) =>
+    setHidden((old) => {
+      const next = new Set(old);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  const series: ViewSeries[] = (panel?.series || []).map((s, i) => ({
+    id: s.id,
+    label: s.label,
+    unit: s.unit,
+    color: i === 0 ? 'cyan' : 'amber',
+    kind: 'bar',
+    points: s.points.map((p) => gdpPoint(p, s)),
+  }));
+  const selected = sliceSeries(series, count);
+  const visible = selected.filter((s) => !hidden.has(s.id));
   return (
     <section className="panel gdp-panel" aria-labelledby="gdp-title" aria-busy={loading}>
-      <div className="panel-heading">
-        <div>
-          <span className="panel-number">01</span>
-          <h2 id="gdp-title">
-            GDP Growth <span>India vs World</span>
-          </h2>
+      <PanelHeading id="gdp" state={panel?.state} loading={loading} />
+      <div className="panel-content">
+        <div className="panel-notice" role="status">
+          {panel?.state === 'stale'
+            ? `Retained data · ${panel.collection.last_error_kind?.replaceAll('_', ' ') || 'collection needs attention'}.`
+            : panel?.state === 'unavailable'
+              ? 'Source unavailable; collection retries independently.'
+              : loading
+                ? 'Loading stored observations…'
+                : 'Real annual growth · rates and changes use distinct units.'}
         </div>
-        <span className={`status ${panel?.state || 'loading'}`}>
-          {loading ? 'Loading' : panel?.state === 'ready' ? 'Stored data' : panel?.state || 'Offline'}
-        </span>
-      </div>
-      <div className="gdp-content">
-        {error && (
-          <div role="alert" className="notice error">
-            {panel ? 'Connection lost. Showing the last loaded data. ' : ''}
-            {error}
-            <button onClick={retry}>Retry connection</button>
-          </div>
-        )}
-        {panel?.state === 'stale' && (
-          <div role="status" className="notice warning">
-            Retained data ·{' '}
-            {panel.collection.last_error_kind?.replaceAll('_', ' ') || 'collection needs attention'}. Last
-            successful collection: {ist(panel.collection.last_success_at)}.
-          </div>
-        )}
         <div className="kpis">
-          {(panel?.series || [null, null]).map((series, index) => {
-            const summary = panel?.summaries.find((s) => s.series_id === series?.id);
-            const current = series && summary ? pointAt(series, summary.current_period_key) : null;
-            const comparison = series && summary ? pointAt(series, summary.comparison_period_key) : null;
-            const change = summary?.change.value;
+          {series.map((s) => {
+            const summary = panel?.summaries.find((p) => p.series_id === s.id);
+            const point = s.points.find((p) => p.key === summary?.current_period_key);
+            const sourceSeries = panel?.series.find((p) => p.id === s.id);
+            const prior = sourceSeries && pointAt(sourceSeries, summary?.comparison_period_key || null);
             return (
-              <article className={`kpi ${index === 0 ? 'india' : 'world'}`} key={series?.id || index}>
-                <div className="kpi-label">
-                  <span aria-hidden="true">{index === 0 ? '🇮🇳' : '◎'}</span>
-                  {series?.label || (index === 0 ? 'India' : 'World')}
-                  <small>Annual real growth</small>
-                </div>
-                <div className="kpi-value" data-testid={`card-${series?.id || index}`}>
-                  {loading && !panel ? <span className="skeleton value-skeleton" /> : metric(current?.value)}
-                </div>
-                <div className="kpi-foot">
-                  <span>{current?.period_label || 'Reporting period —'}</span>
-                  <span
-                    className={`change ${change != null && Number(change) < 0 ? 'negative' : ''}`}
-                    title={`Change from ${comparison?.period_label || 'previous year'}`}
-                    aria-label={`Change from ${comparison?.period_label || 'previous year'}: ${metric(change, ' percentage points')}`}
-                  >
-                    {change != null && Number(change) > 0 ? '+' : ''}
-                    {metric(change, ' pp')}
-                  </span>
-                </div>
-              </article>
+              <Kpi
+                key={s.id}
+                label={s.label}
+                series={s}
+                point={point}
+                delta={change(summary?.change.value, 'percentage_points')}
+                comparison={`Change from ${prior?.period_label || 'previous year'} in percentage points`}
+                image={s.id === 'gdp_india' ? 'india' : 'world'}
+              />
             );
           })}
         </div>
-        <div className="chart-caption">
-          <span>
-            ANNUAL GROWTH <b>%</b>
-          </span>
-          <div>
-            <span className="dot gdp_india" />
-            India <span className="dot gdp_world" />
-            World
-          </div>
+        <div className="chart-controls">
+          <span>Annual growth · %</span>
+          <label>
+            Window{' '}
+            <select
+              aria-label="GDP history window"
+              value={count}
+              onChange={(e) => setCount(Number(e.target.value))}
+            >
+              <option value={3}>Last 3 years</option>
+              <option value={5}>Last 5 years</option>
+              <option value={50}>All available years</option>
+            </select>
+          </label>
         </div>
-        <div className="chart-space" data-testid="gdp-chart">
-          {loading && !panel ? (
-            <div className="chart-skeleton skeleton">
-              <span>Loading stored observations…</span>
-            </div>
-          ) : panel && chart.length ? (
-            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-              <BarChart data={chart} margin={{ top: 10, right: 4, bottom: 0, left: -20 }} barGap={5}>
-                <defs>
-                  <linearGradient id="india-bar" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#39d6ff" />
-                    <stop offset="100%" stopColor="#14749d" />
-                  </linearGradient>
-                  <linearGradient id="world-bar" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#f9c66d" />
-                    <stop offset="100%" stopColor="#ad742c" />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid vertical={false} stroke="#334055" strokeDasharray="3 5" />
-                <XAxis
-                  dataKey="year"
-                  tick={{ fill: '#b0bdcf', fontSize: 11 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={{ fill: '#91a3bb', fontSize: 10 }}
-                  axisLine={false}
-                  tickLine={false}
-                  unit="%"
-                  width={48}
-                />
-                <ReferenceLine y={0} stroke="#718198" />
-                <Tooltip
-                  cursor={{ fill: '#ffffff06' }}
-                  content={({ active, label }) =>
-                    active ? <Detail panel={panel} year={String(label)} /> : null
-                  }
-                />
-                <Bar
-                  dataKey="gdp_india"
-                  name="India"
-                  fill="url(#india-bar)"
-                  radius={[3, 3, 0, 0]}
-                  maxBarSize={26}
-                  isAnimationActive={false}
-                />
-                <Bar
-                  dataKey="gdp_world"
-                  name="World"
-                  fill="url(#world-bar)"
-                  radius={[3, 3, 0, 0]}
-                  maxBarSize={26}
-                  isAnimationActive={false}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="chart-empty">
-              <span>—</span>
-              {panel?.state === 'unavailable'
-                ? 'Source unavailable. Collection will retry independently.'
-                : 'No stored observations yet. Collection runs independently.'}
-            </div>
-          )}
-        </div>
+        <Legend series={selected} hidden={hidden} toggle={toggle} />
+        <CanonicalChart id="gdp" series={visible} />
         <p className="period-note">
-          <span>FY</span> India: Apr–Mar <i /> <span>CY</span> World: Jan–Dec aggregate
+          <b>FY</b> India: Apr–Mar · <b>CY</b> World: Jan–Dec aggregate.
           <br />
-          <small>Year ticks identify different reporting windows. Δ compares rates in pp.</small>
+          Year ticks represent different windows; changes are in pp.
         </p>
-        <div className="observations" tabIndex={0} aria-label="GDP observations table">
-          <table>
-            <caption className="sr-only">
-              Canonical GDP observations. Missing values are shown as a dash.
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Source year</th>
-                <th scope="col">India · FY</th>
-                <th scope="col">World · CY</th>
-              </tr>
-            </thead>
-            <tbody>
-              {chart.map((row) => (
-                <tr key={row.year}>
-                  <th scope="row">{row.year}</th>
-                  {panel?.series.map((series) => {
-                    const point = pointAt(series, row.year);
-                    return (
-                      <td
-                        key={series.id}
-                        data-testid={`table-${series.id}-${row.year}`}
-                        title={`${point?.period_label}: ${point?.period_start} to ${point?.period_end}. Retrieved ${ist(point?.retrieved_at || null)}${point?.retained ? '. Retained from earlier collection' : ''}`}
-                      >
-                        {metric(point?.value)}
-                        {point?.retained && <span aria-label="retained"> *</span>}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-              {!chart.length && (
-                <tr>
-                  <td colSpan={3}>—</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+        <ObservationTable
+          id="GDP"
+          rowHeading="Source year"
+          rowLabel={(key) => key}
+          series={visible.map((s) => ({ ...s, label: `${s.label} · ${s.id === 'gdp_india' ? 'FY' : 'CY'}` }))}
+        />
         <div className="source-note">
-          <div>
-            Source:{' '}
-            <a href="https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG" target="_blank" rel="noreferrer">
-              World Bank · WDI ↗
-            </a>
-            <span>NY.GDP.MKTP.KD.ZG</span>
-          </div>
-          <div>
-            Collected <time>{ist(panel?.collection.last_success_at || null)}</time>
-          </div>
+          Source:{' '}
+          <a
+            href={panel?.series[0]?.source.url || 'https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG'}
+            target="_blank"
+            rel="noreferrer"
+          >
+            World Bank · WDI ↗
+          </a>
+          <br />
+          Last collection: {ist(panel?.collection.last_success_at || null)}
         </div>
         <details className="provenance">
           <summary>Reporting & freshness details</summary>
           <p>
-            Release freshness is unknown. Dataset update: {panel?.series[0]?.source.dataset_updated_on || '—'}{' '}
-            (dataset level). Observation publication: not supplied. Last attempt:{' '}
-            {ist(panel?.collection.last_attempt_at || null)}. Collection is{' '}
-            {panel?.collection.in_progress ? 'in progress' : 'independent of this page'}.
+            Observation publication not supplied. Dataset update:{' '}
+            {panel?.series[0]?.source.dataset_updated_on || '—'} (dataset level). Release freshness unknown.
+            Last attempt {ist(panel?.collection.last_attempt_at || null)}.{' '}
+            {panel?.collection.in_progress
+              ? 'Collection in progress.'
+              : 'Collection is independent of this page.'}
           </p>
-          <p>
-            Provider observation status is unspecified when blank. Per-point provenance is available in the
-            table tooltips and API.
-          </p>
+          {panel?.notes.map((note) => (
+            <p key={note}>{note}</p>
+          ))}
         </details>
       </div>
     </section>

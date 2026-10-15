@@ -1,0 +1,101 @@
+[
+  {
+    "file": "frontend/public/design/background.webp",
+    "id": "image0_0_1",
+    "width": 4096,
+    "height": 2305,
+    "source_sha256": "40bf2875e51b884586c16b89346e32dbc8bbbc7b233ac8b8df94ddf682d8829c",
+    "sha256": "fcf06565abf07b3a4359da7c04818faad05343914d0b6faadb2e3fe0c8dec5da",
+    "byte_length": 750144
+  },
+  {
+    "file": "frontend/public/design/masthead.webp",
+    "id": "image2_0_1",
+    "width": 740,
+    "height": 447,
+    "source_sha256": "48a684354cb2792330a09d7f48d59dbf8d31972fd686672171275a7ad5b3e7b9",
+    "sha256": "ea2516234e6867226d7ed94f96b8f7a65bb736e67892aa2e938947f33a772d5f",
+    "byte_length": 74386
+  },
+  {
+    "file": "frontend/public/design/india.webp",
+    "id": "image3_0_1",
+    "width": 1254,
+    "height": 1254,
+    "source_sha256": "e26c3115f9e9ca2957c70284d8b6fa7deb2919cc2ee985553aa8dcc0a7698dc7",
+    "sha256": "de126822ddbd967cb44d50202a472a6d776bb88271ce120681153b053e112968",
+    "byte_length": 1172120
+  },
+  {
+    "file": "frontend/public/design/world.webp",
+    "id": "image4_0_1",
+    "width": 1266,
+    "height": 1243,
+    "source_sha256": "708c87451ab4ec764360ec2108008aa86fb7deabc322c5b9b578ab4e4acf0ccd",
+    "sha256": "b19bbba7828628f993687cf754b9eb870f848e5feaac52797d72ea5e878f968a",
+    "byte_length": 1405128
+  },
+  {
+    "file": "frontend/public/design/trade.webp",
+    "id": "image5_0_1",
+    "width": 1983,
+    "height": 793,
+    "source_sha256": "9ecded6c9439e31338d487c2d65d9aebdda0ddea025629bad909b9af5ae0f8a6",
+    "sha256": "122a919aec33332b4532ae4b862e7c4390333f2d9c0a7bcd24daf3f3ce2b43da",
+    "byte_length": 1188520
+  },
+  {
+    "file": "frontend/public/design/inflation.webp",
+    "id": "image6_0_1",
+    "width": 1385,
+    "height": 1136,
+    "source_sha256": "f97906b7a10f1b5709617befa4c2dd5c71cac069bfc257997058780f15db5d5e",
+    "sha256": "9faf538a6b78d15f2e13a14d92f246847d8916e2086c13b6516650fbebb7dc3e",
+    "byte_length": 1141236
+  },
+  {
+    "file": "frontend/public/design/target.webp",
+    "id": "image7_0_1",
+    "width": 1774,
+    "height": 887,
+    "source_sha256": "20e8d25642bcf4ce87196196b8ae85d3cd4539d8a94b0717638162521ed2419d",
+    "sha256": "d4cad66f7ecb09f4155b080f68844e94ecbe9bdd3b31fa77a9e5f54317f398dd",
+    "byte_length": 981176
+  },
+  {
+    "file": "frontend/public/design/us.webp",
+    "id": "image8_0_1",
+    "width": 1254,
+    "height": 1254,
+    "source_sha256": "d76966a40582f70d78f96f1316b744eb23d0f9e67965437ca58d2f095b7e0851",
+    "sha256": "ae876bd67d2166b11f130f6dab46a8e98cfbf79e6c05d05afe9e21529bb62376",
+    "byte_length": 1020382
+  },
+  {
+    "file": "frontend/public/design/gst.webp",
+    "id": "image9_0_1",
+    "width": 1254,
+    "height": 1254,
+    "source_sha256": "023a581e99eac9d1cb24fa2137957be916384d49c69585cc2426ec4f9c0ef6b1",
+    "sha256": "f1e6599699ee9dd5bdc80e35b55a1cf7ccf36fabc9e267d46295f34626d29523",
+    "byte_length": 954376
+  },
+  {
+    "file": "frontend/public/design/gst-average.webp",
+    "id": "image10_0_1",
+    "width": 1312,
+    "height": 1199,
+    "source_sha256": "27413c7bbf71f5bc55abda936a719c46c3c7a163db584c88360c63062141d1e9",
+    "sha256": "6a5b4c86c43261e1d50ebafedb6123d2327c2ae483e465678c8c723f3b551d09",
+    "byte_length": 1095184
+  },
+  {
+    "file": "frontend/public/design/expenditure.webp",
+    "id": "image11_0_1",
+    "width": 1774,
+    "height": 887,
+    "source_sha256": "7fc8605269c724c7f7d1f134871e75b3409d7a01845466f9fd294c9d0ee4eca2",
+    "sha256": "b86e7d5b20ae7aaa5414ae78caebe7d16e352069854c7453dc2f0cedadc07504",
+    "byte_length": 1108472
+  }
+]

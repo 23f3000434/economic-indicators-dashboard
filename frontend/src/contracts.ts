@@ -83,3 +83,147 @@ export function ist(value: string | null): string {
       }).format(new Date(value)) + ' IST'
     : '—';
 }
+
+export type PanelId = 'gdp' | 'debt' | 'trade' | 'gst' | 'inflation' | 'expenditure';
+export type Unit = 'inr_crore' | 'usd_billion' | 'percent';
+export type PeriodKind =
+  | 'month'
+  | 'fiscal_year'
+  | 'fiscal_year_to_date'
+  | 'calendar_year'
+  | 'policy_validity';
+export interface Period {
+  key: string;
+  label: string;
+  kind: PeriodKind;
+  start: string;
+  end: string;
+}
+export interface Reference {
+  series_id: string;
+  period_key: string;
+}
+export interface Measurement {
+  series_id: string;
+  period: Period;
+  value: string | null;
+  definition: {
+    group: 'expenditure' | 'gst' | 'trade' | 'inflation' | 'inflation_policy' | 'debt';
+    provider: 'cga' | 'gstn' | 'commerce' | 'mospi' | 'gazette' | 'imf';
+    unit: Unit;
+    methodology: string;
+    status: 'actual' | 'unspecified' | 'provisional' | 'final' | 'estimate';
+    published_at: string | null;
+    publication_note: string;
+    inputs: Reference[];
+  };
+  source_url: string | null;
+  retrieved_at: string | null;
+  response_sha256: string | null;
+  footnote: string;
+  retained: boolean;
+}
+export interface IndicatorSeries {
+  id: string;
+  label: string;
+  unit: Unit;
+  points: Measurement[];
+}
+export interface IndicatorSummary {
+  current: Reference;
+  comparison: Reference | null;
+  kind: 'relative_percent' | 'percentage_points' | 'none';
+  value: string | null;
+  period_kind: Exclude<PeriodKind, 'policy_validity'>;
+}
+type Collection = Panel['collection'];
+export interface GroupCollection extends Collection {
+  group_id: string;
+  provider_id: string;
+  next_request_not_before: string | null;
+  interval_seconds: number;
+}
+export interface InflationPolicy {
+  validity: Period;
+  target: Reference;
+  lower: Reference;
+  upper: Reference;
+  active: boolean;
+}
+export interface IndicatorPanel {
+  schema_version: '1';
+  id: Exclude<PanelId, 'gdp'>;
+  state: Panel['state'];
+  availability: 'implemented' | 'blocked' | 'unverified';
+  collection: GroupCollection[];
+  series: IndicatorSeries[];
+  summaries: IndicatorSummary[];
+  notes: string[];
+  coverage: string[];
+  policies: InflationPolicy[];
+  freshness_assessment: 'unknown';
+  report_years: number;
+}
+export interface TickerItem {
+  id: 'nse_indices' | 'bse_sensex';
+  label: string;
+  state: 'unavailable';
+  availability: 'blocked';
+  unit: 'index_points';
+  value: null;
+  previous_close: null;
+  change_percent: null;
+  exchange_timestamp: null;
+  source_url: null;
+  error_kind: 'market_access_unresolved';
+}
+export interface Dashboard {
+  schema_version: '1';
+  generated_at: string;
+  panels: (Panel | IndicatorPanel)[];
+  ticker: TickerItem[];
+  collection_groups: GroupCollection[];
+}
+
+export function resolve(panel: IndicatorPanel | null, reference: Reference | null | undefined) {
+  if (!reference) return undefined;
+  return panel?.series
+    .find((s) => s.id === reference.series_id)
+    ?.points.find((p) => p.period.key === reference.period_key);
+}
+export const summaryFor = (panel: IndicatorPanel | null, series: string, kind: PeriodKind) =>
+  panel?.summaries.find((s) => s.current.series_id === series && s.period_kind === kind);
+
+// Display conversion only. Economic calculations and comparisons belong to FastAPI.
+export function scaledDecimal(value: string | null | undefined, decimalPlaces: number): string | null {
+  if (value == null || !/^-?\d+(\.\d+)?$/.test(value)) return null;
+  const sign = value.startsWith('-') ? '-' : '';
+  const [whole, fraction = ''] = value.replace(/^-/, '').split('.');
+  const digits = whole.padStart(decimalPlaces + 1, '0');
+  return `${sign}${digits.slice(0, -decimalPlaces)}.${digits.slice(-decimalPlaces)}${fraction}`;
+}
+export function amount(value: string | null | undefined, unit: Unit, signed = false): string {
+  const formatted = unit === 'inr_crore' ? metric(scaledDecimal(value, 5), '') : metric(value, '');
+  if (formatted === '—') return formatted;
+  const plus = signed && value != null && !value.startsWith('-') && /[1-9]/.test(value) ? '+' : '';
+  return `${unit === 'inr_crore' ? '₹' : unit === 'usd_billion' ? '$' : ''}${plus}${formatted}${unit === 'inr_crore' ? ' L cr' : unit === 'usd_billion' ? ' B' : '%'}`;
+}
+export function change(value: string | null | undefined, kind: IndicatorSummary['kind']) {
+  if (kind === 'none') return '—';
+  const formatted = metric(value, kind === 'percentage_points' ? ' pp' : '%');
+  return `${value != null && !value.startsWith('-') && /[1-9]/.test(value) && formatted !== '—' ? '+' : ''}${formatted}`;
+}
+export function published(value: string | null) {
+  if (!value) return 'not supplied';
+  return new Intl.DateTimeFormat('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(value));
+}
+export function policyFor(panel: IndicatorPanel | null, period?: Period) {
+  return panel?.policies.find((p) =>
+    period ? p.validity.start <= period.start && period.end <= p.validity.end : p.active,
+  );
+}

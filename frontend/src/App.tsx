@@ -1,97 +1,147 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { auth } from './auth';
-import type { Panel } from './contracts';
-const GdpPanel = lazy(() => import('./GdpPanel').then((module) => ({ default: module.GdpPanel })));
+import type { Dashboard, IndicatorPanel, Panel, PanelId } from './contracts';
+import { PanelHeading, PanelLoading, ReadNotice, RecoveryBoundary, titles } from './PanelParts';
 
-const remaining = [
-  ['02', 'Debt to GDP', 'India & US comparison', 'Annual public debt'],
-  ['03', 'Trade Balance', 'Exports & imports', 'Merchandise trade'],
-  ['04', 'GST Collection', 'Revenue & monthly average', 'Goods & services tax'],
-  ['05', 'Inflation', 'India CPI & policy target', 'Consumer prices'],
-  ['06', 'Government Expenditure', 'Revenue & capital', 'Union government actuals'],
-];
+function PanelSlot({
+  id,
+  panel,
+  loading,
+  refresh,
+}: {
+  id: PanelId;
+  panel?: Panel | IndicatorPanel;
+  loading: boolean;
+  refresh: () => Promise<void>;
+}) {
+  const [attempt, setAttempt] = useState(0);
+  // A retry creates a new React.lazy identity; rejected import promises are otherwise cached.
+  const { Gdp, Indicator } = useMemo(
+    () => ({
+      Gdp: lazy(() => import('./GdpPanel').then((m) => ({ default: m.GdpPanel }))),
+      Indicator: lazy(() => import('./IndicatorPanel').then((m) => ({ default: m.IndicatorPanel }))),
+    }),
+    [attempt],
+  );
+  return (
+    <RecoveryBoundary
+      key={attempt}
+      label={titles[id][1]}
+      retry={() => {
+        void refresh().then(() => setAttempt((n) => n + 1));
+      }}
+    >
+      <Suspense fallback={<PanelLoading id={id} />}>
+        {panel ? (
+          panel.id === 'gdp' ? (
+            <Gdp panel={panel} loading={false} />
+          ) : (
+            <Indicator panel={panel} />
+          )
+        ) : loading ? (
+          <PanelLoading id={id} />
+        ) : (
+          <section className="panel" aria-labelledby={`${id}-title`}>
+            <PanelHeading id={id} loading={false} />
+            <div className="unavailable-chart">
+              <span>—</span>
+              <p>Connect to the API to load stored observations.</p>
+            </div>
+          </section>
+        )}
+      </Suspense>
+    </RecoveryBoundary>
+  );
+}
 
+const order: PanelId[] = ['gdp', 'debt', 'trade', 'gst', 'inflation', 'expenditure'];
 export function App() {
   const [, redraw] = useState(0);
-  const [panel, setPanel] = useState<Panel | null>(null);
-  const [panelOwner, setPanelOwner] = useState<string | null>(null);
-  const pendingRead = useRef<Promise<void> | null>(null);
-  const readController = useRef<AbortController | null>(null);
+  const [dashboard, setDashboard] = useState<Dashboard | null>(null);
+  const [owner, setOwner] = useState<string | null>(null);
+  const pending = useRef<Promise<void> | null>(null);
+  const controllerRef = useRef<AbortController | null>(null);
+  const ownerRef = useRef<string | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [logoutError, setLogoutError] = useState('');
-  useEffect(() => auth.subscribe(() => redraw((n) => n + 1)), []);
+  useEffect(
+    () =>
+      auth.subscribe(() => {
+        const next = auth.state === 'signed-in' ? auth.tokens?.user.id || null : null;
+        if (next !== ownerRef.current) {
+          controllerRef.current?.abort();
+          controllerRef.current = null;
+          pending.current = null;
+          ownerRef.current = next;
+          setDashboard(null);
+          setOwner(null);
+          setError('');
+          setBusy(false);
+        }
+        redraw((n) => n + 1);
+      }),
+    [],
+  );
   useEffect(() => {
     void auth.bootstrap();
   }, []);
   const signedIn = auth.state === 'signed-in';
   const userId = auth.tokens?.user.id;
   const load = useCallback((): Promise<void> => {
-    if (pendingRead.current) return pendingRead.current;
-    const owner = auth.tokens?.user.id || null;
+    if (pending.current) return pending.current;
+    if (auth.state !== 'signed-in') return Promise.resolve();
+    const user = auth.tokens?.user.id || null;
     const controller = new AbortController();
-    readController.current = controller;
+    controllerRef.current = controller;
     setBusy(true);
-    pendingRead.current = (async () => {
+    const request = (async () => {
       try {
-        const result = await auth.read<Panel>('/api/v1/panels/gdp', controller.signal);
-        if (!controller.signal.aborted && auth.tokens?.user.id === owner) {
-          setPanel(result);
-          setPanelOwner(owner);
+        const result = await auth.read<Dashboard>('/api/v1/dashboard', controller.signal);
+        if (result.schema_version !== '1' || !Array.isArray(result.panels))
+          throw new Error('The dashboard response is incompatible. Please retry.');
+        if (!controller.signal.aborted && auth.state === 'signed-in' && auth.tokens?.user.id === user) {
+          setDashboard(result);
+          setOwner(user);
           setError('');
         }
       } catch (e) {
         if (!controller.signal.aborted) setError((e as Error).message);
       } finally {
-        if (readController.current === controller) {
+        if (controllerRef.current === controller) {
           setBusy(false);
-          pendingRead.current = null;
+          pending.current = null;
         }
       }
     })();
-    return pendingRead.current;
+    pending.current = request;
+    return request;
   }, []);
   useEffect(() => {
-    if (!signedIn) {
-      readController.current?.abort();
-      pendingRead.current = null;
-      setPanel(null);
-      setPanelOwner(null);
-      setError('');
-      return;
-    }
-    let active = true;
-    let pending = false;
-    const poll = async () => {
-      if (!active || pending || document.hidden) return;
-      pending = true;
-      await load();
-      pending = false;
+    if (!signedIn) return;
+    void load();
+    const poll = () => {
+      if (!document.hidden) void load();
     };
-    void poll();
-    const interval = window.setInterval(() => {
-      void poll();
-    }, 60000);
-    const visible = () => {
-      if (!document.hidden) void poll();
-    };
-    document.addEventListener('visibilitychange', visible);
+    const timer = window.setInterval(poll, 60000);
+    document.addEventListener('visibilitychange', poll);
+    window.addEventListener('online', poll);
     return () => {
-      active = false;
-      readController.current?.abort();
-      pendingRead.current = null;
-      window.clearInterval(interval);
-      document.removeEventListener('visibilitychange', visible);
+      controllerRef.current?.abort();
+      controllerRef.current = null;
+      pending.current = null;
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', poll);
+      window.removeEventListener('online', poll);
     };
   }, [signedIn, userId, load]);
   useEffect(() => {
     if (!signedIn) return;
     const timer = window.setInterval(() => {
-      if (!document.hidden && auth.tokens && Date.parse(auth.tokens.access_expires_at) < Date.now() + 60000) {
+      if (!document.hidden && auth.tokens && Date.parse(auth.tokens.access_expires_at) < Date.now() + 60000)
         void auth.renew().catch((e) => setError(e.message));
-      }
     }, 15000);
     return () => window.clearInterval(timer);
   }, [signedIn]);
@@ -116,39 +166,37 @@ export function App() {
       setLogoutError((e as Error).message);
     }
   }
+  const visible = owner === userId ? dashboard : null;
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#main">
+        Skip to dashboard
+      </a>
       <header className="masthead">
-        <div className="brand-mark" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <i />
-        </div>
-        <div>
-          <p className="eyebrow">THE ECONOMIC PICTURE</p>
-          <h1>ECONOMIC INDICATOR</h1>
-          <p className="tagline">A clearer view of the numbers that shape India.</p>
-        </div>
+        <h1>ECONOMIC INDICATOR</h1>
         <div className="account">
           {signedIn ? (
             <>
-              <span className="account-dot" />
-              {auth.tokens?.user.username}
+              <span>{auth.tokens?.user.username}</span>
+              <button onClick={() => void load()} disabled={busy} aria-label="Refresh stored dashboard data">
+                {busy ? 'Updating…' : '↻ Refresh view'}
+              </button>
               <button onClick={() => void signOut()}>Sign out ↗</button>
             </>
           ) : (
-            <span className="secure-label">◈ Secure dashboard</span>
+            <span>Secure access</span>
           )}
         </div>
       </header>
-      <div className="market-strip">
-        <span className="strip-label">MARKET PULSE</span>
-        <div>
-          <span className="muted-dot" />
-          Market feed pending access verification
-        </div>
-        <span className="strip-end">NSE / BSE · —</span>
+      <div className="market-strip" aria-label="Market feed status">
+        <span className="strip-label">
+          MARKETS <small>Unavailable</small>
+        </span>
+        {visible?.ticker.map((t) => (
+          <span className="ticker-item" key={t.id}>
+            <b>{t.id === 'nse_indices' ? 'NSE indices' : 'SENSEX'}</b> — <small>Accepted feed pending</small>
+          </span>
+        )) || <span>NSE / BSE · — · Accepted feed pending</span>}
       </div>
       {logoutError && (
         <p className="global-error" role="alert">
@@ -156,7 +204,7 @@ export function App() {
         </p>
       )}
       {!signedIn ? (
-        <main className="login-layout">
+        <main id="main" className="login-layout">
           <div className="login-intro">
             <span className="section-kicker">YOUR ECONOMIC OBSERVATORY</span>
             <h2>
@@ -217,76 +265,32 @@ export function App() {
           </section>
         </main>
       ) : (
-        <main className="dashboard">
-          <div className="dashboard-intro">
-            <div>
-              <span className="section-kicker">MACROECONOMIC OVERVIEW</span>
-              <p>
-                India, in context<span>Annual observations · stored independently</span>
-              </p>
-            </div>
-            <button onClick={() => void load()} disabled={busy} aria-label="Refresh stored GDP data">
-              {busy ? '↻ Updating…' : '↻ Refresh view'}
-            </button>
+        <main id="main" className="dashboard">
+          <ReadNotice error={error} retained={!!visible} retry={() => void load()} />
+          <div className="sr-only" role="status">
+            {busy ? 'Updating stored dashboard data' : 'Dashboard view ready'}
           </div>
           <div className="panel-grid">
-            <Suspense
-              fallback={
-                <section className="panel gdp-placeholder" aria-label="GDP loading">
-                  <div className="panel-heading">
-                    <h2>GDP Growth · India vs World</h2>
-                  </div>
-                  <div className="gdp-content skeleton" role="status">
-                    Loading GDP panel…
-                  </div>
-                </section>
-              }
-            >
-              <GdpPanel
-                panel={panelOwner === userId ? panel : null}
-                error={error}
-                loading={busy && !panel}
-                retry={() => void load()}
+            {order.map((id) => (
+              <PanelSlot
+                key={`${userId}-${id}`}
+                id={id}
+                panel={visible?.panels.find((p) => p.id === id)}
+                loading={!visible && busy}
+                refresh={load}
               />
-            </Suspense>
-            {remaining.map(([number, title, subtitle, caption]) => (
-              <section className="panel reserved-panel" key={number} aria-label={`${title} — reserved`}>
-                <div className="panel-heading">
-                  <div>
-                    <span className="panel-number">{number}</span>
-                    <h2>
-                      {title}
-                      <span>{subtitle}</span>
-                    </h2>
-                  </div>
-                  <span className="status reserved">Reserved</span>
-                </div>
-                <div className="reserved-content">
-                  <div className="reserved-motif" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                  <span className="reserved-value">—</span>
-                  <h3>{caption}</h3>
-                  <p>
-                    This panel is reserved for the next stage.
-                    <br />
-                    No observations are connected.
-                  </p>
-                  <span className="reserved-tag">SOURCE VERIFICATION PENDING</span>
-                </div>
-              </section>
             ))}
           </div>
+          <p className="view-note">
+            Stored data · observation dates appear in each panel · release freshness is unknown. Refresh view
+            reads the database; collection runs independently.
+          </p>
         </main>
       )}
       <footer>
         <span>ECONOMIC INDICATOR</span>
-        <p>Public data. Explicit periods. Informed perspective.</p>
-        <span>GDP SLICE · 01 / 06</span>
+        <p>Public sources. Explicit periods. Traceable observations.</p>
+        <span>INDIA · MACROECONOMIC DASHBOARD</span>
       </footer>
     </div>
   );

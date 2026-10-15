@@ -9,6 +9,7 @@ export default defineConfig({
   expect: { timeout: 8000 },
   use: {
     baseURL: 'http://localhost:5174',
+    reducedMotion: 'reduce',
     viewport: { width: 1214, height: 2159 },
     launchOptions: {
       executablePath:
@@ -27,7 +28,9 @@ export default defineConfig({
       reuseExistingServer: false,
     },
     {
-      command: 'npm run dev -- --port 5174',
+      command: process.env.E2E_PREVIEW
+        ? 'npm run preview -- --port 5174 --strictPort --outDir ../.verification/browser-dist'
+        : 'npm run dev -- --port 5174 --strictPort',
       url: 'http://localhost:5174',
       reuseExistingServer: false,
       env: { VITE_API_BASE_URL: 'http://localhost:8001' },

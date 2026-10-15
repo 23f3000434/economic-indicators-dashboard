@@ -1,0 +1,66 @@
+{
+  "source_svg_sha256": "dd84037be981dbcfb33dac67eebf28ea483e93c3f905cb6fbec83cad598bbc59",
+  "source_dimensions": [
+    "1248",
+    "2193"
+  ],
+  "checks": [
+    {
+      "asset": "background.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "masthead.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "india.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "world.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "trade.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "inflation.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "target.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "us.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "gst.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "gst-average.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    },
+    {
+      "asset": "expenditure.webp",
+      "hashes_and_callsite": "passed",
+      "pixel_identity": "passed"
+    }
+  ],
+  "total_asset_bytes": 10891124,
+  "omitted_asset": "image1_0_1 is the LIVE dot, not applicable without an accepted market feed."
+}

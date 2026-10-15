@@ -28,12 +28,18 @@ test('login, canonical values, reload, memory-only JWT and database-only browser
   page.on('pageerror', (error) => errors.push(error.message));
   await signIn(page);
   await expect(page.getByTestId('card-gdp_world')).toHaveText('2.92%');
+  await expect(
+    page.locator('.gdp-panel').getByRole('columnheader', { name: 'India · FY', exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.locator('.gdp-panel').getByRole('columnheader', { name: 'World · CY', exact: true }),
+  ).toBeVisible();
   await expect(page.getByTestId('table-gdp_india-2025')).toHaveText('7.57%');
-  await expect(page.getByText('FY 2025–26', { exact: true })).toBeVisible();
-  await expect(page.getByText('CY 2025', { exact: true })).toBeVisible();
-  await expect(page.getByRole('region', { name: /— reserved/ })).toHaveCount(5);
-  await expect(page.locator('.recharts-bar-rectangle')).toHaveCount(10);
-  await page.locator('.recharts-bar-rectangle').first().hover();
+  await expect(page.locator('.gdp-panel .kpis').getByText('FY 2025–26', { exact: true })).toBeVisible();
+  await expect(page.locator('.gdp-panel .kpis').getByText('CY 2025', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Government Expenditure/ })).toBeVisible();
+  await expect(page.locator('.gdp-panel .recharts-bar-rectangle')).toHaveCount(10);
+  await page.locator('.gdp-panel .recharts-bar-rectangle').first().hover();
   await expect(page.locator('.chart-tooltip')).toContainText('FY 2021–22');
   expect(await page.evaluate(() => [Object.keys(localStorage), Object.keys(sessionStorage)])).toEqual([
     [],
@@ -56,7 +62,7 @@ test('reserved geometry, connection retry, stale retention, missing gap and reco
   const blocked = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route('**/api/v1/panels/gdp', async (route) => {
+  await page.route('**/api/v1/dashboard', async (route) => {
     await blocked;
     await route.continue();
   });
@@ -70,26 +76,26 @@ test('reserved geometry, connection retry, stale retention, missing gap and reco
   await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
   const readyBox = await page.locator('.gdp-panel').boundingBox();
   expect(Math.abs(loadingBox!.height - readyBox!.height)).toBeLessThanOrEqual(1);
-  await page.unroute('**/api/v1/panels/gdp');
-  await page.route('**/api/v1/panels/gdp', (route) => route.abort());
-  await page.getByRole('button', { name: 'Refresh stored GDP data' }).click();
+  await page.unroute('**/api/v1/dashboard');
+  await page.route('**/api/v1/dashboard', (route) => route.abort());
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
   await expect(page.getByRole('alert')).toContainText('Connection lost');
   await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
-  await page.unroute('**/api/v1/panels/gdp');
+  await page.unroute('**/api/v1/dashboard');
   await page.getByRole('button', { name: 'Retry connection' }).click();
   await expect(page.getByRole('alert')).toHaveCount(0);
   await request.post(API + '/__test/collect/failure');
-  await page.getByRole('button', { name: 'Refresh stored GDP data' }).click();
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
   await expect(page.getByText(/Retained data · timeout/)).toBeVisible();
   await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
   await request.post(API + '/__test/collect/missing');
-  await page.getByRole('button', { name: 'Refresh stored GDP data' }).click();
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
   await expect(page.getByTestId('table-gdp_india-2023')).toHaveText('—');
-  await expect(page.locator('.recharts-bar-rectangle')).toHaveCount(8);
+  await expect(page.locator('.gdp-panel .recharts-bar-rectangle')).toHaveCount(8);
   await request.post(API + '/__test/collect/success');
-  await page.getByRole('button', { name: 'Refresh stored GDP data' }).click();
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
   await expect(page.getByTestId('table-gdp_india-2023')).not.toHaveText('—');
-  await expect(page.locator('.status.ready')).toBeVisible();
+  await expect(page.locator('.gdp-panel .status.ready')).toBeVisible();
 });
 
 test('automatic renewal, absolute expiry and logout revocation across tabs', async ({
@@ -109,7 +115,7 @@ test('automatic renewal, absolute expiry and logout revocation across tabs', asy
   await request.post(API + '/__test/advance/901');
   await page.clock.fastForward(901000);
   await other.clock.fastForward(901000);
-  await page.getByRole('button', { name: 'Refresh stored GDP data' }).click();
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
   await expect.poll(() => renewed).toBeGreaterThan(0);
   await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
   await page.getByRole('button', { name: /Sign out/ }).click();
@@ -120,7 +126,7 @@ test('automatic renewal, absolute expiry and logout revocation across tabs', asy
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
   await request.post(API + '/__test/advance/604801');
-  await page.getByRole('button', { name: 'Refresh stored GDP data' }).click();
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
   await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
 });
 

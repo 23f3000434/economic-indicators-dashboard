@@ -8,6 +8,7 @@ from app.config import Settings
 from app.main import create_app
 
 from tests.conftest import PASSWORD, Clock, fixture_response
+from tests.test_dashboard import provider_response
 
 ROOT = Path(__file__).resolve().parents[1]
 clock = Clock()
@@ -25,7 +26,7 @@ settings = Settings(
     collection_years=6,
     upstream_attempts=1,
 )
-upstream = httpx.AsyncClient(transport=httpx.MockTransport(fixture_response))
+upstream = httpx.AsyncClient(transport=httpx.MockTransport(provider_response))
 app = create_app(settings, clock, upstream)
 original_lifespan = app.router.lifespan_context
 
@@ -33,12 +34,23 @@ original_lifespan = app.router.lifespan_context
 async def reset():
     clock.value = Clock().value
     with app.state.db.connect(write=True) as db:
-        for table in ("refresh_tokens", "sessions", "users", "observations", "collection_runs"):
+        for table in (
+            "refresh_tokens",
+            "sessions",
+            "users",
+            "observations",
+            "collection_runs",
+            "provider_cooldowns",
+        ):
             db.execute(f"DELETE FROM {table}")  # fixed test-only table names
     app.state.auth.attempts.clear()
     app.state.auth.create_user("analyst", PASSWORD)
+    app.state.auth.create_user("reviewer", PASSWORD)
     app.state.collector.client = upstream
     await app.state.collector.collect_once()
+    for job in app.state.jobs.values():
+        job.client = upstream
+        await job.collect_once()
 
 
 @asynccontextmanager
@@ -79,9 +91,25 @@ async def collect(mode: str):
 
     if mode == "missing":
         with app.state.db.connect(write=True) as db:
-            db.execute("DELETE FROM observations")
+            db.execute("DELETE FROM observations WHERE group_id='gdp'")
     async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as source:
         app.state.collector.client = source
         ok = await app.state.collector.collect_once()
     app.state.collector.client = upstream
+    return {"ok": ok}
+
+
+@app.post("/__test/group/{group}/{mode}")
+async def group_collect(group: str, mode: str):
+    job = app.state.jobs[group]
+    if mode == "failure":
+
+        def response(request):
+            raise httpx.ReadTimeout("injected independent provider failure", request=request)
+    else:
+        response = provider_response
+    async with httpx.AsyncClient(transport=httpx.MockTransport(response)) as source:
+        job.client = source
+        ok = await job.collect_once()
+    job.client = upstream
     return {"ok": ok}

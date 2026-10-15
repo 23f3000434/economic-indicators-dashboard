@@ -1,6 +1,6 @@
 # Multi-provider backend evidence
 
-The baseline is 03aa914. This stage preserves GDP/authentication and implements one source path at a time. Application inputs are live official responses; fixtures are compressed original responses used only by offline tests. Diagnostic caches and private proof databases stay ignored.
+This records the completed backend stage from 03aa914 to b3ca864. It preserves GDP/authentication and implements one source path at a time. The subsequent [frontend stage](frontend.md) consumes these stored-data contracts; no new feed is promoted by UI integration. Application inputs are live official responses; fixtures are compressed original responses used only by offline tests. Diagnostic caches and private proof databases stay ignored.
 
 ## CGA — implemented
 

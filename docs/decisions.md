@@ -1,6 +1,6 @@
 # Decisions and evidence log
 
-Dates below are 15 October 2026 (IST); machine evidence uses UTC. Accepted user choices are distinguished from implementation recommendations. Update this log when evidence or scope changes, not with retrospective claims.
+Decisions D01–D25 were recorded on 15 October 2026 (IST); frontend-stage work spans 15–16 October. Machine evidence uses UTC. Accepted user choices are distinguished from implementation recommendations. Update this log when evidence or scope changes, not with retrospective claims.
 
 | Decision | Status | Basis/consequence |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ Dates below are 15 October 2026 (IST); machine evidence uses UTC. Accepted user 
 | D11 Logout identity and authority | Implemented | Valid bearer authority works without a cookie. Recognised conflicting identities return 409 without mutation. Explicit invalid bearers cannot silently fall back to a cookie identity. Cookie-only logout requires CSRF. |
 | D12 Local security boundary | Implemented | Explicit loopback development mode uses `dev_refresh`, HttpOnly/Strict without Secure over HTTP. Production configuration requires separate HTTPS subdomains, uses Secure `__Host-refresh`, and has no insecure override. Actual domain verification remains pending. |
 | D13 GDP slice scope | Completed in 03aa914 | Historical scope: authenticated GDP only. The user now authorises D14; the working slice remains a regression boundary. |
-| D14 Multi-provider backend | Authorised by user | Foundation/cooldown/history corrections, then one verified adapter at a time, then the protected stored-data dashboard aggregate. No frontend redesign or deployment. Unavailable sources remain explicit gates, never fabricated completed adapters. |
+| D14 Multi-provider backend | Completed in b3ca864 | Foundation/cooldown/history corrections, then one verified adapter at a time, then the protected stored-data dashboard aggregate. No frontend redesign or deployment. Unavailable sources remain explicit gates, never fabricated completed adapters. |
 | D15 Contract/schema evolution | Implemented foundation | Preserve GDP v1. Migration 003 adds group/validated semantic snapshots to the existing observation table and permits unknown dataset-update dates. Code catalogue validates provider/unit identities; no ORM or extra chart/revision tables. New points include explicit period/status/methodology/publication provenance. |
 | D16 Collection cooldown/history | Implemented and verified | Migration 002 adds durable provider deadlines. Delta-seconds and HTTP-date Retry-After are honoured within the request budget or deferred; later attempts/groups sharing that provider check the persisted deadline. History pruning is per group and preserves its last success and every running record. 47 backend tests plus 9 subtests pass at this increment, including existing GDP/authentication. |
 | D17 GST compensation cess | Recommended assumption implemented; user preference can change presentation | User was asked; no answer had arrived after independent CGA work. Primary canonical series consistently excludes cess (reported total minus cess when included, reconciled against CGST/SGST/IGST). Preserve original reported totals and separately published cess with per-point definitions. Never mix older inclusive totals with current exclusive totals. |
@@ -57,8 +57,14 @@ Committed public evidence is linked from `sources.md`; ignored raw bodies/privat
 - **Figma:** connected account `monishmprogram@gmail.com` was denied design context/metadata/screenshot access to frame `1:2` on 15 October. Restored sharing has not been verified; SVG cannot establish fonts/prototypes/states or exact frame parity.
 - **Submission:** portfolio/project links and role summaries; evaluation credentials shared separately; deployed frontend/API/docs/health URLs once deployed.
 
-None of these inputs blocks independent backend sources. No rehearsal, portfolio construction, unrelated folder edits, frontend redesign or public deployment belongs to this stage.
+None of these inputs blocks independent backend sources. The current frontend stage proceeds independently of those gates. Rehearsal, portfolio construction, unrelated folder edits and public deployment remain outside this stage.
 
+## Frontend stage decisions
+
+| Decision | Status | Basis/consequence |
+| --- | --- | --- |
 | D26 Full frontend/design stage | Authorised by user from b3ca864 | Complete aggregate integration, accurate controls/presentation, SVG/Figma comparison, resilience/accessibility/browser checks; first repair collector write-outage recovery and scoped omissions. Deployment remains later. GDP/auth/contracts and independent collection remain regression boundaries. |
 | D27 Exact Figma access recheck | Blocked; SVG fallback authorised | Both get_design_context (screenshot requested) and get_screenshot for brsbeMh0t7dB6ibf3cJN4D frame 1:2 deny access. Debug IDs 790325f0-aed4-43db-9cc5-d9d7caa7d9b0 and 7c689846-2c01-43a3-a896-770c5a1590a5. Continue from supplied SVG, recording typography/constraints/states/revision limits. |
 | D28 Scoped recovery and omissions | Implemented; focused checks pass | Retry only exact known-finished failed run IDs after writes return, never age-expire active work. Join SQL workers on cancellation. Explicit expected response keys define omissions; untouched older history is outside that scope. No migration/dependency required. |
+| D29 Accurate presentation/control scope | Implemented | Aggregate-only browser reads; periods select canonical grains, legends toggle chart/table/tooltip, CPI bases stay separate and policy applies only inside validity. Debt/market show blocked states. No arithmetic moves from the API. |
+| D30 SVG artwork/geometry | Implemented; SVG/browser verified | Eleven original embedded rasters converted losslessly with decoded pixel equality and source/output hashes. Supplied LIVE dot omitted. Horizontal proportions follow the SVG; extra controls/tables/provenance increase panel height. Exact Figma typography/constraints/revision parity remain unverified. |
