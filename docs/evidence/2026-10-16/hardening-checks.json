@@ -1,0 +1,83 @@
+{
+  "scope": "Hardening/deployment readiness from 42d9d4a; no public deployment or GitHub CI run",
+  "backend": {
+    "tests": 88,
+    "subtests": 9,
+    "elapsed_seconds": 49.33,
+    "result": "passed",
+    "coverage": "existing GDP/auth/source/cooldown/scheduling/failure/recovery and new delivery/backup/schema checks"
+  },
+  "frontend": {
+    "unit_tests": 12,
+    "vitest": "4.1.11",
+    "node": "22.23.3",
+    "typescript_strict_and_unused": "passed",
+    "prettier": "passed",
+    "vite_production_build": "passed",
+    "deployment_https_origin_csp_and_artifact_checks": "passed"
+  },
+  "browser": {
+    "compiled_scenarios": 19,
+    "result": "passed",
+    "elapsed_minutes": 3.5,
+    "normal_interface_checks": 11,
+    "normal_canonical_values": 10,
+    "viewport_css": [
+      [
+        1214,
+        2159
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "initial_run": "17 passed; one fixture setup deadline during concurrent heavy backend verification; final isolated full run passed"
+  },
+  "artwork": {
+    "variants": 21,
+    "file_bytes_all_densities": 1097882,
+    "source_hashes_and_resized_rgba": "passed",
+    "cold_load_and_screenshot_evidence": "hardening-performance.json"
+  },
+  "recovery": {
+    "real_observations_restored": 388,
+    "restored_sessions": 0,
+    "schema_versions": "1 -> 3 upgrade, 3 -> 3 idempotency",
+    "online_consistency": "passed with concurrent WAL writer",
+    "incomplete_schema_rejection": "two red tests reproduced before tightening; now passed",
+    "evidence": "recovery-checks.json"
+  },
+  "delivery": {
+    "api_python": "3.12.14",
+    "uv": "0.10.2",
+    "runtime_packages": 27,
+    "tests_fixtures_development_dependencies": "excluded from allowlisted runtime and checked in a fresh subprocess",
+    "pages_build": "exact Node, locked npm install, test HTTPS origins; no publish",
+    "ci": "prepared with pinned official Actions commits; remote Linux execution pending"
+  },
+  "source_gates": {
+    "debt": "IMF HTTP 403 / FRED metadata+CSV timeouts",
+    "nse": "200 quote JSON; no accepted collection/display arrangement or completed adapter",
+    "bse": "200 HTML shell only; quote route/feed unverified"
+  },
+  "figma": {
+    "frame": "1:2",
+    "edit_access": "denied on final context recheck",
+    "debug_uuid": "7e50c0ba-c62e-4de8-ad17-5d08e35786f3",
+    "account": "monishmprogram@gmail.com",
+    "fallback": "supplied SVG; exact UI acceptance not achieved"
+  },
+  "remaining_host_checks": [
+    "controlled domain/DNS/HTTPS",
+    "actual ingress/proxy CIDRs",
+    "mounted private disk ownership and redeploy persistence",
+    "Linux source TLS/egress",
+    "real-domain cookie/CORS/CSRF/concurrency checks",
+    "private off-host backup operations"
+  ],
+  "diagnostics": [
+    "existing Starlette HTTPX deprecation",
+    "known rotated-PDF extraction messages in fixture coverage"
+  ]
+}

@@ -13,7 +13,10 @@ export default defineConfig({
     viewport: { width: 1214, height: 2159 },
     launchOptions: {
       executablePath:
-        process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        process.env.CHROME_PATH ||
+        (process.platform === 'darwin'
+          ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+          : undefined),
     },
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',

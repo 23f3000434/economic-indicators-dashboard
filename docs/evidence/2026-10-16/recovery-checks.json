@@ -1,0 +1,22 @@
+{
+  "scope": "Read-only online snapshot of the normal private database; all writes in isolated ignored mode-0700 temporary storage. No source database/session mutation.",
+  "schema_version": 3,
+  "observations": 388,
+  "collection_runs": 7,
+  "provider_cooldowns": 0,
+  "canonical_observations_runs_cooldowns_equal": true,
+  "canonical_rows_sha256": "15c74f6dfaedd8e040bf3a780eddc56d7f03687ab4a77c9e1836ab82f64d9daf",
+  "restored_sessions": 0,
+  "restored_refresh_tokens": 0,
+  "file_modes": [
+    "0o600",
+    "0o600"
+  ],
+  "integrity_and_foreign_keys": "passed for both snapshots",
+  "isolated_storage": true,
+  "migration_schema_columns_and_foreign_keys": "verified against immutable migrations during final restore",
+  "incomplete_schema_negative_cases": [
+    "missing provider_cooldowns table rejected",
+    "missing collection_runs.provider_id column rejected"
+  ]
+}

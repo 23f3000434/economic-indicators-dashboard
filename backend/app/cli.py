@@ -3,6 +3,7 @@ import asyncio
 import getpass
 import json
 import time
+from pathlib import Path
 
 from .auth import Auth
 from .config import Settings
@@ -10,6 +11,7 @@ from .dashboard import read_dashboard
 from .db import Database
 from .gdp import Collector, read_panel
 from .macro_collector import build_jobs
+from .recovery import copy_database
 
 
 def main():
@@ -18,6 +20,11 @@ def main():
     )
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("migrate")
+    backup = commands.add_parser("backup")
+    backup.add_argument("destination", type=Path)
+    restore = commands.add_parser("restore")
+    restore.add_argument("snapshot", type=Path)
+    restore.add_argument("destination", type=Path)
     user = commands.add_parser("create-user")
     user.add_argument("username")
     commands.add_parser("collect-gdp")
@@ -28,8 +35,14 @@ def main():
         "groups", nargs="+", choices=["gdp", "expenditure", "gst", "trade", "inflation", "inflation_policy"]
     )
     args = parser.parse_args()
+    if args.command == "restore":
+        print(json.dumps(copy_database(args.snapshot, args.destination, restore=True), indent=2))
+        return
     settings = Settings.load()
     database = Database(settings.database)
+    if args.command == "backup":
+        print(json.dumps(copy_database(database.path, args.destination), indent=2))
+        return
     database.migrate()
     if args.command == "create-user":
         password = getpass.getpass("Password (12+ characters): ")

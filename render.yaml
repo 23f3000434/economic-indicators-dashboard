@@ -1,0 +1,45 @@
+# Prepared configuration only. Do not create/sync cloud services during this stage.
+services:
+  - type: web
+    name: economic-indicators-api
+    runtime: python
+    plan: starter
+    numInstances: 1
+    autoDeployTrigger: "off"
+    buildCommand: sh deploy/build_api.sh
+    startCommand: sh deploy/start_api.sh
+    healthCheckPath: /healthz
+    maxShutdownDelaySeconds: 45
+    disk:
+      name: private-economic-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.14
+      - key: UV_VERSION
+        value: 0.10.2
+      - key: APP_ENV
+        value: production
+      - key: PERSISTENT_DATA_DIR
+        value: /var/data
+      - key: SQLITE_PATH
+        value: /var/data/private/dashboard.sqlite3
+      - key: API_ORIGIN
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: COOKIE_SITE_DOMAIN
+        sync: false
+      - key: TRUSTED_PROXY_CIDRS
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CSRF_SECRET
+        generateValue: true
+      - key: ROTATION_SECRET
+        generateValue: true
+      - key: SESSION_MAX_AGE_SECONDS
+        value: "604800"
+      - key: COLLECTOR_ENABLED
+        value: "true"

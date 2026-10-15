@@ -4,11 +4,11 @@ Authorised from 42d9d4a. Public deployment is excluded. Keep engineering finding
 
 | Risk | Assessment before changes | Action/status |
 | --- | --- | --- |
-| High: late auth responses | Renewal/bootstrap can publish state after a logout or account change; second read after renewal bypasses the original 401 handler | Reproduce with controlled delayed responses before changing behaviour |
-| High: recovery/deployment | No verified backup/restore procedure or deliverable production configuration; restored old sessions must not resurrect revoked access | Prepare isolated backup/restore, migration checks and single-worker private-disk deployment |
-| Medium: loading cost | 10,891,124 artwork bytes, with full-resolution card art | Measure cold transfers first; deterministic resized variants and lazy offscreen loading; compare screenshots |
-| Medium: source/comparison correctness | Retained/null observations and reporting methodology must survive failure/recovery and control changes | Review validation, arithmetic and original regression boundaries; fix only reproduced defects |
-| Delivery blockers | Debt/market required features unavailable; Figma exact acceptance and production domain/hosting remain unverified | Bounded source attempts; precise missing inputs; no fabricated completion |
+| High: late auth responses | Renewal/bootstrap can publish state after a logout or account change; second read after renewal bypasses the original 401 handler | Four initial client defects reproduced and fixed; one proactive-notice defect subsequently reproduced in Chrome and fixed |
+| High: recovery/deployment | No verified backup/restore procedure or deliverable production configuration; restored old sessions must not resurrect revoked access | Isolated migration/online backup/new-path restore verified; single-owner private-disk runtime prepared; hosted acceptance remains pending |
+| Medium: loading cost | 10,891,124 artwork bytes, with full-resolution card art | Baseline/optimised cold transfers measured; 21 variants and lazy loading verified with unchanged panel geometry |
+| Medium: source/comparison correctness | Retained/null observations and reporting methodology must survive failure/recovery and control changes | Existing validation, comparison, failure/isolation/cooldown/retention/restart regressions pass; no speculative data-contract rewrite |
+| Delivery blockers | Debt/market required features unavailable; Figma exact acceptance and production domain/hosting remain unverified | IMF 403/FRED timeouts; NSE JSON reachable but feed not accepted; BSE quotes unverified; Figma/domain/host gates explicit |
 
 Figma design context and screenshot still deny frame 1:2 on 16 October 2026. Debug IDs: e7d1dbfd-7167-48c5-a05b-46f3056e15c3 and 7242c37c-92e7-433c-9334-9e464d037c0e. Connected account sharing was requested. SVG fallback remains available. Current UI is not exact: its panels are taller for controls/tables/provenance, typography cannot be confirmed, and sample axes/data/debt/market are deliberately corrected. SVG export 1248×2193 is distinct from the required 1214×2159 viewport.
 
@@ -46,3 +46,11 @@ The public OSV batch lookup returned no known-advisory matches for the 27 locked
 Delivery uses exact Python 3.12.14/uv 0.10.2 and Node 22.23.3, verified locally with an isolated official Node archive and SHA-256. A build check caught uv selecting another installed interpreter; the script now explicitly supplies the prechecked Python path and checks the resulting environment. The assembled API installs 27 runtime packages without pytest/Pillow or fixture modules. Actual frontend production/test/local builds and origin/CSP/artifact checks pass. Public hosting/ingress/certificates and Linux CI execution are not established by these checks.
 
 Twenty sequential warm keepalive reads of the ordinary local dashboard returned 200, with p50 22.00ms, p95 27.22ms and a 332,736-byte uncompressed response. This is a small local sample, not a load test or production latency guarantee. Health returned 200; unauthenticated dashboard and post-logout access returned 401; test-reset and database-file paths returned 404. [Normal API evidence](evidence/2026-10-16/local-api-hardening.json).
+
+Final Figma design-context recheck also denied edit access to frame 1:2 (debug 7e50c0ba-c62e-4de8-ad17-5d08e35786f3). Connected account: `monishmprogram@gmail.com`. No restored access or frame dimensions were confirmed.
+
+## Final checkpoint
+
+Final verification: 88 backend tests + 9 subtests, 12 frontend units, 19 compiled Chrome scenarios, strict/unused TypeScript, production builds, format/lint and 21 resized-pixel/hash asset checks pass. The normal private-data interface separately passes 11 checks with 10 canonical value agreements. The new recovery tooling rejected two incomplete logical schemas only after focused negative reproductions; final validation reuses immutable migrations for table-column/foreign-key structure. Current schema stays version 3; no new migration or runtime dependency is introduced for recovery/deployment.
+
+[Full check record](evidence/2026-10-16/hardening-checks.json), [normal UI proof](evidence/2026-10-16/hardening-live-interface.json), and [deployment/recovery checklist](deployment.md). Public hosting and GitHub CI were not run; the source and design gates above remain unresolved.

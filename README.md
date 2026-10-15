@@ -4,7 +4,7 @@ Implemented locally: independent scheduled GDP/CGA/GST/merchandise-trade/CPI/pol
 
 ## Local setup
 
-Prerequisites: Python 3.12+, [uv](https://docs.astral.sh/uv/), Node 22.12+ and npm. Verified with Python 3.12.14, SQLite 3.53.1 and Node 25.6.1. Dependencies are pinned in `uv.lock` and `frontend/package-lock.json`. Start from the repository root:
+Prerequisites: Python 3.12+, [uv](https://docs.astral.sh/uv/), Node 22.12+ and npm. Verified with Python 3.12.14, SQLite 3.53.1 and Node 25.6.1; delivery build/unit checks also use pinned Node 22.23.3 (`.node-version`). Dependencies are pinned in `uv.lock` and `frontend/package-lock.json`. Start from the repository root:
 
 ```sh
 uv sync --frozen --cache-dir .verification/uv-cache
@@ -51,7 +51,7 @@ Manual collection exits nonzero on failure/defer without deleting valid data or 
 
 ## Configuration and security
 
-Server defaults/names are in `.env.example`; only `VITE_API_BASE_URL` is public. SQLite defaults to `data/dashboard.sqlite3` (0700 directory/0600 file), with numbered SQL migrations and `PRAGMA user_version`. Back it up consistently before schema changes; production backup/restore remains a deployment gate. Keep the file outside all frontend/static paths. Secrets, databases and generated output are ignored.
+Server defaults/names are in `.env.example`; only `VITE_API_BASE_URL` is public. SQLite defaults to `data/dashboard.sqlite3` (0700 directory/0600 file), with numbered SQL migrations and `PRAGMA user_version`. Use the verified online backup/new-path restore commands in [the recovery runbook](docs/deployment.md) before schema changes; host backup scheduling/off-host storage remain deployment gates. Keep the file outside all frontend/static paths. Secrets, databases and generated output are ignored.
 
 GDP uses a rolling 12-year input window ending in the previous UTC year. `GDP_START_YEAR`/`GDP_END_YEAR` override it; `GDP_REPORT_YEARS=5` controls display. Include a comparison year; at most 100 input years, within 1960–2199. Source gaps remain null. Newly omitted previously valid values retain original provenance and are labelled stale. India fiscal years and World calendar-year aggregates are visibly different. Dataset update, collection and unknown observation-release freshness stay distinct.
 
@@ -65,7 +65,7 @@ Auth: 15-minute memory-only JWT, persistent server session with configurable abs
 
 Local development explicitly uses matching loopback HTTP hosts and `dev_refresh` (HttpOnly, SameSite=Strict, Secure=false). Use **localhost for both URLs**, not a mix with 127.0.0.1. Ports do not isolate cookies; use trusted local services. Production requires separate HTTPS subdomains of `COOKIE_SITE_DOMAIN`, exact frontend Origin, and Secure `__Host-refresh`, Path=/, no Domain attribute. No production insecure-cookie override exists. Domain/DNS gates production verification, not local implementation.
 
-Planned hosting: static frontend on Pages, FastAPI on one paid Render instance with a private persistent disk. Build the frontend with `VITE_API_BASE_URL` set to the actual HTTPS API URL. Set server `APP_ENV=production`, actual HTTPS origins/domain, secrets and disk-mounted `SQLITE_PATH`. Preserve the disk across deploys and verify private backup/restore. If a controlled domain is unavailable, select/verify the same-origin API proxy in the contracts; do not silently use cross-site provider cookies.
+Prepared hosting configuration: static frontend on Pages, FastAPI on one paid Render instance with a private persistent disk; [build/start commands and ready/blocked checklist](docs/deployment.md). Build the frontend with `VITE_API_BASE_URL` set to the actual HTTPS API URL. Set server `APP_ENV=production`, actual HTTPS origins/domain, secrets and disk-mounted `SQLITE_PATH`. Preserve the disk across deploys and verify private backup/restore. If a controlled domain is unavailable, select/verify the same-origin API proxy in the contracts; do not silently use cross-site provider cookies.
 
 ## Verification
 
@@ -82,7 +82,7 @@ VITE_API_BASE_URL=http://localhost:8001 npm run build -- --outDir ../.verificati
 E2E_PREVIEW=1 npm run test:browser
 ```
 
-Browser tests start/stop isolated fixture servers on localhost:5174/8001 and use real cookies with controlled clocks. The harness seeds all implemented providers exclusively from reviewed test fixtures and isolates independent failures. They use installed Chrome; set `CHROME_PATH` elsewhere. Fixtures/control endpoints never enter the normal app. The [verification matrix](docs/verification.md) covers renewal/reload/expiry, CSRF/revocation, concurrent tabs, interrupted responses, invalid/missing data, failure retention/recovery, restart persistence, disabled upstream networking and layout.
+Browser tests start/stop isolated fixture servers on localhost:5174/8001 and use real cookies with controlled clocks. The harness seeds all implemented providers exclusively from reviewed test fixtures and isolates independent failures. On macOS they use installed Chrome or `CHROME_PATH`; Linux CI installs the locked Playwright Chromium build. Fixtures/control endpoints never enter the normal app. The [verification matrix](docs/verification.md) covers renewal/reload/expiry, CSRF/revocation, concurrent tabs, interrupted responses, invalid/missing data, failure retention/recovery, restart persistence, disabled upstream networking and layout.
 
 Optional live check: place **local-only** account credentials in ignored, owner-only `.verification/local-access.json` (`username`/`password`) and run `node scripts/smoke_local.mjs` with the normal servers running. Overrides: `LOCAL_SMOKE_CREDENTIALS`, `LOCAL_FRONTEND_URL`, `LOCAL_API_URL`, `CHROME_PATH`. It records economic-data-only evidence and ignored screenshots. Never commit credentials or use production credentials for this check.
 
@@ -103,6 +103,8 @@ This uses actual public responses and an ignored private proof database with ran
 
 ## Engineering and submission records
 
+- [Hardening findings, performance and design differences](docs/hardening.md)
+- [Separate-environment deployment and recovery runbook](docs/deployment.md)
 - [Requirements and deliverables](docs/requirements.md)
 - [Architecture/dependencies](docs/architecture.md)
 - [Decisions/outstanding inputs](docs/decisions.md)
@@ -116,4 +118,4 @@ This uses actual public responses and an ignored private proof database with ran
 - [Frontend-stage checks](docs/evidence/2026-10-16/frontend-checks.json)
 - [Normal full-interface live-data check](docs/evidence/2026-10-16/frontend-live.json)
 
-Exact Figma frame 1:2 access remains denied after both context and screenshot requests. The full frontend follows the supplied SVG structure and artwork with accurate observations/units/periods; exact fonts, editable constraints, interaction states and revision parity cannot be established from that export. See [frontend acceptance and design differences](docs/frontend.md). IMF debt routes return 403 and FRED mirror requests timed out; no debt adapter is promoted. NSE/BSE access and instrument resolution remain unresolved, with no invented quotes. Final submission still requires deployed frontend/API/health URLs, separately shared credentials, user-supplied portfolio/project roles and the post-assessment video. Rehearsal stays outside this repository.
+Exact Figma frame 1:2 access remains denied after both context and screenshot requests. The full frontend follows the supplied SVG structure and artwork with accurate observations/units/periods; exact fonts, editable constraints, interaction states and revision parity cannot be established from that export. See [frontend acceptance and design differences](docs/frontend.md). IMF debt routes return 403 and FRED mirror requests timed out; no debt adapter is promoted. NSE now returns public quote JSON, but an authorised collection/display arrangement remains unresolved; BSE still has no proven quote route. Neither is a completed adapter. Final submission still requires deployed frontend/API/health URLs, separately shared credentials, user-supplied portfolio/project roles and the post-assessment video. Rehearsal stays outside this repository.

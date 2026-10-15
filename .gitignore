@@ -39,3 +39,7 @@ test-results/
 .idea/
 .vscode/
 *.log
+
+# Allowlisted deployment assembly; never source data or a second application mode
+.delivery/
+backups/

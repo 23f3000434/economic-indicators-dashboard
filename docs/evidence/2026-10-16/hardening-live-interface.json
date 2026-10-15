@@ -1,0 +1,265 @@
+{
+  "checked_at": "2026-10-15T20:02:46.345Z",
+  "frontend": "http://localhost:5175",
+  "api": "http://localhost:8010",
+  "mode": "Normal application factory and persistent private SQLite; no test harness or fixtures",
+  "checks": [
+    "unauthenticated aggregate denied",
+    "login",
+    "canonical card/table agreement across all implemented panels",
+    "actual debt/market unavailable states",
+    "reload renewal",
+    "memory-only JWT",
+    "persistent HttpOnly local cookie",
+    "desktop/mobile no horizontal overflow",
+    "API-only browser data fetches",
+    "logout revokes prior access JWT",
+    "no browser runtime errors"
+  ],
+  "canonical_agreement": [
+    {
+      "series": "gdp_india",
+      "period_key": "2025",
+      "value": "7.56666179284244",
+      "unit": "percent",
+      "display": "7.57%",
+      "retained": false
+    },
+    {
+      "series": "gdp_world",
+      "period_key": "2025",
+      "value": "2.92127318539153",
+      "unit": "percent",
+      "display": "2.92%",
+      "retained": false
+    },
+    {
+      "series": "trade_exports",
+      "period_key": "FY2025-26",
+      "value": "441.78",
+      "unit": "usd_billion",
+      "display": "$441.78 B",
+      "retained": false
+    },
+    {
+      "series": "trade_imports",
+      "period_key": "FY2025-26",
+      "value": "774.98",
+      "unit": "usd_billion",
+      "display": "$774.98 B",
+      "retained": false
+    },
+    {
+      "series": "trade_balance",
+      "period_key": "FY2025-26",
+      "value": "-333.20",
+      "unit": "usd_billion",
+      "display": "$-333.20 B",
+      "retained": false
+    },
+    {
+      "series": "gst_fy_total",
+      "period_key": "FY2025-26",
+      "value": "2227096.6644980370398",
+      "unit": "inr_crore",
+      "display": "\u20b922.27 L cr",
+      "retained": false
+    },
+    {
+      "series": "gst_fy_average",
+      "period_key": "FY2025-26",
+      "value": "185591.38870816975331666666666666666666666666666666666666666666666666666666666667",
+      "unit": "inr_crore",
+      "display": "\u20b91.86 L cr",
+      "retained": false
+    },
+    {
+      "series": "cpi_yoy_2024",
+      "period_key": "2026-09",
+      "value": "5.54",
+      "unit": "percent",
+      "display": "5.54%",
+      "retained": false
+    },
+    {
+      "series": "expenditure_total",
+      "period_key": "FY2025-26",
+      "value": "4905151",
+      "unit": "inr_crore",
+      "display": "\u20b949.05 L cr",
+      "retained": false
+    },
+    {
+      "series": "expenditure_capital",
+      "period_key": "FY2025-26",
+      "value": "1069119",
+      "unit": "inr_crore",
+      "display": "\u20b910.69 L cr",
+      "retained": false
+    }
+  ],
+  "panels": [
+    {
+      "id": "gdp",
+      "state": "ready"
+    },
+    {
+      "id": "debt",
+      "state": "unavailable"
+    },
+    {
+      "id": "trade",
+      "state": "ready"
+    },
+    {
+      "id": "gst",
+      "state": "ready"
+    },
+    {
+      "id": "inflation",
+      "state": "ready"
+    },
+    {
+      "id": "expenditure",
+      "state": "ready"
+    }
+  ],
+  "ticker": [
+    {
+      "id": "nse_indices",
+      "label": "NSE indices \u2014 accepted feed pending",
+      "state": "unavailable",
+      "availability": "blocked",
+      "unit": "index_points",
+      "value": null,
+      "previous_close": null,
+      "change_percent": null,
+      "exchange_timestamp": null,
+      "source_url": null,
+      "error_kind": "market_access_unresolved"
+    },
+    {
+      "id": "bse_sensex",
+      "label": "BSE SENSEX \u2014 accepted feed pending",
+      "state": "unavailable",
+      "availability": "blocked",
+      "unit": "index_points",
+      "value": null,
+      "previous_close": null,
+      "change_percent": null,
+      "exchange_timestamp": null,
+      "source_url": null,
+      "error_kind": "market_access_unresolved"
+    }
+  ],
+  "collection_groups": [
+    {
+      "last_attempt_at": "2026-10-15T15:01:03.637515Z",
+      "last_success_at": "2026-10-15T15:01:03.819045Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "gdp",
+      "provider_id": "world_bank_wdi",
+      "next_request_not_before": null,
+      "interval_seconds": 604800
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529713Z",
+      "last_success_at": "2026-10-15T16:45:01.098803Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "trade",
+      "provider_id": "commerce",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.528766Z",
+      "last_success_at": "2026-10-15T16:45:07.225941Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "gst",
+      "provider_id": "gstn",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529652Z",
+      "last_success_at": "2026-10-15T16:45:06.205468Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "inflation",
+      "provider_id": "mospi",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529730Z",
+      "last_success_at": "2026-10-15T16:44:55.173997Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "inflation_policy",
+      "provider_id": "gazette",
+      "next_request_not_before": null,
+      "interval_seconds": 604800
+    },
+    {
+      "last_attempt_at": "2026-10-15T16:44:54.529029Z",
+      "last_success_at": "2026-10-15T16:45:07.167270Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "expenditure",
+      "provider_id": "cga",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    }
+  ],
+  "desktop_panel_geometry": [
+    {
+      "x": 29,
+      "y": 155,
+      "width": 566,
+      "height": 630
+    },
+    {
+      "x": 619,
+      "y": 155,
+      "width": 566,
+      "height": 630
+    },
+    {
+      "x": 29,
+      "y": 809,
+      "width": 566,
+      "height": 630
+    },
+    {
+      "x": 619,
+      "y": 809,
+      "width": 566,
+      "height": 630
+    },
+    {
+      "x": 29,
+      "y": 1463,
+      "width": 566,
+      "height": 630
+    },
+    {
+      "x": 619,
+      "y": 1463,
+      "width": 566,
+      "height": 630
+    }
+  ],
+  "read_latency_ms": {
+    "min": 23.54462499999954,
+    "max": 40.927708000000166
+  },
+  "cookie": {
+    "name": "dev_refresh",
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Strict"
+  }
+}
