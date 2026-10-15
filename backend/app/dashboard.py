@@ -31,28 +31,11 @@ class Dashboard(Model):
     collection_groups: list[GroupCollection]
 
 
-def debt_unavailable():
-    return IndicatorPanel(
-        id="debt",
-        state="unavailable",
-        availability="blocked",
-        collection=[],
-        series=[],
-        summaries=[],
-        notes=[
-            "Required definition: India/US general-government gross debt as percent of GDP (IMF GGXWDG_NGDP); central-government or external debt is not a substitute.",
-            "IMF public API/download routes returned HTTP 403 in this runtime. The official FRED mirror timed out before a response; no collector was established.",
-            "Reporting basis, source vintage and historical/estimate status must be verified with accepted observations before enabling debt. No figures are supplied.",
-        ],
-        coverage=["No verified current comparable India/US debt observations stored."],
-    )
-
-
 def read_dashboard(database, settings, jobs, now):
     gdp = read_panel(database, settings, now)
-    panels = [gdp, debt_unavailable()] + [
+    panels = [gdp] + [
         read_indicator(database, name, jobs, now, settings.macro_report_years)
-        for name in ("trade", "gst", "inflation", "expenditure")
+        for name in ("debt", "trade", "gst", "inflation", "expenditure")
     ]
     with database.connect() as db:
         gdp_status = collection_status(db, "gdp", "world_bank_wdi", settings.collection_interval, now)

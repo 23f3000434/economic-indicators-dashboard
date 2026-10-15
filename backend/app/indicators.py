@@ -294,7 +294,7 @@ def _summaries_for_grain(points):
                 and p.period.end.month == current.period.end.month
                 and p.definition.methodology == current.definition.methodology
             ]
-            kind = "relative_percent"
+            kind = "percentage_points" if current.definition.group == "debt" else "relative_percent"
         prior = matches[-1] if matches else None
         delta = None
         with localcontext() as context:

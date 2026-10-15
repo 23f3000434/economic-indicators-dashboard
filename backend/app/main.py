@@ -264,6 +264,10 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     def expenditure(user=Depends(current_user)):
         return read_indicator(database, "expenditure", jobs, clock(), settings.macro_report_years)
 
+    @app.get("/api/v1/panels/debt", response_model=IndicatorPanel, tags=["dashboard"])
+    def debt(user=Depends(current_user)):
+        return read_indicator(database, "debt", jobs, clock(), settings.macro_report_years)
+
     @app.get("/api/v1/panels/gst", response_model=IndicatorPanel, tags=["dashboard"])
     def gst(user=Depends(current_user)):
         return read_indicator(database, "gst", jobs, clock(), settings.macro_report_years)

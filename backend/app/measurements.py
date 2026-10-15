@@ -12,7 +12,7 @@ from pydantic import Field, field_validator, model_validator
 from .models import Model
 
 Group = Literal["expenditure", "gst", "trade", "inflation", "inflation_policy", "debt"]
-Provider = Literal["cga", "gstn", "commerce", "mospi", "gazette", "imf"]
+Provider = Literal["cga", "gstn", "commerce", "mospi", "gazette", "imf", "world_bank_data360"]
 Unit = Literal["inr_crore", "usd_billion", "percent"]
 
 
@@ -110,6 +110,12 @@ class Reference(Model):
         return value
 
 
+class SupportingSource(Model):
+    role: Literal["metadata", "methodology"]
+    url: str
+    response_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+
+
 class Definition(Model):
     group: Group
     provider: Provider
@@ -118,6 +124,9 @@ class Definition(Model):
     status: Literal["actual", "provisional", "final", "estimate", "unspecified"]
     published_at: date | None = None
     publication_note: str = ""
+    vintage_date: date | None = None
+    source_status: str | None = None
+    supporting_sources: list[SupportingSource] = Field(default_factory=list)
     inputs: list[Reference] = Field(default_factory=list)
 
 
@@ -151,8 +160,10 @@ class Measurement(Model):
 
         if self.value is not None and not all((self.source_url, self.retrieved_at, self.response_sha256)):
             raise ValueError("A value requires original response provenance")
-        if self.source_url is not None:
-            url = urlsplit(self.source_url)
+        for supplied_url in (self.source_url, *(s.url for s in self.definition.supporting_sources)):
+            if supplied_url is None:
+                continue
+            url = urlsplit(supplied_url)
             if (
                 url.scheme != "https"
                 or url.hostname not in HOSTS[self.definition.provider]
@@ -170,8 +181,11 @@ HOSTS = {
     "mospi": {"www.mospi.gov.in"},
     "gazette": {"egazette.gov.in"},
     "imf": {"www.imf.org", "data.imf.org"},
+    "world_bank_data360": {"data360files.worldbank.org", "data.imf.org"},
 }
 CATALOGUE = {
+    "debt_india": ("debt", "world_bank_data360", "percent", "India general-government gross debt / GDP"),
+    "debt_us": ("debt", "world_bank_data360", "percent", "US general-government gross debt / GDP"),
     "expenditure_revenue": ("expenditure", "cga", "inr_crore", "Revenue expenditure, actual"),
     "expenditure_capital": ("expenditure", "cga", "inr_crore", "Capital expenditure, actual"),
     "expenditure_total": ("expenditure", "cga", "inr_crore", "Total expenditure, actual"),

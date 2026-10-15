@@ -130,11 +130,12 @@ class MacroCollector:
 def build_jobs(settings, database, clock, client=None):
     from .providers.cga import CGA
     from .providers.cpi import CPI
+    from .providers.debt import Debt
     from .providers.gst import GST
     from .providers.policy import Policy
     from .providers.trade import Trade
 
     return {
         a.group: MacroCollector(a, settings, database, clock, client)
-        for a in [CGA(settings), GST(settings), Trade(settings), CPI(settings), Policy(settings)]
+        for a in [CGA(settings), GST(settings), Trade(settings), CPI(settings), Policy(settings), Debt(settings)]
     }

@@ -1,0 +1,364 @@
+{
+  "checked_at": "2026-10-15T21:10:42.154347+00:00",
+  "groups": {
+    "debt": {
+      "collected": true,
+      "api_status": 200,
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-15T21:10:42.275018Z",
+          "last_success_at": "2026-10-15T21:10:45.073156Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "debt",
+          "provider_id": "world_bank_data360",
+          "next_request_not_before": null,
+          "interval_seconds": 604800
+        }
+      ],
+      "summaries": [
+        {
+          "current": {
+            "series_id": "debt_india",
+            "period_key": "FY2025-26"
+          },
+          "comparison": {
+            "series_id": "debt_india",
+            "period_key": "FY2024-25"
+          },
+          "kind": "percentage_points",
+          "value": "-0.544476",
+          "period_kind": "fiscal_year"
+        },
+        {
+          "current": {
+            "series_id": "debt_us",
+            "period_key": "2025"
+          },
+          "comparison": {
+            "series_id": "debt_us",
+            "period_key": "2024"
+          },
+          "kind": "percentage_points",
+          "value": "2.042455",
+          "period_kind": "calendar_year"
+        }
+      ],
+      "series": [
+        {
+          "id": "debt_india",
+          "unit": "percent",
+          "points": 6,
+          "first": {
+            "series_id": "debt_india",
+            "period": {
+              "key": "FY2020-21",
+              "label": "FY 2020\u201321",
+              "kind": "fiscal_year",
+              "start": "2020-04-01",
+              "end": "2021-03-31"
+            },
+            "definition": {
+              "group": "debt",
+              "provider": "world_bank_data360",
+              "unit": "percent",
+              "methodology": "imf_weo_general_government_gross_debt_percent_gdp",
+              "status": "actual",
+              "published_at": null,
+              "publication_note": "IMF WEO via World Bank Data360, Latest Version snapshot. Vintage is the mirror's metadata version date, not an observation publication date. Source A means Normal value. Actual/estimate classification uses the matching WEO appendix's Government Finance latest actual year: 2024. India: FY Apr\u2013Mar, central/state coverage, cash; US: CY Jan\u2013Dec, central/state/local, accrual. Coverage/accounting differences limit comparability. Future source years are excluded.",
+              "vintage_date": "2026-10-13",
+              "source_status": "A: Normal value",
+              "supporting_sources": [
+                {
+                  "role": "metadata",
+                  "url": "https://data360files.worldbank.org/data360-data/metadata/IMF_WEO/IMF_WEO_GGXWDG_NGDP.json",
+                  "response_sha256": "188becca8e104481bb7044adc550c71d5e56b8773a35ee91d0149e6be9ef1c44"
+                },
+                {
+                  "role": "methodology",
+                  "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf",
+                  "response_sha256": "cd4e2829d7e621d43134728bfc128547f776e909e08ef1d38b837e2d39e5ae2a"
+                }
+              ],
+              "inputs": []
+            },
+            "value": "90.394508",
+            "source_url": "https://data360files.worldbank.org/data360-data/data/IMF_WEO/IMF_WEO_GGXWDG_NGDP.csv",
+            "retrieved_at": "2026-10-15T21:10:43.225240Z",
+            "response_sha256": "79c1e31bf2524edaf765dda2477119cc2d84097abd1b03512a964353fd1a47d5",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "debt_india",
+            "period": {
+              "key": "FY2025-26",
+              "label": "FY 2025\u201326",
+              "kind": "fiscal_year",
+              "start": "2025-04-01",
+              "end": "2026-03-31"
+            },
+            "definition": {
+              "group": "debt",
+              "provider": "world_bank_data360",
+              "unit": "percent",
+              "methodology": "imf_weo_general_government_gross_debt_percent_gdp",
+              "status": "estimate",
+              "published_at": null,
+              "publication_note": "IMF WEO via World Bank Data360, Latest Version snapshot. Vintage is the mirror's metadata version date, not an observation publication date. Source A means Normal value. Actual/estimate classification uses the matching WEO appendix's Government Finance latest actual year: 2024. India: FY Apr\u2013Mar, central/state coverage, cash; US: CY Jan\u2013Dec, central/state/local, accrual. Coverage/accounting differences limit comparability. Future source years are excluded.",
+              "vintage_date": "2026-10-13",
+              "source_status": "A: Normal value",
+              "supporting_sources": [
+                {
+                  "role": "metadata",
+                  "url": "https://data360files.worldbank.org/data360-data/metadata/IMF_WEO/IMF_WEO_GGXWDG_NGDP.json",
+                  "response_sha256": "188becca8e104481bb7044adc550c71d5e56b8773a35ee91d0149e6be9ef1c44"
+                },
+                {
+                  "role": "methodology",
+                  "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf",
+                  "response_sha256": "cd4e2829d7e621d43134728bfc128547f776e909e08ef1d38b837e2d39e5ae2a"
+                }
+              ],
+              "inputs": []
+            },
+            "value": "84.260729",
+            "source_url": "https://data360files.worldbank.org/data360-data/data/IMF_WEO/IMF_WEO_GGXWDG_NGDP.csv",
+            "retrieved_at": "2026-10-15T21:10:43.225240Z",
+            "response_sha256": "79c1e31bf2524edaf765dda2477119cc2d84097abd1b03512a964353fd1a47d5",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "debt_us",
+          "unit": "percent",
+          "points": 6,
+          "first": {
+            "series_id": "debt_us",
+            "period": {
+              "key": "2020",
+              "label": "CY 2020",
+              "kind": "calendar_year",
+              "start": "2020-01-01",
+              "end": "2020-12-31"
+            },
+            "definition": {
+              "group": "debt",
+              "provider": "world_bank_data360",
+              "unit": "percent",
+              "methodology": "imf_weo_general_government_gross_debt_percent_gdp",
+              "status": "actual",
+              "published_at": null,
+              "publication_note": "IMF WEO via World Bank Data360, Latest Version snapshot. Vintage is the mirror's metadata version date, not an observation publication date. Source A means Normal value. Actual/estimate classification uses the matching WEO appendix's Government Finance latest actual year: 2025. India: FY Apr\u2013Mar, central/state coverage, cash; US: CY Jan\u2013Dec, central/state/local, accrual. Coverage/accounting differences limit comparability. Future source years are excluded.",
+              "vintage_date": "2026-10-13",
+              "source_status": "A: Normal value",
+              "supporting_sources": [
+                {
+                  "role": "metadata",
+                  "url": "https://data360files.worldbank.org/data360-data/metadata/IMF_WEO/IMF_WEO_GGXWDG_NGDP.json",
+                  "response_sha256": "188becca8e104481bb7044adc550c71d5e56b8773a35ee91d0149e6be9ef1c44"
+                },
+                {
+                  "role": "methodology",
+                  "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf",
+                  "response_sha256": "cd4e2829d7e621d43134728bfc128547f776e909e08ef1d38b837e2d39e5ae2a"
+                }
+              ],
+              "inputs": []
+            },
+            "value": "132.616628",
+            "source_url": "https://data360files.worldbank.org/data360-data/data/IMF_WEO/IMF_WEO_GGXWDG_NGDP.csv",
+            "retrieved_at": "2026-10-15T21:10:43.225240Z",
+            "response_sha256": "79c1e31bf2524edaf765dda2477119cc2d84097abd1b03512a964353fd1a47d5",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "debt_us",
+            "period": {
+              "key": "2025",
+              "label": "CY 2025",
+              "kind": "calendar_year",
+              "start": "2025-01-01",
+              "end": "2025-12-31"
+            },
+            "definition": {
+              "group": "debt",
+              "provider": "world_bank_data360",
+              "unit": "percent",
+              "methodology": "imf_weo_general_government_gross_debt_percent_gdp",
+              "status": "actual",
+              "published_at": null,
+              "publication_note": "IMF WEO via World Bank Data360, Latest Version snapshot. Vintage is the mirror's metadata version date, not an observation publication date. Source A means Normal value. Actual/estimate classification uses the matching WEO appendix's Government Finance latest actual year: 2025. India: FY Apr\u2013Mar, central/state coverage, cash; US: CY Jan\u2013Dec, central/state/local, accrual. Coverage/accounting differences limit comparability. Future source years are excluded.",
+              "vintage_date": "2026-10-13",
+              "source_status": "A: Normal value",
+              "supporting_sources": [
+                {
+                  "role": "metadata",
+                  "url": "https://data360files.worldbank.org/data360-data/metadata/IMF_WEO/IMF_WEO_GGXWDG_NGDP.json",
+                  "response_sha256": "188becca8e104481bb7044adc550c71d5e56b8773a35ee91d0149e6be9ef1c44"
+                },
+                {
+                  "role": "methodology",
+                  "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf",
+                  "response_sha256": "cd4e2829d7e621d43134728bfc128547f776e909e08ef1d38b837e2d39e5ae2a"
+                }
+              ],
+              "inputs": []
+            },
+            "value": "124.376732",
+            "source_url": "https://data360files.worldbank.org/data360-data/data/IMF_WEO/IMF_WEO_GGXWDG_NGDP.csv",
+            "retrieved_at": "2026-10-15T21:10:43.225240Z",
+            "response_sha256": "79c1e31bf2524edaf765dda2477119cc2d84097abd1b03512a964353fd1a47d5",
+            "footnote": "",
+            "retained": false
+          }
+        }
+      ]
+    }
+  },
+  "dashboard": {
+    "api_status": 200,
+    "schema_version": "1",
+    "panels": [
+      {
+        "id": "gdp",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 10
+      },
+      {
+        "id": "debt",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 12
+      },
+      {
+        "id": "trade",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 75
+      },
+      {
+        "id": "gst",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 240
+      },
+      {
+        "id": "inflation",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 84
+      },
+      {
+        "id": "expenditure",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 21
+      }
+    ],
+    "ticker": [
+      {
+        "id": "nse_indices",
+        "label": "NSE indices \u2014 accepted feed pending",
+        "state": "unavailable",
+        "availability": "blocked",
+        "unit": "index_points",
+        "value": null,
+        "previous_close": null,
+        "change_percent": null,
+        "exchange_timestamp": null,
+        "source_url": null,
+        "error_kind": "market_access_unresolved"
+      },
+      {
+        "id": "bse_sensex",
+        "label": "BSE SENSEX \u2014 accepted feed pending",
+        "state": "unavailable",
+        "availability": "blocked",
+        "unit": "index_points",
+        "value": null,
+        "previous_close": null,
+        "change_percent": null,
+        "exchange_timestamp": null,
+        "source_url": null,
+        "error_kind": "market_access_unresolved"
+      }
+    ],
+    "collection_groups": [
+      {
+        "last_attempt_at": "2026-10-15T16:36:32.927101Z",
+        "last_success_at": "2026-10-15T16:36:33.147687Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "gdp",
+        "provider_id": "world_bank_wdi",
+        "next_request_not_before": null,
+        "interval_seconds": 604800
+      },
+      {
+        "last_attempt_at": "2026-10-15T21:10:42.275018Z",
+        "last_success_at": "2026-10-15T21:10:45.073156Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "debt",
+        "provider_id": "world_bank_data360",
+        "next_request_not_before": null,
+        "interval_seconds": 604800
+      },
+      {
+        "last_attempt_at": "2026-10-15T16:36:49.287404Z",
+        "last_success_at": "2026-10-15T16:36:51.822919Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "trade",
+        "provider_id": "commerce",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      },
+      {
+        "last_attempt_at": "2026-10-15T16:36:42.524777Z",
+        "last_success_at": "2026-10-15T16:36:49.269728Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "gst",
+        "provider_id": "gstn",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      },
+      {
+        "last_attempt_at": "2026-10-15T16:36:51.831441Z",
+        "last_success_at": "2026-10-15T16:36:54.582918Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "inflation",
+        "provider_id": "mospi",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      },
+      {
+        "last_attempt_at": "2026-10-15T16:36:54.591884Z",
+        "last_success_at": "2026-10-15T16:36:55.947588Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "inflation_policy",
+        "provider_id": "gazette",
+        "next_request_not_before": null,
+        "interval_seconds": 604800
+      },
+      {
+        "last_attempt_at": "2026-10-15T16:36:33.154473Z",
+        "last_success_at": "2026-10-15T16:36:42.518025Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "expenditure",
+        "provider_id": "cga",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      }
+    ]
+  }
+}

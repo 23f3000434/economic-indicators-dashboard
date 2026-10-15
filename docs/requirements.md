@@ -1,6 +1,6 @@
 # Requirements and verification
 
-The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope from 42d9d4a is hardening and deployment readiness: reproduce/fix concrete defects, reduce artwork cost with deterministic variants and lazy loading, measure desktop/mobile cold loads, reassess design/source gates, verify migrations and isolated backup/restore, and prepare locked separate frontend/API deployment and offline CI. Preserve GDP/authentication, canonical measurements and independent collection. Public deployment remains a later stage. Unavailable debt/market states do not fulfil those required data features.
+The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope from af5ff07 is precise design and data completion: measured Figma reproduction, actual market snapshots, comparable India/US debt, current official-release checks and source-to-screen/visual acceptance. Preserve GDP/authentication, canonical measurements, independent collection and delivery safeguards. Public deployment remains pending completion review. Unavailable debt/market states do not fulfil those required data features.
 
 References read without modification:
 - `Interview_Round_2_Full_Stack_Application_Challenge.docx` supplied from Downloads.
@@ -26,7 +26,7 @@ References read without modification:
 | R13 | Health route; API request/response/auth documentation; environment names; DB setup/migrations; local run instructions | OpenAPI and README review; clean-checkout setup; health does not call upstream providers |
 | R14 | Maintainable, performant, explainable application | Focused tests, asset/bundle review, cached-read performance, stable rendering; document meaningful technical/AI-assisted decisions and their verification |
 
-The SVG is `1248 × 2193`, has outlined text and embedded images, and cannot prove fonts, layout constraints, states, prototypes, or revision parity. Figma connection access was denied; exact inspection is pending. Preserve the design's structure while correcting illustrative numbers, misleading units, copied legends, and unsupported daily debt dates. Record corrections instead of inventing observations.
+The SVG is `1248 × 2193`, with outlined text and embedded images. Browser read-only Properties now establishes Figma frame 1:2's local `2193 × 1248` size and −90° rotation, corresponding to those visual bounds. It also exposes individual layout and typography measurements despite MCP edit-access denial. Record the viewport mapping and measurements in `design-completion.md`; keep reference-sized panels and put extended information in accessible drawers. Correct illustrative numbers, misleading units, copied legends and unsupported daily debt dates without inventing observations.
 
 ## Submission checklist
 

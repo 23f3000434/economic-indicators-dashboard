@@ -35,6 +35,8 @@ class Settings:
     trade_interval: int = 86400
     cpi_interval: int = 86400
     policy_interval: int = 604800
+    debt_interval: int = 604800
+    debt_appendix_url: str = "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf"
     policy_url: str = "https://egazette.gov.in/WriteReadData/2026/271285.pdf"
     macro_groups: tuple[str, ...] | None = None
     collection_budget: int = 600
@@ -68,6 +70,7 @@ class Settings:
                 self.trade_interval,
                 self.cpi_interval,
                 self.policy_interval,
+                self.debt_interval,
             )
         ):
             raise ValueError("Group intervals must be positive")
@@ -81,6 +84,7 @@ class Settings:
             "trade",
             "inflation",
             "inflation_policy",
+            "debt",
         }:
             raise ValueError("Unknown collection group")
         policy = urlsplit(self.policy_url)
@@ -92,6 +96,15 @@ class Settings:
             or not policy.path.endswith(".pdf")
         ):
             raise ValueError("Policy must reference a reviewed official HTTPS Gazette PDF")
+        appendix = urlsplit(self.debt_appendix_url)
+        if (
+            appendix.scheme != "https"
+            or appendix.hostname != "data.imf.org"
+            or appendix.username
+            or appendix.port
+            or not appendix.path.endswith(".pdf")
+        ):
+            raise ValueError("Debt appendix must be an official IMF HTTPS PDF")
         origins = [urlsplit(self.frontend_origin), urlsplit(self.api_origin)]
         if any(o.path or o.query or o.fragment or o.username or not o.hostname for o in origins):
             raise ValueError("Origins must contain only scheme, host and optional port")
@@ -163,6 +176,10 @@ class Settings:
             trade_interval=integer("TRADE_COLLECTION_INTERVAL_SECONDS", 86400),
             cpi_interval=integer("CPI_COLLECTION_INTERVAL_SECONDS", 86400),
             policy_interval=integer("POLICY_COLLECTION_INTERVAL_SECONDS", 604800),
+            debt_interval=integer("DEBT_COLLECTION_INTERVAL_SECONDS", 604800),
+            debt_appendix_url=os.getenv(
+                "DEBT_APPENDIX_URL", cls.__dataclass_fields__["debt_appendix_url"].default
+            ),
             policy_url=os.getenv(
                 "INFLATION_POLICY_URL", "https://egazette.gov.in/WriteReadData/2026/271285.pdf"
             ),

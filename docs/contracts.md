@@ -1,6 +1,6 @@
 # API and data contracts
 
-GDP version 1 remains a compatibility boundary. The multi-provider backend and complete frontend are implemented. The authorised hardening/deployment-readiness stage preserves strict measurement/provenance/period/status contracts; public deployment remains later. Historical proof examples are evidence, never application inputs.
+GDP version 1 remains a compatibility boundary. The authorised completion stage from af5ff07 adds verified market/debt data and precise design acceptance while preserving strict measurement/provenance/period/status contracts and independent collection. Public deployment remains pending review. Historical proof examples are evidence, never application inputs.
 
 ## Data read boundary
 
@@ -47,7 +47,7 @@ Provider cooldown deadlines persist independently of attempts and survive restar
 | Metric | Unit, period, and calculations |
 | --- | --- |
 | GDP India/World | WDI `NY.GDP.MKTP.KD.ZG`, annual real GDP growth in percent. India source year `Y` maps to FY `Y–Y+1` (Apr–Mar); World is the published annual aggregate. Show the reporting-window difference. Card change = current growth minus prior annual growth, in pp. |
-| India/US debt | Proposed IMF general-government gross debt/GDP, percent, annual. Show coverage, fiscal/calendar basis, vintage, and estimate status. Never substitute external or central-government debt without an explicit definition change. Change in pp; values above 100% are valid. |
+| India/US debt | IMF WEO GGXWDG_NGDP via official World Bank Data360 mirror, percent, annual. India FY Apr–Mar (central/state, cash); US CY Jan–Dec (central/state/local, accrual), with explicit comparability caveat. Store mirror vintage and original status plus metadata/appendix hashes. The matching WEO appendix supplies latest-actual-year cutoffs; later values are estimates. Source flag A alone is not proof of actual status. Change in pp; values above 100% are valid. |
 | Trade | Merchandise only, source USD million converted to USD billion by `/1000` when needed. Balance = exports − imports, with negative deficits supported. FYTD/prior FYTD compare identical months; annual chart uses completed FYs. YoY amount change uses `(current/prior − 1) × 100`, null if prior is zero or absent. |
 | GST | Gross collections before refunds, stored INR crore. Display ₹ lakh crore using `/100000`. FYTD average = sum of published FY months / number of months; never divide an incomplete year by 12. Annual bars = gross total, line = total/12 only for a complete year, both on the same monetary scale. Cards compare matching periods. |
 | Inflation | All-India combined headline CPI YoY rate in percent, monthly. Badge is rate minus prior month's rate, in pp. Policy target/tolerance is a dated policy value, not a monthly economic observation. Keep CPI base changes explicit. |
@@ -108,6 +108,8 @@ Cookie/security basis: [MDN cookie scope and SameSite](https://developer.mozilla
 Cloud persistence, HTTPS/DNS cookies and Figma fidelity remain external acceptance gates. The completed multi-provider backend stage established the dashboard read boundary; the current frontend stage consumes that aggregate while preserving GDP v1.
 
 ## Additional indicator measurements
+
+Debt uses existing measurement storage, without a migration or mutable catalogue table. Definition adds optional `vintage_date`, `source_status`, and `supporting_sources[{role: metadata|methodology, url, response_sha256}]`; defaults preserve earlier snapshots. Fetch stable Data360 Latest Version CSV/metadata and a configured, reviewed official WEO appendix. Reject a metadata/appendix vintage mismatch, changed country coverage/units, duplicate or negative debt values. Collect the configured reporting window plus a comparison year, ending at the previous source year; do not silently present future WEO projections as observations. Expected scope includes both countries' requested source-year keys, so omissions retain old provenance/stale flags. `GET /api/v1/panels/debt` and the aggregate are authenticated, database-only projections.
 
 Migration 003 preserves GDP observations and permits unknown dataset-update dates as SQL NULL. Non-GDP observations add a group and a validated JSON snapshot containing `period` and `definition`; no new mutable catalogue, revision or chart tables. Original URL, response SHA-256, retrieval time, value and retention flag remain authoritative columns. Snapshotting semantics prevents a later code/catalogue change from silently reinterpreting old values.
 

@@ -17,6 +17,7 @@ from fastapi.testclient import TestClient
 from tests.conftest import PASSWORD, fixture_response, login
 from tests.test_cga import body as cga_body
 from tests.test_cga import cga_response
+from tests.test_debt import debt_response
 from tests.test_gst import gst_response
 from tests.test_inflation import inflation_response
 from tests.test_trade import trade_response
@@ -26,6 +27,8 @@ def provider_response(request):
     host = request.url.host
     if host == "api.worldbank.org":
         return fixture_response(request)
+    if host in {"data360files.worldbank.org", "data.imf.org"}:
+        return debt_response(request)
     if host in {"cga.gov.in", "cga.nic.in"}:
         return cga_response(request)
     if host in {"www.gst.gov.in", "tutorial.gst.gov.in"}:
@@ -51,9 +54,9 @@ def test_all_paths_dashboard_offline_reads_and_independent_failure(settings, clo
         Dashboard.model_validate(payload)
         panels = {p["id"]: p for p in payload["panels"]}
         assert set(panels) == {"gdp", "debt", "trade", "gst", "inflation", "expenditure"}
-        assert all(p["state"] == "ready" for k, p in panels.items() if k != "debt")
-        assert panels["debt"]["state"] == "unavailable" and panels["debt"]["availability"] == "blocked"
-        assert panels["debt"]["series"] == [] and panels["debt"]["collection"] == []
+        assert all(p["state"] == "ready" for p in panels.values())
+        assert panels["debt"]["availability"] == "implemented"
+        assert len(panels["debt"]["series"]) == 2 and len(panels["debt"]["collection"]) == 1
         assert len(payload["ticker"]) == 2 and all(
             t["value"] is None and t["exchange_timestamp"] is None and t["availability"] == "blocked"
             for t in payload["ticker"]
@@ -65,6 +68,7 @@ def test_all_paths_dashboard_offline_reads_and_independent_failure(settings, clo
             "trade",
             "inflation",
             "inflation_policy",
+            "debt",
         }
         # Every card/derived/table input reference resolves inside its canonical panel.
         for k, p in panels.items():

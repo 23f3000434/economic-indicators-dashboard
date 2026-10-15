@@ -32,7 +32,9 @@ def main():
     commands.add_parser("read-dashboard")
     collect = commands.add_parser("collect")
     collect.add_argument(
-        "groups", nargs="+", choices=["gdp", "expenditure", "gst", "trade", "inflation", "inflation_policy"]
+        "groups",
+        nargs="+",
+        choices=["gdp", "debt", "expenditure", "gst", "trade", "inflation", "inflation_policy"],
     )
     args = parser.parse_args()
     if args.command == "restore":

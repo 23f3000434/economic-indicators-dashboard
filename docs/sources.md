@@ -1,5 +1,16 @@
 # Source verification
 
+## Completion checkpoint — 16 October 2026 IST
+
+Debt is now implemented and proved through actual official responses → validation → private SQLite → authenticated API. [Public evidence](evidence/2026-10-16/debt-live.json) records the World Bank Data360 IMF WEO mirror's metadata vintage 13 October 2026 and original response/supporting-source hashes. The matching [official WEO appendix](https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf) supplies India/US reporting conventions, coverage/accounting and latest actual government-finance years. India FY2025–26 is 84.260729% (estimate); US CY2025 is 124.376732% (actual). India coverage is central/state and cash; US includes local government and uses accrual. These differences limit cross-country comparability. Source flag A means Normal value, not actual.
+
+The stable CSV/metadata routes work without credentials. The IMF dataset listing and whole-workbook route returned403 in this runtime; the appendix PDF returned200. New mirror vintages must match a reviewed DEBT_APPENDIX_URL; mismatch preserves the prior data and marks collection stale. This replaces the earlier debt-blocked checkpoint below. No external/central-government substitute was used.
+
+Figma read-only browser Properties works for frame1:2; connector edit restrictions do not prevent inspection. Measurements and font requirements are recorded in [design-completion.md](design-completion.md).
+
+Market verification now has actual authenticated Upstox200 quote responses for SENSEX, NIFTY BANK and NIFTY IT, plus exchange status. NSE public allIndices200 independently agrees on the NIFTY observations and previous closes. Credential is server-only/ignored. Adapter integration and source-to-screen acceptance are still in progress at this checkpoint. The BSE public summary is reachable but lacks an exchange timestamp and is not promoted as the ticker feed.
+
+
 Initial verification on 15 October 2026; bounded debt/market and Figma rechecks on 16 October (IST), from this workstation with network-enabled execution. **No source has been tested from Render.** Transport reports are diagnostic evidence; their successful HTTP status is not a working collector. The GDP baseline and subsequent multi-provider proofs establish the implemented paths below; see [adapter evidence and coverage](multi-provider.md).
 
 - **Proven:** actual source responses validated and passed through SQLite/readback into the agreed panel contract, for the stated series/window only.
