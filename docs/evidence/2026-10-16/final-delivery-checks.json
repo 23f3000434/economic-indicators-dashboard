@@ -51,6 +51,23 @@
       "initial_unpushed_commits": 11,
       "actions_enabled": true,
       "initial_workflow_runs": 0
+    },
+    {
+      "check": "Markdown anchors and post-commit configured-secret scan",
+      "anchors": 4,
+      "tracked_files": 280,
+      "status": "passed"
+    },
+    {
+      "check": "Render YAML parse and declarations",
+      "status": "passed",
+      "verified": [
+        "one instance",
+        "1 GB disk at /var/data",
+        "prompted server-only Upstox secret",
+        "three independently generated auth secrets"
+      ],
+      "host_validation": false
     }
   ],
   "accepted_input": {
@@ -58,7 +75,7 @@
   },
   "hosting_inspection": {
     "render_dashboard": "existing workspace accessible",
-    "cloudflare_dashboard": "user completed sign-in; domain overview has no configured zones",
+    "cloudflare_dashboard": "User completed sign-in personally; authenticated domain overview reports no configured zones",
     "project_services_created": false,
     "dns_changes": false,
     "billable_actions": false
@@ -73,5 +90,67 @@
       "private off-host backup operation and evaluation handoff"
     ]
   },
-  "submission": "Portfolio/project links supplied separately per user; post-assessment recording remains an external deliverable"
+  "submission": "Portfolio/project links supplied separately per user; post-assessment recording remains an external deliverable",
+  "recorded_at": "2026-10-16T07:34:55.034946+00:00",
+  "github_delivery": {
+    "repository": "https://github.com/23f3000434/economic-indicators-dashboard",
+    "visibility": "PRIVATE",
+    "branch": "main",
+    "verified_commit": "da53013dbecb3819136ae65168a75a8942bf214b",
+    "push": "succeeded from 42d9d4a to da53013",
+    "workflow_url": "https://github.com/23f3000434/economic-indicators-dashboard/actions/runs/38866759432",
+    "workflow_run_id": 38866759432,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "python": "3.12.14",
+    "uv": "0.10.2",
+    "node": "22.23.3",
+    "started_at": "2026-10-16T07:22:07Z",
+    "completed_at": "2026-10-16T07:32:31Z",
+    "backend": {
+      "passed": 107,
+      "subtests_passed": 9,
+      "failed": 0,
+      "seconds": 90.38
+    },
+    "frontend_units": {
+      "passed": 17,
+      "failed": 0,
+      "files": 3,
+      "seconds": 1.02
+    },
+    "compiled_browser": {
+      "passed": 27,
+      "failed": 0,
+      "duration_display": "7.4m",
+      "workers": 1,
+      "complete_suite": true
+    },
+    "other_checks": [
+      "locked dependency installation",
+      "npm audit: zero vulnerabilities",
+      "Ruff",
+      "Prettier",
+      "21 artwork variants/hash checks; resized pixel proof reused, not repeated",
+      "8 frontend origin/CSP configurations",
+      "allowlisted 27-package API without pytest/Pillow or tests/fixtures",
+      "strict TypeScript and Vite production builds",
+      "production artifact origins/CSP/hashed-assets/no-test-data checks"
+    ],
+    "warnings": [
+      "Existing Starlette HTTPX test-client deprecation",
+      "Existing rotated-PDF text diagnostics; strict parser fixtures and all tests passed"
+    ],
+    "provider_network_used_for_tests": false,
+    "deployed_by_workflow": false,
+    "followup": "Only Markdown/JSON evidence is updated after this successful run. Application, dependencies, tests and build/deployment configuration remain identical; no repeat full suite for the documentation-only record."
+  },
+  "final_document_check": {
+    "checked_at": "2026-10-16T07:36:14.261347+00:00",
+    "local_markdown_targets": 162,
+    "anchors": 4,
+    "tracked_paths_scanned_for_configured_secrets": 280,
+    "status": "passed",
+    "application_build_test_config_unchanged_since_verified_commit": true
+  }
 }

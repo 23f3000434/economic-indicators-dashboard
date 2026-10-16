@@ -2,6 +2,17 @@
 
 **Final delivery from 596e4a7:** reuse the dated local evidence below; current delivery/remote CI/production results are in [delivery-status.md](delivery-status.md). All debt/market paths are implemented locally. The user accepted the documented Roboto fallback on 16 October; exact Segoe identity is not claimed. Deployment is authorised with concrete inputs and remains unverified until actually performed.
 
+## Final delivery: remote Linux acceptance
+
+[GitHub run 38866759432](https://github.com/23f3000434/economic-indicators-dashboard/actions/runs/38866759432) passed on **da53013dbecb3819136ae65168a75a8942bf214b** (16 October 2026, 07:22:07–07:32:31 UTC), using Ubuntu 24.04/Python 3.12.14 / uv 0.10.2 / Node 22.23.3:
+
+- Backend **107 passed + 9 subtests**, 90.38s; frontend **17/17 units**, 1.02s.
+- One complete, sequential compiled browser suite **27/27 passed**, 7.4m, including cross-tab dialog/data clearing, reload/renewal/expiry/logout, concurrency/interrupted refresh, canonical panels/controls, gaps/failures/recovery and the focused tooltip/selection/seamless-ticker checks. No retries, assertion changes or application repairs were needed in this run.
+- Ruff, Prettier, locked installs, npm audit(0 vulnerabilities), 21 artwork variant/hash checks, 8 origin/CSP configurations, allowlisted 27-package API isolation and strict TypeScript/Vite/production-artifact checks passed. This run did not repeat resized-pixel identity measurements; earlier artwork proof remains linked.
+- The existing Starlette HTTPX deprecation and rotated-PDF text diagnostics remain visible. Neither caused a failure. No live providers, production accounts, fixtures in the normal runtime, DNS changes or deployment were part of CI.
+
+Local delivery/recovery tests **12/12** and read-only frontend/docs/OpenAPI/health 200, protected dashboard/ticker 401 and test/database paths 404 also passed. [Sanitised delivery record](evidence/2026-10-16/final-delivery-checks.json) includes exact boundaries. The subsequent Markdown/JSON-only handoff commit preserves the verified application/configuration and skips a redundant full suite. Production smoke remains **not run** until actual release inputs are configured. User accepted the Roboto fallback; exact Segoe/pixel identity remains a disclosed difference.
+
 ## Completion and interaction baseline
 
 Completion stage from af5ff07: measured Figma reproduction, real market snapshots, comparable debt and official-release/source-to-screen verification. Public deployment remains pending. The dated sections below are historical checkpoints; their former debt/market/Figma gates are superseded by the current completion evidence in [design-completion.md](design-completion.md).
