@@ -1,6 +1,6 @@
 # Current frontend and design acceptance
 
-Current stage from af5ff07 completes measured design/data integration locally. Public deployment remains pending review. Earlier expanded panels and debt/market placeholders are replaced; GDP v1, authentication and independent collection remain compatible.
+The implementation completed through 596e4a7 is preserved during final delivery. Deployment is now authorised subject to actual release inputs; hosted acceptance is recorded separately in delivery-status.md. The user accepted the documented Roboto fallback on 16 October, with the Segoe UI difference still disclosed. Earlier expanded panels and debt/market placeholders are replaced; GDP v1, authentication and independent collection remain compatible.
 
 ## Data flow
 

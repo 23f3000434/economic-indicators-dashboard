@@ -1,6 +1,6 @@
 # Design and data completion (from af5ff07)
 
-Public deployment is pending completion review. This stage implements the measured reference layout and actual market/debt paths while preserving authentication, GDP v1 and independent collection. Exact Segoe UI typography remains pending. Fixtures remain test-only.
+The measured layout and actual market/debt paths are implemented locally through 596e4a7, preserving authentication, GDP v1 and independent collection. Final deployment is now authorised subject to concrete release inputs. The user accepted the documented Roboto fallback on 16 October 2026; Segoe UI/pixel identity is not claimed. Fixtures remain test-only. Current delivery/hosted acceptance is in [delivery-status.md](delivery-status.md).
 
 ## Reference access and viewport mapping
 
@@ -50,9 +50,9 @@ Measured heading offsets **inside each panel**: GDP 26/26, debt 28/23, trade 37/
 | Ticker SENSEX / values | Segoe UI 600,17.08px; line height 21.32px; positive #69F6B8 |
 | Ticker NIFTY BANK label | Manrope 700,17.08px; line height 21.32px |
 
-Measured illustration slots inside cards: exports 86.12×58 at157.88/48; imports84×70.14 at161/41; inflation106×87 at140/29; target99×98.45 at162/28; GST107.12×107.12 at164/25; GST average91×84 at168/35; total96×96.54 at159/30; capital99×99 at156/24. Preserve original SVG clipping and image transforms, including artwork extending beyond its frame. These are not generic interchangeable icon sizes.
+Measured illustration slots inside cards: exports 86.12×58 at 157.88/48; imports84×70.14 at 161/41; inflation106×87 at 140/29; target99×98.45 at 162/28; GST107.12×107.12 at 164/25; GST average91×84 at 168/35; total96×96.54 at 159/30; capital99×99 at 156/24. Preserve original SVG clipping and image transforms, including artwork extending beyond its frame. These are not generic interchangeable icon sizes.
 
-Roboto and Manrope can be self-hosted under their OFL licences. Segoe UI is proprietary; licensed webfonts or the user's acceptance of an installed-font/fallback approach are pending. Do not claim a fallback is the exact Figma font.
+Roboto and Manrope are self-hosted with their OFL licences. The user accepted the installed-Segoe/Roboto fallback approach on 16 October 2026 during final delivery. No proprietary Segoe webfonts are distributed. The fallback remains a documented difference from Figma, never an exact-font claim.
 
 ## Necessary content corrections
 
@@ -77,11 +77,11 @@ These are proven local application paths, not documentation-only collectors. Pro
 | --- | --- | --- |
 | World Bank WDI GDP | Annual source year 2025: India FY2025–26 7.56666179284244%; World CY2025 2.92127318539153%. Dataset updated 8 Oct 2026; individual publication date is not supplied. | Proven source → validation → SQLite → protected API → UI |
 | IMF WEO, official World Bank Data360 mirror | Vintage 13 Oct 2026; India FY2025–26 84.260729% estimate; US CY2025 124.376732% actual. Same headline general-government gross-debt/GDP definition; institutional coverage/accounting and FY/CY differences remain explicit. | Proven; direct IMF listing/workbook403 routes are superseded by the retrievable official mirror/appendix path |
-| Commerce / PIB merchandise trade | September 2026 exports44.40/imports74.61/balance−30.21 USD billion, released15 Oct. Matching prior month/FYTD comparisons. The live PIB index fixes the older Commerce archive's August lead. | Proven; five completed FYs plus explicit current/prior published monthly/FYTD windows. Other monthly gaps remain null. |
-| GSTN | September 2026 gross excluding compensation cess203,521 INR crore, released1 Oct. Annual totals/averages and FYTD averages derive from published months. April2020–September2026 coverage. | Proven; the recorded compensation-cess assumption remains explicit |
-| MoSPI CPI | All-India combined September2026 YoY5.54%, released12 Oct, base2024=100, provisional. Last base2012 release ends December2025; no bridge across bases. | Proven |
+| Commerce / PIB merchandise trade | September 2026 exports44.40/imports74.61/balance−30.21 USD billion, released 15 Oct. Matching prior month/FYTD comparisons. The live PIB index fixes the older Commerce archive's August lead. | Proven; five completed FYs plus explicit current/prior published monthly/FYTD windows. Other monthly gaps remain null. |
+| GSTN | September 2026 gross excluding compensation cess203,521 INR crore, released 1 Oct. Annual totals/averages and FYTD averages derive from published months. April 2020–September 2026 coverage. | Proven; the recorded compensation-cess assumption remains explicit |
+| MoSPI CPI | All-India combined September 2026 YoY5.54%, released 12 Oct, base2024=100, provisional. Last base2012 release ends December 2025; no bridge across bases. | Proven |
 | Gazette inflation policy | S.O.1580(E),25 Mar2026: target4%, tolerance2–6%, valid1 Apr2026–31 Mar2031. Applied only within validity. | Proven; successor notification requires review/configuration |
-| CGA expenditure | Latest published selector: August2026; FY2026–27 April–August actual revenue1,568,009 + capital509,949 = total2,077,958 INR crore. Publication date not supplied; not replaced with retrieval time. BE/RE excluded. | Proven; five completed FYs plus matching current/prior FYTD |
+| CGA expenditure | Latest published selector: August 2026; FY2026–27 April–August actual revenue1,568,009 + capital509,949 = total2,077,958 INR crore. Publication date not supplied; not replaced with retrieval time. BE/RE excluded. | Proven; five completed FYs plus matching current/prior FYTD |
 | NSE NIFTY BANK / NIFTY IT | Actual previous-close fields and official index-listing timestamps; minute precision. Today's changing quotes reached normal storage/API/UI. Older cached responses are rejected. | Proven locally; fresh open state Snapshot, delayed/stale when warranted; no latency SLA asserted |
 | BSE SENSEX via Upstox | Actual `BSE_INDEX|SENSEX` quotes, exchange milliseconds, documented net-change comparison. Read-only Analytics Token verified. Separate exchange statuses and dated regular-session timings establish live/closed classification. | Proven locally; exact source attribution visible. Public BSE summary without a timestamp is not used. |
 
@@ -97,7 +97,7 @@ These normal-application captures were recorded at 09:42–09:49 IST on 16 Octob
 
 The comparison separates: (1) verified frame/panel/plot bounds and original decorative artwork, (2) necessary changes for real units, reporting windows, annual debt, CPI methodology, null gaps and signed comparisons, (3) functional account/details/source controls within the original footprint, and (4) the unresolved Segoe UI font difference. Real values, period counts and chart ranges cannot equal the illustrative marks. The original static masthead title remains outlined source artwork. No full-reference screenshot or sample economic curve is part of the production UI.
 
-**Exact typography remains pending.** Roboto Medium500/20px headings and Manrope are loaded/verified. Segoe UI is not installed locally; cards, axes and SENSEX currently render Roboto fallback. Licensed Segoe UI webfonts or the user's acceptance of the installed-font/fallback approach are required before calling the design fully accepted. The browser Properties connection works; additional Figma edit access is not required. A frame-export download timed out, so SVG plus measured Properties remains the comparison basis. No prototype/alternate/mobile interaction states were supplied or inferred.
+**Accepted typography deviation (16 October 2026).** Roboto Medium500/20px headings and Manrope are loaded/verified. Segoe UI is not installed locally; cards, axes and SENSEX render Roboto fallback. The user explicitly accepted this fallback during final delivery. This resolves the font release input; exact Segoe UI/pixel identity is not claimed. The browser Properties connection works; additional Figma edit access is not required. A frame-export download timed out, so SVG plus measured Properties remains the comparison basis. No prototype/alternate/mobile interaction states were supplied or inferred.
 
 Cold local Chrome measurements (cache disabled; response overhead included) keep desktop artwork near 399 KiB at 1× and 798 KiB at 2×. Mobile starts near 334 KiB/603 KiB and defers lower-panel artwork until scrolling; full artwork near394/785 KiB. These are transfer measurements, not production CDN/Lighthouse claims. [Detailed measurements](evidence/2026-10-16/completion-performance.json) record requests and geometry. Original resized RGBA identity, 20 decorative layout hashes and CSP image rendering are verified. No production CSP weakening was necessary.
 
@@ -105,7 +105,7 @@ Cold local Chrome measurements (cache disabled; response overhead included) keep
 
 The subsequent focused interaction pass preserves the measured layout while replacing the tall provenance tooltip with a compact selection overlay and adding continuous accessible quote scrolling. [Current desktop capture](evidence/2026-10-16/interaction-desktop.png) and [mobile capture](evidence/2026-10-16/interaction-mobile.png) show the normal application after those repairs; [two-poll source/UI evidence](evidence/2026-10-16/interaction-live.json) preserves actual prices, exchange timestamps and labels. See verification.md for the focused checks; these additions do not establish exact Segoe UI acceptance or public deployment.
 
-- Licensed Segoe UI webfonts, or an explicit acceptance of the provisional fallback; final visual review distinguishes data corrections from font differences.
+- Font input resolved: user accepted the documented Roboto fallback on 16 October. Keep its visual difference and the separate real-data corrections visible in the submission.
 - Replace the token supplied through chat before production; confirm the accepted market display/redistribution arrangement for the deployed audience.
-- The agreed controlled domain/two HTTPS origins, deployment account/project access, actual proxy trust/mount/egress/cookie checks and private off-host backup operation remain the later deployment stage. None is claimed as already deployed.
+- The agreed controlled domain/two HTTPS origins, deployment account/project access, actual proxy trust/mount/egress/cookie checks and private off-host backup operation are part of the now-authorised final delivery stage. Account/domain/provider inputs and actual hosted acceptance are tracked in delivery-status.md; none is claimed as already deployed.
 - Final submission still needs deployed frontend/API/docs/health URLs, separately shared evaluation credentials, portfolio/project role links and the required post-assessment recording. Rehearsal remains outside the repository.

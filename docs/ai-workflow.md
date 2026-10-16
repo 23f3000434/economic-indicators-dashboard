@@ -1,0 +1,25 @@
+# AI-assisted engineering workflow
+
+This project used the Codex coding assistant throughout planning, implementation and verification. This record describes work performed, not a claim that generated code was correct without checking it. The owner remains responsible for the submitted application. No interview rehearsal or personal presentation script belongs here.
+
+| Task | Actual use of AI/tools | How the result was checked |
+| --- | --- | --- |
+| Assignment and architecture | Extracted the supplied DOCX, distinguished its requirements from the user's authorised stage, proposed architecture/contracts and alternatives. The user selected independent scheduled collection/private SQLite and refreshable server-revocable sessions. | Requirements mapping, accepted decision log and explicit stage checkpoints. No assumption that a document itself authorises external actions. |
+| Source feasibility and adapters | Wrote bounded diagnostic probes and source parsers; inspected real public responses, official method/metadata/release discovery and reporting definitions. Tested one source-to-storage-to-protected-read path at a time. | Reviewed byte-hashed fixtures, Decimal/reconciliation/status/period checks and actual live proof records. Distinguished DNS restrictions, HTTP403, timeout, TLS and unsuitable coverage. A publication link never counted as a collector. |
+| Authentication and collector reliability | Implemented and revised JWT/session rotation, logout identity rules, pending/confirm recovery, per-provider cooldown/history and exact finished-run storage recovery. | Negative tests and real-browser concurrent/lost-response/expiry/logout checks. Reproduced bugs before repairs; did not relax strict cross-tab dialog/data-clearing assertions. |
+| Frontend and Figma translation | Built the canonical dashboard, selectors/formatters, controls, loading/error recovery and measured styling. Inspected read-only Figma Properties and SVG instead of equating MCP edit denial with inaccessible design. |1214×2159 and mobile screenshots, individual panel/plot/font measurements, canonical card/chart/tooltip/table checks. Documented corrected illustrative units and accepted Roboto fallback. |
+| Artwork and interactions | Used deterministic Pillow resizing/compression of supplied artwork, not AI-generated replacements. Repaired tooltip selection/scale/stacking and quote loop continuity. | Hash/alpha/pixel checks, cold-transfer measurements, pointer/tap/keyboard browser checks and normal-application visual inspection. Found the325px ticker seam and band-start crosshair offset by inspection, then verified repairs. |
+| Delivery | Prepared locked runtime/build/security rules, allowlisted artifacts, CI, online backup/isolated restore and engineering/submission documentation. | Runtime exclusion/control-route checks, production-origin/CSP guards, migration/recovery evidence and current release checklist. Local checks do not establish a successful cloud deployment. |
+
+AI was useful for connecting parsing, API contracts, stateful UI and failure tests across the stack, and for producing reproducible probes/documentation. Its outputs needed correction: the initial consume-on-send refresh design could strand interrupted requests; the older Commerce archive did not prove the latest release; pointer/crosshair and ticker seam defects were found in browser checks. These corrections and remaining limits are retained in the evidence rather than hidden behind an all-green claim.
+
+## Evidence that can be inspected
+
+- [Decision chronology](decisions.md) and [requirements](requirements.md): user decisions, authorised stages, assumptions and scope.
+- [Source register](sources.md), [debt proof](evidence/2026-10-16/debt-live.json), [current macro releases](evidence/2026-10-16/macro-release-check.json): source identity, dates, hashes, coverage and definitions.
+- [Actual market failure/recovery](evidence/2026-10-16/market-flow.json) and [two real polling cycles](evidence/2026-10-16/interaction-live.json): exchange times and actual changes, including unchanged/delayed snapshots.
+- [Design comparison/fonts](design-completion.md) and [measured geometry](evidence/2026-10-16/geometry-fonts.json): browser Properties access, fixed bounds and the Segoe fallback difference.
+- [Recovery](evidence/2026-10-16/recovery-v4.json):412 observations,3 quotes and2 status rows preserved, restored sessions removed, original database untouched.
+- [Verification chronology](verification.md): passed checks plus failed attempts, repairs and the previous full-suite22/23 result followed by a focused repair. Current CI results are recorded separately in [delivery status](delivery-status.md).
+
+The code, direct parameterized SQL, migrations, fixtures and tests are reviewable in Git. No hidden production reference dashboard, invented live prices, secret transcript, externally shared passwords or recording is supplied as verification. The required post-assessment recording must be made by the owner in their own words, covering the actual implementation and these decisions; it has not been recorded by the assistant.

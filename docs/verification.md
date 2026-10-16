@@ -1,4 +1,8 @@
-# Current completion verification
+# Verification record
+
+**Final delivery from 596e4a7:** reuse the dated local evidence below; current delivery/remote CI/production results are in [delivery-status.md](delivery-status.md). All debt/market paths are implemented locally. The user accepted the documented Roboto fallback on 16 October; exact Segoe identity is not claimed. Deployment is authorised with concrete inputs and remains unverified until actually performed.
+
+## Completion and interaction baseline
 
 Completion stage from af5ff07: measured Figma reproduction, real market snapshots, comparable debt and official-release/source-to-screen verification. Public deployment remains pending. The dated sections below are historical checkpoints; their former debt/market/Figma gates are superseded by the current completion evidence in [design-completion.md](design-completion.md).
 
@@ -29,7 +33,7 @@ See [completion-checks.json](evidence/2026-10-16/completion-checks.json) for the
 - Initial new pointer/tap checks failed pinning, and were repaired with native pointer events plus the chart's mapped category centres. Screenshot inspection also caught the initial band-start crosshair offset; explicit band centres repair both the crosshair alignment and selection on either grouped bar. Focused assertions check both bars and compare crosshair/tick coordinates without increasing timeouts or weakening expectations. Canonical missing observations have no fabricated bars/dots. Full notes remain accessible inside Details.
 - Normal Chrome inspection confirms compact GDP/debt tooltips, accurate FY/CY and estimate/actual labels, crosshairs/active marks, native manual quote scrolling/focus pause, and zero trailing seam gap. The normal-source proof records three actual stored snapshots across two automatic polling intervals; original quote values, exchange times and statuses agree with the UI. See [interaction evidence](evidence/2026-10-16/interaction-live.json) and [recorded checks](evidence/2026-10-16/interaction-checks.json).
 
-Current screenshots: [desktop tooltip](evidence/2026-10-16/interaction-preview.png), [full desktop](evidence/2026-10-16/interaction-desktop.png), [mobile](evidence/2026-10-16/interaction-mobile.png). They use the normal application and real stored observations, not the fixture server. Segoe UI fallback, public market display/credential rotation, production hosting/domain/recovery acceptance and final submission deliverables remain open as listed in design-completion.md. No deployment occurred.
+Current screenshots: [desktop tooltip](evidence/2026-10-16/interaction-preview.png), [full desktop](evidence/2026-10-16/interaction-desktop.png), [mobile](evidence/2026-10-16/interaction-mobile.png). They use the normal application and real stored observations, not the fixture server. At that checkpoint the Segoe fallback decision was open; the user has since accepted it explicitly. Public market display/credential rotation, production hosting/domain/recovery and final handoff remain tracked in delivery-status.md. No deployment occurred.
 
 ## Earlier checkpoint records
 
@@ -103,4 +107,4 @@ Existing version-1 migrations preserve GDP/auth; current version-3 migration is 
 
 Locked API/frontend runtime assembly builds locally. A fresh normal API process has no tests/fixture imports or control routes; actual normal HTTP checks also return 404 for test and database-file paths. Development dependencies are absent from the API artifact. npm audit is zero after the targeted test-tool patch; the public API-package advisory lookup returns no matches. These are scoped checks, not a comprehensive security audit.
 
-The GitHub workflow is prepared and pins official Actions commits; it has not run remotely. No public deployment occurred. Actual controlled-domain cookies, DNS/HTTPS/CORS, Linux CI/source egress/trust, persistent mount/redeploy/proxy acceptance and off-host backup operation remain pending. Debt/market data and exact design acceptance still fail the corresponding assignment completion gates; unavailable UI states do not complete those features. See the [ready/blocked deployment checklist](deployment.md).
+At this historical hardening checkpoint the GitHub workflow had not run remotely and no deployment occurred. Its debt/market and Figma gates were subsequently resolved locally; those former unavailable states no longer describe the implementation. Actual final-delivery remote/hosted results are tracked in [delivery status](delivery-status.md).

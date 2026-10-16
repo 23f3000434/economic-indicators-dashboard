@@ -1,0 +1,39 @@
+# Bounded production acceptance
+
+**Not executed yet.** This procedure targets only the ordinary deployed application, with actual stored provider data and a dedicated private evaluation account. It must not use `tests.browser_server`, fixtures, synthetic clocks, test endpoints or the local smoke credential file. Record actual results in [delivery status](delivery-status.md); never mark a planned step passed.
+
+## Entry conditions
+
+- Reviewed release commit and passing relevant CI; frontend/API hosted separately at the controlled same-site HTTPS subdomains.
+- Compiled frontend API origin, exact CORS/CSRF origin and Secure host-only refresh cookie; no insecure production override.
+- One API worker/replica, mounted private SQLite, migrations applied, reviewed actual ingress trust, distinct host-managed secrets, rotated Upstox credential and permitted market audience/display arrangement.
+- Dedicated account privately provisioned on the mounted production database. Backup path private; no secret values or auth bodies in captured output.
+
+## Procedure and time bound
+
+Allow about 20 minutes for the foreground sign-in/renewal pass, plus one controlled API restart and readiness wait of at most 3 minutes. Check health at most every 5 seconds during that wait, then stop/report a failure. Two automatic ticker cycles take about 60–90 seconds. A source that is blocked/overdue remains a failed or pending acceptance item; do not poll indefinitely or fetch more aggressively to force green.
+
+| Check | Action and pass criterion | Safe evidence |
+| --- | --- | --- |
+| Origins/build/TLS | Open both HTTPS origins; confirm valid certificates and the frontend's public `build-config.json` points at the exact API origin. Inspect returned Pages CSP/security/cache headers and API health/docs. No test/local origin in bundle. | URLs, release/build identifiers, response codes and non-secret headers. |
+| Health/protection | Public `/healthz`200 with DB ready/collectors running; `/docs` and `/openapi.json`200. Unauthenticated `/api/v1/dashboard`, `/api/v1/ticker`, `/api/v1/panels/gdp`401. Test-control/static DB paths 404. | Status codes only; no database files or route-debug output. |
+| CORS/CSRF | Frontend requests receive only its exact allow-origin plus credentials. Foreign-origin preflight does not grant CORS; missing/foreign Origin/custom-header cookie mutations are403. Use invalid bodies/credentials for negative checks without logging real credentials. | Allowed/disallowed origin and response codes. |
+| Sign-in/reload | With third-party cookies blocked, sign in; all six panels and three indices resolve stored data. Verify `__Host-refresh` Secure/HttpOnly/Strict/Path=/, no Domain. Reload and observe session bootstrap → refresh → confirm without sign-in prompt. JWT/CSRF stay out of localStorage/sessionStorage. | Redacted cookie attributes and route names/statuses; never cookie/token contents. |
+| Automatic renewal | Keep a visible normal tab through the 15-minute JWT renewal point within the 20-minute bound. Observe successful refresh/confirm and subsequent protected reads, unchanged absolute session deadline and no sign-in loop. | Timestamps/statuses and deadline only, no auth response bodies. |
+| Interaction/layout | At1214×2159 and390×844 check panel bounds, fonts/fallback, period/legend controls, compact tooltip/crosshair/active mark, click/tap/Escape/outside dismissal and accessible Details tables. Canonical selected card/table/tooltip values agree; nulls remain gaps. | Cropped app-only screenshots without account details; source/period/value comparisons. |
+| Ticker/state | Capture initial and two automatic ticker polls. Compare protected quote value/change/exchange timestamp/source/status with the visible strip. Unchanged prices are valid; source time must not regress. Verify Snapshot/Delayed/Stale/Closed/Live against exchange time and independently stored schedule. Pause/manual/reduced-motion do not change prices or restart scroll phase. | Economic data/timestamps/status only. Record actual market state observed; do not claim an unobserved trading phase. |
+| Browser failure/recovery | Briefly set this browser offline, retain data with connection notice, then restore connectivity and retry. Do not alter host networking or induce provider failures in production. Existing local tests separately prove per-provider failure retention/recovery. | Before/offline/recovered UI state and status, no HAR containing credentials. |
+| Logout/cross-tab | Open Details in a second authenticated tab, logout first tab; both clear panels/ticker/dialogs and show sign-in. Protected request using the previously valid JWT returns401. A fresh unauthenticated client remains401. | Statuses and cleared UI; do not save the JWT. |
+| Source access/freshness | In the private API environment inspect each group's actual attempts, source identity, validation result, expected reporting scope, publication/vintage/retrieval times and canonical summaries. All required data features must have usable actual stored observations. Merely reaching a publication page or re-fetching old data is insufficient. | Redacted source/period/hash/state metadata and API projection; no secret-bearing request headers. |
+| Restart persistence | Take a consistent private online backup and record schema/users-count/observation/quote/status/run/cooldown counts plus representative historical point provenance. Restart exactly the existing one API. Health must recover within the bound; existing data/users retained, no duplicate active owner, cookie renewal still works with unchanged secrets. Quotes may legitimately advance. | Sanitised before/after manifest and health/session statuses. No live file copy or second collector. |
+| Isolated recovery | On the disk owner, restore a consistent snapshot to a new private path, validate schema/integrity/foreign keys and representative data/provenance, confirm sessions/tokens removed. Do not point the live service at this drill database. Verify off-host encrypted copy/access and schedule separately. | Safe manifest,0700/0600 permissions and restored-session count0. |
+
+For read-only HTTP checks, use exact deployment origins in local variables rather than literal invented URLs. Bound every command, for example `curl --connect-timeout 5 --max-time 15 -sS -o /dev/null -w '%{http_code}\n' "$API_ORIGIN/healthz"`. Never pass account secrets in command arguments or print them. Real sign-in uses the browser and approved private account delivery.
+
+## Failure handling and evidence
+
+Capture a safe failing assertion/status first; fix only the confirmed configuration/implementation defect and rerun its affected checks. Wrong compiled origin requires a new frontend build; wrong cookie site requires corrected domains/configuration, never SameSite=None or insecure cookies. Storage failure requires mount/permissions/owner recovery, never ephemeral SQLite. Source rejection remains a provider/host-access finding; retain valid observations and honest labels.
+
+Absolute7-day expiry, interrupted refresh, identity-conflict logout, malicious data, provider timeout/cooldown and socket-disabled DB-only reads are already covered by recorded offline/browser regressions. Do not weaken production lifetimes or inject failures solely to re-enact them. Production smoke supplements those checks with real-site renewal/logout/cookie/persistence behaviour. Evidence must state which checks were observed here and which reuse local results.
+
+The production record must contain: release commit, frontend/API/docs/health URLs, host service/build identifiers, actual start/end times, each check's pass/fail/pending result, source states and any concrete failure/repair. Do not include secrets, usernames/passwords, cookies, private backup objects or unrelated personal browser content.

@@ -1,100 +1,48 @@
-# Source verification
+# Sources and verification status
 
-## Completion checkpoint — 16 October 2026 IST
+Current implementation at 596e4a7, reconciled for final delivery on 16 October 2026 (IST). **Implemented** means an actual response has been validated, represented by reviewed test fixtures, parsed/normalised, persisted to private SQLite, read through authenticated FastAPI and displayed in the normal React application. It does not imply permission for redistribution or successful requests from Render. No production-host source access has yet been demonstrated.
 
-Debt is now implemented and proved through actual official responses → validation → private SQLite → authenticated API. [Public evidence](evidence/2026-10-16/debt-live.json) records the World Bank Data360 IMF WEO mirror's metadata vintage 13 October 2026 and original response/supporting-source hashes. The matching [official WEO appendix](https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf) supplies India/US reporting conventions, coverage/accounting and latest actual government-finance years. India FY2025–26 is 84.260729% (estimate); US CY2025 is 124.376732% (actual). India coverage is central/state and cash; US includes local government and uses accrual. These differences limit cross-country comparability. Source flag A means Normal value, not actual.
+## Current source register
 
-The stable CSV/metadata routes work without credentials. The IMF dataset listing and whole-workbook route returned403 in this runtime; the appendix PDF returned200. New mirror vintages must match a reviewed DEBT_APPENDIX_URL; mismatch preserves the prior data and marks collection stale. This replaces the earlier debt-blocked checkpoint below. No external/central-government substitute was used.
-
-Figma read-only browser Properties works for frame 1:2; connector edit restrictions do not prevent inspection. Measurements and font requirements are recorded in [design-completion.md](design-completion.md).
-
-Market verification now has actual authenticated Upstox200 quote responses for SENSEX, NIFTY BANK and NIFTY IT, plus exchange status. NSE public allIndices200 independently agrees on the NIFTY observations and previous closes. Credential is server-only/ignored. The adapters now pass actual-response validation, private storage and protected ticker/aggregate reads. Normal application source-to-screen and 30-second refresh evidence is linked from design-completion.md. The BSE public summary is reachable but lacks an exchange timestamp and is not promoted as the ticker feed.
-
-
-Current-release verification also found/fixed the lagging Commerce archive: PIB's live index discovers the 15Oct September release, with merchandise exports44.40/imports74.61/balance−30.21 USD billion. The [current trade/market proof](evidence/2026-10-16/trade-markets-live.json) supersedes August's latest summary. [Real open-session failure/recovery proof](evidence/2026-10-16/market-flow.json) records a controlled timeout, rejection of an older cached NSE timestamp, retained original provenance and subsequent real recovery. Upstox SENSEX is Live only during a verified open session with a recent exchange timestamp; NSE is Snapshot because a public latency SLA is unverified. Actual closed-session responses/protected reads were also captured before opening.
-
-The earlier checkpoints below are historical transport/coverage records, superseded by this completion section for debt, markets and Figma access. They do not describe current feature availability. Public market redistribution/display rights and production-host egress still require review; a read-only credential or200 response does not establish those rights.
-
-
-Initial verification on 15 October 2026; bounded debt/market and Figma rechecks on 16 October (IST), from this workstation with network-enabled execution. **No source has been tested from Render.** Transport reports are diagnostic evidence; their successful HTTP status is not a working collector. The GDP baseline and subsequent multi-provider proofs establish the implemented paths below; see [adapter evidence and coverage](multi-provider.md).
-
-- **Proven:** actual source responses validated and passed through SQLite/readback into the agreed panel contract, for the stated series/window only.
-- **Blocked:** a concrete access/network barrier on the tested route/environment; this does not prove global provider unavailability or absent data coverage.
-- **Unverified:** a publication/site is reachable or identified, but extraction, definitions, history, and/or release discovery are not established as a collector.
-
-## Results
-
-| Proposed source | Status | Evidence and remaining check |
+| Feature / provider | Implemented definition and coverage | Evidence / outstanding production check |
 | --- | --- | --- |
-| World Bank India annual GDP growth | **Proven** | HTTPS 200, correct indicator/country, six 2020–2025 observations, fetched fiscal-year metadata, exact decimal validation, persisted/read back. Local proof only. |
-| World Bank World annual GDP growth | **Proven** | HTTPS 200, same indicator/window; paired GDP panel, summaries and five chart years derived from stored points. Local proof only. |
-| IMF India/US general-government debt | **Blocked** | Tested DataMapper v2 route resolved DNS and returned HTTP **403**. This is an HTTP/CDN/provider-route rejection, not a DNS failure or proof of unsuitable coverage. No spoofing/retry loop. Need an accepted working route/download, validated metadata and annual histories. |
-| MoSPI CPI | **Proven** | Normal public POST listing → current and last-2012-base PDFs → strict combined/headline parsers → SQLite → protected API. Separate 2012/2024 series, null pandemic gaps, explicit status/publication metadata. GET rejection was resolved by using the site’s actual POST method. |
-| MoSPI GDP alternative | **Unverified** | Same portal reachability only; no NAS observation request validated. Not used by the proven GDP slice. Quarterly India GDP must not be silently compared with annual World GDP. |
-| GST gross revenue | **Proven** | Discovered workbook, latest monthly PDF and year-report history; 78 published months, five completed FYs, consistent ex-cess gross and original reported definitions, canonical averages/references. Live SQLite/protected-API proof. |
-| Commerce merchandise trade | **Proven** | Current/annual release discovery plus official PIB historical mirrors. Five completed FYs, matching monthly/FYTD comparators, USD billion, canonical exports − imports. Dead legacy PDFs are excluded. |
-| CGA expenditure | **Proven** | Official selector discovery; five completed FYs and matching current/prior FYTD; actual/provisional columns distinct from BE/RE; exact revenue + capital reconciliation; private SQLite and protected API. |
-| Gazette/RBI inflation-target policy | **Proven locally** | Native system-store TLS resolves issuer-chain failure without disabling verification. Parsed March 25 notification, 4% target/2–6% tolerance, April 2026–March 2031 validity. Independent policy collector/SQLite/protected API. Actual production-host trust chain remains unverified. |
-| NSE indices | **Blocked** | The hardening probe returned 200 quote JSON with NIFTY 50/BANK/IT identities and a dated timestamp. Authorised collection/display terms, latency/timezone contract and a complete adapter remain unresolved. This is an access-arrangement gate, not an HTTP failure. |
-| BSE SENSEX | **Blocked** | Official index-details URL returned an HTML application shell, not quote data. Accepted BSE route/access remains unresolved. SENSEX is not an NSE index. |
-| Figma frame `1:2` | **Blocked** | Available connection denied design context, metadata and screenshot in the planning turn. Frontend and hardening context/screenshot rechecks still deny access; hardening.md records the latest debug IDs and connected account. Supplied SVG can guide structure but cannot establish fonts, constraints, states, prototypes, revision parity or the exact 1214 × 2159 frame. |
+| GDP: World Bank WDI `NY.GDP.MKTP.KD.ZG` | Annual real growth, percent. Rolling 12-year collection / five-year default display. India source year 2025 means FY2025–26, World means CY2025. Latest captured 7.56666179284244% / 2.92127318539153%; dataset updated 8 Oct 2026; individual publication date unknown. | [GDP proof](evidence/2026-10-15/gdp-slice-live.json), [current macro check](evidence/2026-10-16/macro-release-check.json). Check host access; do not call collection time a publication date. |
+| Debt: IMF WEO through official World Bank Data360 mirror | Annual general-government gross debt/GDP, percent, mirror vintage 13 Oct 2026. India FY2025–26 84.260729% estimate; US CY2025 124.376732% actual. India central/state cash vs US central/state/local accrual is an explicit comparability caveat. Configured annual scope and missing slots remain explicit. | [Actual bytes/metadata/appendix/SQLite/API](evidence/2026-10-16/debt-live.json). Working official mirror replaces earlier direct IMF403/FRED-timeout gates. New metadata vintage must match a reviewed official appendix. |
+| Merchandise trade: Commerce / official PIB releases | USD billion, exports/imports and canonical exports minus imports. September 2026 44.40 / 74.61 / −30.21, released 15 Oct. Five completed FYs plus matching current/prior month and FYTD; other monthly gaps are null. | [Current release/storage/API](evidence/2026-10-16/trade-markets-live.json). PIB current-index discovery corrects the lagging Commerce archive. Older history bootstrap URLs need rolling-window maintenance. |
+| GSTN | Gross national GST including imports, consistently **excluding compensation cess** under D17. April 2020–September 2026, 78 published months; latest203,521 INR crore, release1 Oct. Annual/FYTD totals and averages reference published monthly inputs. | [History proof](evidence/2026-10-15/gst-history-live.json), [macro check](evidence/2026-10-16/macro-release-check.json). Preserve original inclusive/exclusive source definitions and rounding tolerances. |
+| MoSPI combined headline CPI | Monthly All-India combined YoY inflation, percent. September 2026 5.54%, provisional, released 12 Oct. Old base2012 ends December 2025; new base2024 begins January 2026. April/May 2020 are null. No synthetic bridge or cross-base badge. | [CPI/policy proof](evidence/2026-10-15/inflation-live.json), [macro check](evidence/2026-10-16/macro-release-check.json). Public POST listing discovers releases; unknown bases fail validation. |
+| Ministry of Finance Gazette policy | S.O.1580(E),25 Mar2026; target4%, tolerance2–6%, valid1 Apr2026–31 Mar2031. Independently scheduled, applied only inside validity. | [Policy proof](evidence/2026-10-15/inflation-live.json). Reviewed `INFLATION_POLICY_URL`, not an automatic successor-notification search. Verify native CA chain on host without disabling TLS. |
+| CGA expenditure | Union Government actual revenue/capital/total, INR crore; five completed FYs and matching current/prior FYTD. August 2026 April–August:1,568,009 +509,949 =2,077,958. Unaudited provisional actuals, never BE/RE. Release publication date not supplied. | [CGA proof](evidence/2026-10-15/cga-live.json), [macro check](evidence/2026-10-16/macro-release-check.json). Selected published month is independently discovered; keep unknown dates null. |
+| NSE NIFTY BANK / NIFTY IT | Official `/api/allIndices` JSON, previous close and listing-level exchange timestamp at minute precision. Independent30s group. Fresh open state **Snapshot**, not a streaming/latency guarantee. Older exchange timestamps are rejected; failure/omission retains the original quote stale. | [Actual source/storage/API](evidence/2026-10-16/trade-markets-live.json), [real retention/recovery](evidence/2026-10-16/market-flow.json), [two automatic polling cycles](evidence/2026-10-16/interaction-live.json). Production egress and permitted collection/display arrangement pending. |
+| BSE SENSEX via read-only Upstox | `BSE_INDEX|SENSEX` V3 quote, exchange milliseconds; previous close = last price minus documented net change when previous-close field is null. Independent30s group. Separate exchange status and dated regular-session schedule establish Live/Closed; delays/failures remain honest. | Same actual-market evidence above. Analytics Token works locally; chat-supplied token must be replaced and verified server-side before production. Token possession does not establish redistribution rights. |
 
-World Bank's 2025 values in the captured responses: India **7.56666179284244%** (FY 2025–26) and World **2.92127318539153%** (annual aggregate). These are captured observations, not hardcoded application defaults. The committed payload is authoritative if inspecting full precision. Its dataset metadata says updated **2026-10-08**; `published_at` is null because no individual release date was supplied. The blank provider status does not establish finality.
+The captured values above are dated evidence, never hardcoded application defaults or a promise to be the latest at evaluation. Observation periods, release dates, dataset/vintage metadata and retrieval times are separate. Source URLs/hashes/status/notes remain on canonical points; cards and views resolve those points. [Definitions and comparison arithmetic](contracts.md), [parser/history details](multi-provider.md), [normal source-to-screen evidence](evidence/2026-10-16/source-to-screen.json).
 
-## Reproducible evidence
+## Data access and display arrangement
 
-```sh
-python3 scripts/probe_sources.py --environment local --output-dir .verification/local
-python3 scripts/prove_gdp.py --input-dir .verification/local --output-dir .verification/gdp-local
-python3 scripts/probe_tls.py --output-dir .verification/tls-local
-python3 -m unittest discover -s tests -v
-```
+The assignment requests NSE principally where applicable. The implementation therefore uses NSE for its two indices and explicitly attributes non-NSE macro data and BSE SENSEX via Upstox. [NSE terms](https://www.nseindia.com/static/nse-terms-of-use) restrict automated collection/storage and republication; a successful request alone does not establish permitted deployment. [NSE subscriptions](https://www.nseindia.com/static/market-data/real-time-data-subscription) provide an authorised-product/vendor route. Record the applicable permission/product and evaluation audience before enabling hosted recurring market collection. Private authentication restricts audience but does not itself grant provider rights.
 
-All writes stay inside the repository. New output paths preserve earlier evidence. The TLS comparison additionally needs curl >= 7.70. No probe uses credentials, market requests, certificate-verification bypasses, browser impersonation, or automatic retries. Raw responses are size-bounded and ignored by Git. `--environment` is a caller-supplied label; compare actual diagnostic stages, not that label alone.
+[Upstox Analytics Token](https://upstox.com/developer/api-documentation/analytics-token/) is free, read-only and long-lived. Actual authenticated responses establish coverage, not a display licence. [Quote fields](https://upstox.com/developer/api-documentation/get-full-market-quote-v3/), [market status](https://upstox.com/developer/api-documentation/get-market-status/), [timings](https://upstox.com/developer/api-documentation/get-market-timings/) and [limits](https://upstox.com/developer/api-documentation/rate-limiting/) underpin the parser/state contract. The default30s cycle makes one SENSEX, two exchange-status and one shared timetable request, below the documented standard limits; there is no per-browser upstream request. Keep credentials solely in the API secret store, with no secret values in evidence. Public display acceptance and replacement credential verification remain pending in [delivery status](delivery-status.md).
 
-| Evidence | Meaning |
-| --- | --- |
-| [sandbox-report.json](evidence/2026-10-15/sandbox-report.json) | DNS errors for control and providers; requests never reached HTTP. |
-| [network-report.json](evidence/2026-10-15/network-report.json) | Same runtime after network permission: successful control/WDI requests, IMF 403, other responses, Python TLS failure. |
-| [tls-report.json](evidence/2026-10-15/tls-report.json) | Certificate-verified Python/curl GET comparison. An earlier HEAD returned 404; HEAD is not an appropriate substitute for this successful GET. |
-| [gdp-proof.json](evidence/2026-10-15/gdp-proof.json) | Response hashes/URLs/timestamps; 12 observations, duplicate-ingestion check, reopen/readback, injected timeout retention. Replays the same HTTP batch; does not claim a second fetch. |
-| [panel.ready.json](evidence/2026-10-15/panel.ready.json), [panel.stale.json](evidence/2026-10-15/panel.stale.json) | Same canonical points and summaries before/after a simulated failure. Test artifacts, not alternative production dashboards. |
-| [source-status.json](evidence/2026-10-15/source-status.json) | Overall per-source status, combining transport and end-to-end evidence without promoting publication links to collectors. |
-| [Public fixtures](../tests/fixtures/README.md) | Byte-identical WDI responses for deterministic offline validation tests. |
+## Earlier access diagnostics, superseded feature gates
 
-The restricted runtime's all-host DNS failure was removed by enabling network execution. IMF still returned 403, so its failure is different. Gazette's differing verified clients indicate a trust-path/chain-resolution difference; the evidence does not identify which CA/intermediate differs. Test the intended container trust chain before choosing an HTTPX policy adapter. Cloud IP rejection, certificate-chain behaviour and release changes remain host-specific unknowns. The new local adapters and their historical coverage are proven separately in [multi-provider.md](multi-provider.md).
-
-## Source references and interpretation
-
-- [WDI indicator data](https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG), [API queries](https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures), and [fiscal-year labelling](https://datahelpdesk.worldbank.org/knowledgebase/articles/201203-are-all-wdi-series-on-a-calendar-year-reporting-pe). Attribute World Bank/underlying national-account sources; retain supplied notes. No independent rebasing or FY-to-CY transformation was performed.
-- [IMF API documentation](https://www.imf.org/external/datamapper/api/help) and [India reporting/coverage notes](https://www.elibrary.imf.org/abstract/book/9798229042758/CH004.xml) inform the proposed debt definition; they do not override the recorded 403 or prove a collector.
-- [NSE terms](https://www.nseindia.com/static/nse-terms-of-use) and [BSE index disclaimer](https://www.bseindices.com/legal-disclaimer) motivate the unresolved market-access gate. Obtain panel resolution rather than claiming an endpoint's visibility satisfies access and display conditions.
-
-Implemented sources preserve the working GDP path. Debt and market remain explicit unavailable states; wider-than-proven history and MoSPI GDP alternatives remain unverified. Recheck every chosen adapter from the actual API host before submission.
-
-## Current-stage access diagnosis
-
-[Network-enabled request evidence](evidence/2026-10-15/multi-source-access.json) distinguishes transport from collector completion:
-
-- IMF DataMapper v1/v2, dataset and WEO download routes returned HTTP 403. No validated debt response exists. The definition remains comparable general-government gross debt/GDP for India/US; central-government or external debt is unsuitable as a substitute.
-- FRED’s official IMF mirror was checked as an alternative: both series pages and both CSV requests hit read timeouts before any HTTP response. This is a runtime timeout, not evidence of provider rejection or a working CSV collector. Debt remains blocked.
-- Legacy Commerce WordPress PDFs returned 404. Accepted official PIB mirrors supply the required historical tables. A search-engine PDF copy was never used as an application input.
-- The CPI legacy host timed out; the newer site’s GET API returned 403. The public client’s POST listing works, and its actual linked PDFs are parsed. No secret/header spoofing was used.
-- Gazette’s default Python CA path failed; native system-store verification succeeded. The explicit native SSL context is used only for policy; TLS/hostname verification stays enabled.
-- GST Council archive PDFs were reachable, but January 2022 was not extractable and early figures were revised. They remain an unimplemented alternative; the discovered GSTN year report supplies revised history. Statewise domestic GST is unsuitable for national gross including imports. BIS/RBI speech mirrors were diagnostic alternatives, not policy collectors.
-
-Current aggregate proof: [all implemented sources](evidence/2026-10-15/multi-provider-live.json). Normal persistent local API/collection/logout proof: [local-multi-api.json](evidence/2026-10-15/local-multi-api.json). Figma and market access were not retested or bypassed in this backend stage.
-
-## Hardening recheck — 16 October 2026 IST
-
-`probe_delivery_sources.py` makes one bounded request per route using the native verified TLS store, honest diagnostic User-Agent, no retries/credentials/browser impersonation. [HTTP/transport evidence](evidence/2026-10-16/delivery-source-access.json). The control returned 200, establishing that this is not an all-host runtime DNS outage.
-
-| Required feature | Actual result | Status / precise missing input |
+| Tested route / environment | Actual diagnosis | Current consequence |
 | --- | --- | --- |
-| Comparable annual general-government gross debt/GDP, India and US | IMF DataMapper pair 403 after DNS/HTTP; FRED's two series pages and two CSV routes timed out before HTTP headers | **Blocked.** Need an accepted retrievable official WEO vintage/download or working official mirror route, with India FY/US CY notes, observed/estimated cutoff and historical coverage. No substituted central-government debt and no inferred estimate status. Intended-host egress remains untested. |
-| NSE indices | Public `/api/allIndices` returned 200 JSON (113,866 bytes), with NIFTY 50, NIFTY BANK and NIFTY IT identities and global timestamp `15-Oct-2026 15:30` | **Access arrangement blocked; response shape reachable.** This is no longer an observed network gate. Timezone/latency guarantees and permitted collection/display/update terms remain unverified; no collector/persistence/API path promoted. This dated snapshot is not proof of a live feed. |
-| BSE SENSEX | Official index-details URL returned 200, 20,048-byte application HTML shell, no quote observations | **Unverified quote route and blocked accepted feed.** Need an authorised SENSEX endpoint/feed and its instrument, timestamp/timezone/delay/display contract. A publication page is not an adapter. |
+| Restricted execution, all hosts | DNS failures before HTTP for both control and providers | Runtime network restriction, not provider rejection. Network-enabled local execution established working paths. [Reports](evidence/2026-10-15/network-report.json). |
+| Direct IMF DataMapper/listing/workbook | HTTP403 after DNS/HTTP | Route/CDN rejection; do not bypass it. Official Data360 mirror + accessible matching IMF appendix now implement debt. [Debt proof](evidence/2026-10-16/debt-live.json). |
+| FRED IMF mirror candidates | Read timeout before headers | Timeout, not an HTTP rejection or proven alternative. Not used. [Diagnostic report](evidence/2026-10-16/delivery-source-access.json). |
+| BSE public summary/index HTML | Shell or untimestamped summary | Unsuitable for timestamped ticker attribution. Upstox supplies the implemented SENSEX path. |
+| MoSPI old host / newer API GET | Timeout /403 | Normal public client POST listing works; implemented CPI adapter uses it, without impersonation or secret headers. |
+| Gazette default Python CA path | Certificate issuer-chain failure | Native system trust succeeded with hostname/certificate verification intact. Host trust remains to check. |
+| Legacy Commerce WordPress PDFs |404 | Official PIB mirrors and current index supply working releases/history; search-engine copies are not application inputs. |
+| GST Council archives | Reachable PDFs, including an unextractable scanned release and revised older figures | Unimplemented alternative; discovered GSTN report supplies verified revised history. |
+| MoSPI GDP | Publication reachability only | Unverified alternative; production GDP uses WDI. No quarterly India/annual World substitution. |
+| Figma MCP frame1:2 | Connector edit-access denial | Browser read-only Properties works and supplied SVG remains the pixel reference. No extra edit access is needed. [Measured bounds/fonts](design-completion.md). |
 
-The current [NSE website terms](https://www.nseindia.com/static/nse-terms-of-use), use clauses 8–9, restrict republication/storage and automated collection; a successful public request is not an accepted recurring feed. [NSE data subscription information](https://www.nseindia.com/static/market-data/real-time-data-subscription) is a concrete route to an authorised product/vendor. The BSE disclaimer remained an application shell in text inspection; its contents were not independently verified. The user was asked for the approved arrangement/permission and credentials outside Git. There is no scheduled market collection, no committed raw quote fixture, and no bypass attempt. Debt/market features remain unmet, despite useful unavailable UI states.
+These earlier failures are retained as diagnostic history, not current claims that debt/market functionality is absent. Immutable dated evidence files record the state at their checkpoint.
 
-The existing WDI, CGA, GSTN, Commerce, MoSPI and Gazette adapters remain implemented with their earlier live evidence and offline regressions. This bounded recheck does not claim fresh live ingestion of those unchanged sources or Render egress verification.
+## Reproduction
+
+After locked setup, run `.venv/bin/python scripts/verify_sources.py --groups gdp debt expenditure gst trade inflation inflation_policy` for actual source → ignored private proof database → protected API checks. Use `scripts/verify_market_flow.py --help` for the credentialed market proof and its explicit fault-injection boundary. Neither imports test fixtures or changes the normal database. Outbound DNS/TLS permission is required; a restricted-runtime failure must be diagnosed by stage.
+
+Historical stdlib probes `scripts/probe_sources.py`, `scripts/prove_gdp.py` and `scripts/probe_tls.py` reproduce the original planning checkpoint, not the full current adapter set. Reviewed public-source fixtures/manifests live only under `tests/fixtures/`; raw bodies, credentials and diagnostic databases remain ignored. No provider has yet been checked from the actual Render environment.

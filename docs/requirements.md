@@ -1,8 +1,8 @@
 # Requirements and verification
 
-The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope from af5ff07 is precise design and data completion: measured Figma reproduction, actual market snapshots, comparable India/US debt, current official-release checks and source-to-screen/visual acceptance. Preserve GDP/authentication, canonical measurements, independent collection and delivery safeguards. Public deployment remains pending completion review. Unavailable debt/market states do not fulfil those required data features.
+The supplied DOCX is the assessment brief; the user's messages define authorised work. Final delivery/submission from **596e4a7** is authorised, including separate Pages/Render deployment when the actual release inputs are available. Preserve the completed UI/interactions/ticker, authentication, parameterized SQL, canonical contracts and independent collection. Complete materials and affected verification; avoid unrelated features/refactors.
 
-The current local interaction pass is limited to compact readable tooltips, shared period selection/crosshairs/active marks, a seamless accessible quote scroll, and verification of real values/statuses across two polling cycles. Preserve the measured layout, authentication and backend architecture. Unrelated features/refactors and public deployment remain outside scope.
+All six panels and the three reference market indices now have locally verified source → validation → SQLite → protected API → React paths. Production access, domain/cookie/persistence acceptance and evaluation handoff are separate pending deliverables. The user accepted the documented Roboto fallback on 16 October; this is an accepted design deviation, not exact Segoe UI fidelity. See the current [delivery checklist](delivery-status.md) and [submission handoff](submission.md).
 
 References read without modification:
 - `Interview_Round_2_Full_Stack_Application_Challenge.docx` supplied from Downloads.
@@ -34,7 +34,7 @@ The SVG is `1248 × 2193`, with outlined text and embedded images. Browser read-
 
 | Deliverable | Verification/completion gate |
 | --- | --- |
-| Repository with frontend/backend, schema/migrations, README | Locked local setup, verified macro backend/aggregate and full authenticated frontend implemented. Debt/market local paths verified; exact-font and hosted acceptance gates remain pending |
+| Repository with frontend/backend, schema/migrations, README | Locked local setup, verified macro backend/aggregate and full authenticated frontend implemented. Debt/market local paths verified; Roboto fallback accepted and disclosed; hosted acceptance remains pending |
 | Frontend URL, API/docs URL, health URL | Accessible during evaluation; production HTTPS/CORS/health checks pass |
 | Evaluation account or instructions shared separately | Login works; no passwords, signing keys, refresh tokens, or production credentials committed |
 | Portfolio URL and flagship project links | User supplies working links plus accurate role, technologies, and contribution summaries |

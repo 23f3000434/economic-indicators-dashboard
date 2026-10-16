@@ -1,0 +1,77 @@
+{
+  "checked_at": "2026-10-16T07:20:17.172371+00:00",
+  "base_commit": "596e4a7",
+  "scope": "Final delivery documents, deployment configuration placeholder and repository handoff; application behaviour unchanged",
+  "checks": [
+    {
+      "command": ".venv/bin/pytest -q tests/test_delivery.py tests/test_recovery.py",
+      "passed": 12,
+      "failed": 0,
+      "seconds": 1.14,
+      "warnings": [
+        "Existing Starlette HTTPX test-client deprecation"
+      ]
+    },
+    {
+      "command": "node deploy/check_frontend.mjs",
+      "passed_configurations": 8,
+      "status": "passed"
+    },
+    {
+      "check": "Local Markdown file targets",
+      "count": 160,
+      "status": "passed"
+    },
+    {
+      "check": "Configured secrets/private files in tracked paths and outgoing history",
+      "tracked_paths": 273,
+      "status": "passed",
+      "secret_values_recorded": false
+    },
+    {
+      "check": "Normal local read-only URLs",
+      "frontend": 200,
+      "health": 200,
+      "docs": 200,
+      "openapi": 200,
+      "unauthenticated_dashboard": 401,
+      "unauthenticated_ticker": 401,
+      "test_endpoint": 404,
+      "database_path": 404,
+      "database": "ready",
+      "collector": "running"
+    },
+    {
+      "check": "GitHub account/repository/Actions permission",
+      "repository": "23f3000434/economic-indicators-dashboard",
+      "visibility": "PRIVATE",
+      "default_branch": "main",
+      "initial_remote_main": "42d9d4adf96831467d7a960e660652cfdbb58494",
+      "initial_local_main": "596e4a7",
+      "initial_unpushed_commits": 11,
+      "actions_enabled": true,
+      "initial_workflow_runs": 0
+    }
+  ],
+  "accepted_input": {
+    "font": "User explicitly accepted installed Segoe UI / documented self-hosted Roboto fallback; exact Segoe fidelity not claimed"
+  },
+  "hosting_inspection": {
+    "render_dashboard": "existing workspace accessible",
+    "cloudflare_dashboard": "user completed sign-in; domain overview has no configured zones",
+    "project_services_created": false,
+    "dns_changes": false,
+    "billable_actions": false
+  },
+  "production_deployment": {
+    "status": "not performed",
+    "missing_facts": [
+      "controlled parent domain/DNS and exact HTTPS origins",
+      "applicable market collection/display arrangement",
+      "secure rotated Upstox credential",
+      "host ingress/mount/egress/cookie/restart acceptance",
+      "private off-host backup operation and evaluation handoff"
+    ]
+  },
+  "submission": "Portfolio/project links supplied separately per user; post-assessment recording remains an external deliverable"
+}
