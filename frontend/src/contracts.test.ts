@@ -107,3 +107,42 @@ describe('multi-provider display contracts', () => {
     expect(selected[1].points).toEqual([last]);
   });
 });
+
+it('groups debt source-year coordinates without changing fiscal/calendar canonical keys', () => {
+  const years = ['2021', '2022', '2023', '2024', '2025'];
+  const series = [
+    {
+      id: 'india',
+      points: years.map((y) => ({
+        key: `FY${y}-${String(Number(y) + 1).slice(-2)}`,
+        axisKey: y,
+        start: `${y}-04-01`,
+        end: `${Number(y) + 1}-03-31`,
+        value: y === '2023' ? null : '84',
+      })),
+    },
+    {
+      id: 'us',
+      points: years.map((y) => ({
+        key: y,
+        axisKey: y,
+        start: `${y}-01-01`,
+        end: `${y}-12-31`,
+        value: '124',
+      })),
+    },
+  ] as ViewSeries[];
+  const selected = sliceSeries(series, 3);
+  expect(selected.map((s) => s.points.length)).toEqual([3, 3]);
+  expect(selected[0].points[0].key).toBe('FY2023-24');
+  expect(selected[0].points[0].value).toBeNull();
+  expect(periodKeys(selected)).toContain('2023');
+});
+
+import { exchangeTime } from './contracts';
+it('displays actual exchange precision without inventing NSE seconds', () => {
+  expect(exchangeTime('2026-10-16T04:08:16.330000Z', 'millisecond')).toContain('09:38:16.330');
+  expect(exchangeTime('2026-10-16T04:08:00Z', 'minute')).toContain('09:38');
+  expect(exchangeTime('2026-10-16T04:08:00Z', 'minute')).not.toContain('09:38:00');
+  expect(exchangeTime(null, null)).toBe('—');
+});

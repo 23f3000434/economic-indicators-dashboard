@@ -1,0 +1,1375 @@
+{
+  "checked_at": "2026-10-16T04:12:43.759Z",
+  "phase": "completion",
+  "browser": "155.0.8059.82",
+  "method": "Fresh Chrome contexts, HTTP cache disabled; unthrottled local HTTP preview. CDP encodedDataLength includes response overhead. No production/CDN performance claim.",
+  "runs": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1214,
+        "height": 2159,
+        "dpr": 1
+      },
+      "signed_out": {
+        "requests": 7,
+        "total_transfer_bytes": 404766,
+        "artwork_transfer_bytes": 279999,
+        "artwork_paths": [
+          "/design/canvas-layout-1x-ff8b93fa1c5a.svg"
+        ]
+      },
+      "signed_in_initial": {
+        "requests": 23,
+        "total_transfer_bytes": 1070690,
+        "artwork_transfer_bytes": 408873,
+        "artwork_paths": [
+          "/design/canvas-layout-1x-ff8b93fa1c5a.svg",
+          "/design/gdp-layout-1x-ae354ba4366e.svg",
+          "/design/debt-layout-1x-0a41f3cbd100.svg",
+          "/design/trade-layout-1x-580082ba2224.svg",
+          "/design/inflation-layout-1x-12a8cc953739.svg",
+          "/design/gst-layout-1x-6de7a17d967e.svg",
+          "/design/expenditure-layout-1x-ace073997125.svg"
+        ]
+      },
+      "after_scroll": {
+        "requests": 23,
+        "total_transfer_bytes": 1070690,
+        "artwork_transfer_bytes": 408873,
+        "artwork_paths": [
+          "/design/canvas-layout-1x-ff8b93fa1c5a.svg",
+          "/design/gdp-layout-1x-ae354ba4366e.svg",
+          "/design/debt-layout-1x-0a41f3cbd100.svg",
+          "/design/trade-layout-1x-580082ba2224.svg",
+          "/design/inflation-layout-1x-12a8cc953739.svg",
+          "/design/gst-layout-1x-6de7a17d967e.svg",
+          "/design/expenditure-layout-1x-ace073997125.svg"
+        ]
+      },
+      "initial_card_images": [
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gdp-layout-1x-ae354ba4366e.svg",
+          "y": 157.58653259277344
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/debt-layout-1x-0a41f3cbd100.svg",
+          "y": 157.58653259277344
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-layout-1x-580082ba2224.svg",
+          "y": 710.1121826171875
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-layout-1x-6de7a17d967e.svg",
+          "y": 710.1121826171875
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/inflation-layout-1x-12a8cc953739.svg",
+          "y": 1262.6378173828125
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/expenditure-layout-1x-ace073997125.svg",
+          "y": 1262.6378173828125
+        }
+      ],
+      "login_to_dashboard_ready_ms": 1688.7917499999999,
+      "total_measurement_ms": 3503.3238749999996,
+      "panel_geometry": [
+        {
+          "width": 566.1442260742188,
+          "height": 529.179443359375
+        },
+        {
+          "width": 567.1170043945312,
+          "height": 529.179443359375
+        },
+        {
+          "width": 566.1442260742188,
+          "height": 529.179443359375
+        },
+        {
+          "width": 567.1170043945312,
+          "height": 529.179443359375
+        },
+        {
+          "width": 566.1442260742188,
+          "height": 529.179443359375
+        },
+        {
+          "width": 567.1170043945312,
+          "height": 529.179443359375
+        }
+      ],
+      "requests": [
+        {
+          "path": "/",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/html",
+          "bytes": 856
+        },
+        {
+          "path": "/assets/index-VSCx37Yz.css",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/css",
+          "bytes": 5532
+        },
+        {
+          "path": "/assets/index-CdSilbCO.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 79983
+        },
+        {
+          "path": "/design/canvas-layout-1x-ff8b93fa1c5a.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 279999
+        },
+        {
+          "path": "/favicon.ico",
+          "origin": "http://localhost:5175",
+          "status": 404,
+          "mime": "text/plain",
+          "bytes": 157
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "origin": "http://localhost:8010",
+          "status": 401,
+          "mime": "application/json",
+          "bytes": 399
+        },
+        {
+          "path": "/fonts/Roboto-latin-variable.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 37840
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 1080
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 4768
+        },
+        {
+          "path": "/fonts/Manrope-700.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 14580
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 393778
+        },
+        {
+          "path": "/assets/GdpPanel-RHi1Kndw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 1900
+        },
+        {
+          "path": "/assets/IndicatorPanel-Db9Y0A5X.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 3808
+        },
+        {
+          "path": "/assets/CanonicalChart-typFgkxw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 117136
+        },
+        {
+          "path": "/design/gdp-layout-1x-ae354ba4366e.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 10000
+        },
+        {
+          "path": "/design/debt-layout-1x-0a41f3cbd100.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 8885
+        },
+        {
+          "path": "/design/trade-layout-1x-580082ba2224.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 23928
+        },
+        {
+          "path": "/design/inflation-layout-1x-12a8cc953739.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 37120
+        },
+        {
+          "path": "/design/gst-layout-1x-6de7a17d967e.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 23924
+        },
+        {
+          "path": "/design/expenditure-layout-1x-ace073997125.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 25017
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1
+      },
+      "signed_out": {
+        "requests": 6,
+        "total_transfer_bytes": 404609,
+        "artwork_transfer_bytes": 279999,
+        "artwork_paths": [
+          "/design/canvas-layout-1x-ff8b93fa1c5a.svg"
+        ]
+      },
+      "signed_in_initial": {
+        "requests": 26,
+        "total_transfer_bytes": 1003985,
+        "artwork_transfer_bytes": 342325,
+        "artwork_paths": [
+          "/design/canvas-layout-1x-ff8b93fa1c5a.svg",
+          "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "/design/debt-layout-mobile-0123b48204af.svg",
+          "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "/design/gst-layout-mobile-b13265ab3654.svg",
+          "/design/india-48-a71bbb8cc921.webp",
+          "/design/world-48-69141010909b.webp",
+          "/design/us-48-c8c208a4222e.webp",
+          "/design/trade-192-51fc15ef6593.webp",
+          "/design/gst-96-4f4dc885680d.webp",
+          "/design/gst-average-96-1e7774e3a906.webp"
+        ]
+      },
+      "after_scroll": {
+        "requests": 31,
+        "total_transfer_bytes": 1065572,
+        "artwork_transfer_bytes": 403912,
+        "artwork_paths": [
+          "/design/canvas-layout-1x-ff8b93fa1c5a.svg",
+          "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "/design/debt-layout-mobile-0123b48204af.svg",
+          "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "/design/gst-layout-mobile-b13265ab3654.svg",
+          "/design/india-48-a71bbb8cc921.webp",
+          "/design/world-48-69141010909b.webp",
+          "/design/us-48-c8c208a4222e.webp",
+          "/design/trade-192-51fc15ef6593.webp",
+          "/design/gst-96-4f4dc885680d.webp",
+          "/design/gst-average-96-1e7774e3a906.webp",
+          "/design/inflation-96-9ce1601e8e33.webp",
+          "/design/target-192-8be17220ea79.webp",
+          "/design/inflation-layout-mobile-8e53d4c5c828.svg",
+          "/design/expenditure-192-74f6f1196fb0.webp",
+          "/design/expenditure-layout-mobile-1a7554be2d58.svg"
+        ]
+      },
+      "initial_card_images": [
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "y": 181
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/india-48-a71bbb8cc921.webp",
+          "y": 269.25
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/world-48-69141010909b.webp",
+          "y": 269.640625
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/debt-layout-mobile-0123b48204af.svg",
+          "y": 679
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/india-48-a71bbb8cc921.webp",
+          "y": 767.25
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/us-48-c8c208a4222e.webp",
+          "y": 767.25
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "y": 1177
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-192-51fc15ef6593.webp",
+          "y": 1307.828125
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-192-51fc15ef6593.webp",
+          "y": 1307.828125
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-layout-mobile-b13265ab3654.svg",
+          "y": 1675
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-96-4f4dc885680d.webp",
+          "y": 1797
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-average-96-1e7774e3a906.webp",
+          "y": 1797
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/inflation-layout-1x-12a8cc953739.svg",
+          "y": 2173
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/inflation-96-9ce1601e8e33.webp",
+          "y": 2295
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/target-192-8be17220ea79.webp",
+          "y": 2294
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/expenditure-layout-1x-ace073997125.svg",
+          "y": 2671
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/expenditure-192-74f6f1196fb0.webp",
+          "y": 2792
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/expenditure-192-74f6f1196fb0.webp",
+          "y": 2792
+        }
+      ],
+      "login_to_dashboard_ready_ms": 828.9548340000001,
+      "total_measurement_ms": 1953.2696660000001,
+      "panel_geometry": [
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        }
+      ],
+      "requests": [
+        {
+          "path": "/",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/html",
+          "bytes": 856
+        },
+        {
+          "path": "/assets/index-VSCx37Yz.css",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/css",
+          "bytes": 5532
+        },
+        {
+          "path": "/assets/index-CdSilbCO.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 79983
+        },
+        {
+          "path": "/design/canvas-layout-1x-ff8b93fa1c5a.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 279999
+        },
+        {
+          "path": "/fonts/Roboto-latin-variable.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 37840
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "origin": "http://localhost:8010",
+          "status": 401,
+          "mime": "application/json",
+          "bytes": 399
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 1080
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1407
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 4768
+        },
+        {
+          "path": "/design/debt-layout-mobile-0123b48204af.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1407
+        },
+        {
+          "path": "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1578
+        },
+        {
+          "path": "/design/gst-layout-mobile-b13265ab3654.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1510
+        },
+        {
+          "path": "/fonts/Manrope-700.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 14580
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 393778
+        },
+        {
+          "path": "/assets/GdpPanel-RHi1Kndw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 1900
+        },
+        {
+          "path": "/assets/IndicatorPanel-Db9Y0A5X.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 3808
+        },
+        {
+          "path": "/assets/CanonicalChart-typFgkxw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 117136
+        },
+        {
+          "path": "/design/india-48-a71bbb8cc921.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 3882
+        },
+        {
+          "path": "/design/world-48-69141010909b.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 4688
+        },
+        {
+          "path": "/design/us-48-c8c208a4222e.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 3598
+        },
+        {
+          "path": "/design/trade-192-51fc15ef6593.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 21948
+        },
+        {
+          "path": "/design/gst-96-4f4dc885680d.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 9008
+        },
+        {
+          "path": "/design/gst-average-96-1e7774e3a906.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 13300
+        },
+        {
+          "path": "/design/inflation-96-9ce1601e8e33.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 12212
+        },
+        {
+          "path": "/design/target-192-8be17220ea79.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 23210
+        },
+        {
+          "path": "/design/inflation-layout-mobile-8e53d4c5c828.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1513
+        },
+        {
+          "path": "/design/expenditure-192-74f6f1196fb0.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 23178
+        },
+        {
+          "path": "/design/expenditure-layout-mobile-1a7554be2d58.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1474
+        }
+      ]
+    },
+    {
+      "name": "desktop-retina",
+      "viewport": {
+        "width": 1214,
+        "height": 2159,
+        "dpr": 2
+      },
+      "signed_out": {
+        "requests": 6,
+        "total_transfer_bytes": 567205,
+        "artwork_transfer_bytes": 442595,
+        "artwork_paths": [
+          "/design/canvas-layout-2x-b7dbc3bf5848.svg"
+        ]
+      },
+      "signed_in_initial": {
+        "requests": 22,
+        "total_transfer_bytes": 1479026,
+        "artwork_transfer_bytes": 817366,
+        "artwork_paths": [
+          "/design/canvas-layout-2x-b7dbc3bf5848.svg",
+          "/design/debt-layout-2x-3ec3c9b8db7c.svg",
+          "/design/gdp-layout-2x-bec03d269611.svg",
+          "/design/trade-layout-2x-a6e7b9992c19.svg",
+          "/design/gst-layout-2x-319d64b52d6b.svg",
+          "/design/inflation-layout-2x-f7891bc3949b.svg",
+          "/design/expenditure-layout-2x-7862a912a217.svg"
+        ]
+      },
+      "after_scroll": {
+        "requests": 22,
+        "total_transfer_bytes": 1479026,
+        "artwork_transfer_bytes": 817366,
+        "artwork_paths": [
+          "/design/canvas-layout-2x-b7dbc3bf5848.svg",
+          "/design/debt-layout-2x-3ec3c9b8db7c.svg",
+          "/design/gdp-layout-2x-bec03d269611.svg",
+          "/design/trade-layout-2x-a6e7b9992c19.svg",
+          "/design/gst-layout-2x-319d64b52d6b.svg",
+          "/design/inflation-layout-2x-f7891bc3949b.svg",
+          "/design/expenditure-layout-2x-7862a912a217.svg"
+        ]
+      },
+      "initial_card_images": [
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gdp-layout-2x-bec03d269611.svg",
+          "y": 157.58653259277344
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/debt-layout-2x-3ec3c9b8db7c.svg",
+          "y": 157.58653259277344
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-layout-2x-a6e7b9992c19.svg",
+          "y": 710.1121826171875
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-layout-2x-319d64b52d6b.svg",
+          "y": 710.1121826171875
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/inflation-layout-2x-f7891bc3949b.svg",
+          "y": 1262.6378173828125
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/expenditure-layout-2x-7862a912a217.svg",
+          "y": 1262.6378173828125
+        }
+      ],
+      "login_to_dashboard_ready_ms": 823.5225830000009,
+      "total_measurement_ms": 2145.5152500000004,
+      "panel_geometry": [
+        {
+          "width": 566.1442260742188,
+          "height": 529.179443359375
+        },
+        {
+          "width": 567.1170043945312,
+          "height": 529.179443359375
+        },
+        {
+          "width": 566.1442260742188,
+          "height": 529.179443359375
+        },
+        {
+          "width": 567.1170043945312,
+          "height": 529.179443359375
+        },
+        {
+          "width": 566.1442260742188,
+          "height": 529.179443359375
+        },
+        {
+          "width": 567.1170043945312,
+          "height": 529.179443359375
+        }
+      ],
+      "requests": [
+        {
+          "path": "/",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/html",
+          "bytes": 856
+        },
+        {
+          "path": "/assets/index-VSCx37Yz.css",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/css",
+          "bytes": 5532
+        },
+        {
+          "path": "/assets/index-CdSilbCO.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 79983
+        },
+        {
+          "path": "/design/canvas-layout-2x-b7dbc3bf5848.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 442595
+        },
+        {
+          "path": "/fonts/Roboto-latin-variable.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 37840
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "origin": "http://localhost:8010",
+          "status": 401,
+          "mime": "application/json",
+          "bytes": 399
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 1080
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 4768
+        },
+        {
+          "path": "/fonts/Manrope-700.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 14580
+        },
+        {
+          "path": "/design/debt-layout-2x-3ec3c9b8db7c.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 23515
+        },
+        {
+          "path": "/design/gdp-layout-2x-bec03d269611.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 27081
+        },
+        {
+          "path": "/design/trade-layout-2x-a6e7b9992c19.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 69754
+        },
+        {
+          "path": "/design/gst-layout-2x-319d64b52d6b.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 66925
+        },
+        {
+          "path": "/design/inflation-layout-2x-f7891bc3949b.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 111735
+        },
+        {
+          "path": "/design/expenditure-layout-2x-7862a912a217.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 75761
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 393778
+        },
+        {
+          "path": "/assets/GdpPanel-RHi1Kndw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 1900
+        },
+        {
+          "path": "/assets/IndicatorPanel-Db9Y0A5X.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 3808
+        },
+        {
+          "path": "/assets/CanonicalChart-typFgkxw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 117136
+        }
+      ]
+    },
+    {
+      "name": "mobile-retina",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 2
+      },
+      "signed_out": {
+        "requests": 6,
+        "total_transfer_bytes": 567205,
+        "artwork_transfer_bytes": 442595,
+        "artwork_paths": [
+          "/design/canvas-layout-2x-b7dbc3bf5848.svg"
+        ]
+      },
+      "signed_in_initial": {
+        "requests": 26,
+        "total_transfer_bytes": 1278979,
+        "artwork_transfer_bytes": 617319,
+        "artwork_paths": [
+          "/design/canvas-layout-2x-b7dbc3bf5848.svg",
+          "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "/design/debt-layout-mobile-0123b48204af.svg",
+          "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "/design/gst-layout-mobile-b13265ab3654.svg",
+          "/design/india-96-93d86d877cce.webp",
+          "/design/trade-384-df1a88c2f41b.webp",
+          "/design/world-96-54e408409514.webp",
+          "/design/us-96-c130e0cee877.webp",
+          "/design/gst-average-192-99b8721538a2.webp",
+          "/design/gst-192-eae7f03b7596.webp"
+        ]
+      },
+      "after_scroll": {
+        "requests": 31,
+        "total_transfer_bytes": 1465126,
+        "artwork_transfer_bytes": 803466,
+        "artwork_paths": [
+          "/design/canvas-layout-2x-b7dbc3bf5848.svg",
+          "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "/design/debt-layout-mobile-0123b48204af.svg",
+          "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "/design/gst-layout-mobile-b13265ab3654.svg",
+          "/design/india-96-93d86d877cce.webp",
+          "/design/trade-384-df1a88c2f41b.webp",
+          "/design/world-96-54e408409514.webp",
+          "/design/us-96-c130e0cee877.webp",
+          "/design/gst-average-192-99b8721538a2.webp",
+          "/design/gst-192-eae7f03b7596.webp",
+          "/design/inflation-layout-mobile-8e53d4c5c828.svg",
+          "/design/target-384-6401e6b282f7.webp",
+          "/design/inflation-192-a2869ac751f9.webp",
+          "/design/expenditure-384-27e64ebf40e4.webp",
+          "/design/expenditure-layout-mobile-1a7554be2d58.svg"
+        ]
+      },
+      "initial_card_images": [
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "y": 181
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/india-96-93d86d877cce.webp",
+          "y": 269.25
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/world-96-54e408409514.webp",
+          "y": 269.640625
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/debt-layout-mobile-0123b48204af.svg",
+          "y": 679
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/india-96-93d86d877cce.webp",
+          "y": 767.25
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/us-96-c130e0cee877.webp",
+          "y": 767.25
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "y": 1177
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-384-df1a88c2f41b.webp",
+          "y": 1307.828125
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/trade-384-df1a88c2f41b.webp",
+          "y": 1307.828125
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-layout-mobile-b13265ab3654.svg",
+          "y": 1675
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-192-eae7f03b7596.webp",
+          "y": 1797
+        },
+        {
+          "complete": true,
+          "loading": "lazy",
+          "src": "/design/gst-average-192-99b8721538a2.webp",
+          "y": 1797
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/inflation-layout-1x-12a8cc953739.svg",
+          "y": 2173
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/inflation-96-9ce1601e8e33.webp",
+          "y": 2295
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/target-192-8be17220ea79.webp",
+          "y": 2294
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/expenditure-layout-1x-ace073997125.svg",
+          "y": 2671
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/expenditure-192-74f6f1196fb0.webp",
+          "y": 2792
+        },
+        {
+          "complete": false,
+          "loading": "lazy",
+          "src": "/design/expenditure-192-74f6f1196fb0.webp",
+          "y": 2792
+        }
+      ],
+      "login_to_dashboard_ready_ms": 833.773792,
+      "total_measurement_ms": 1998.8935410000013,
+      "panel_geometry": [
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        },
+        {
+          "width": 366,
+          "height": 480
+        }
+      ],
+      "requests": [
+        {
+          "path": "/",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/html",
+          "bytes": 856
+        },
+        {
+          "path": "/assets/index-VSCx37Yz.css",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/css",
+          "bytes": 5532
+        },
+        {
+          "path": "/assets/index-CdSilbCO.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 79983
+        },
+        {
+          "path": "/design/canvas-layout-2x-b7dbc3bf5848.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 442595
+        },
+        {
+          "path": "/fonts/Roboto-latin-variable.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 37840
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "origin": "http://localhost:8010",
+          "status": 401,
+          "mime": "application/json",
+          "bytes": 399
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 1080
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "text/plain",
+          "bytes": 0
+        },
+        {
+          "path": "/api/v1/ticker",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 4768
+        },
+        {
+          "path": "/design/gdp-layout-mobile-d746aaf39455.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1407
+        },
+        {
+          "path": "/design/debt-layout-mobile-0123b48204af.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1407
+        },
+        {
+          "path": "/design/trade-layout-mobile-31a8738fb9ce.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1578
+        },
+        {
+          "path": "/design/gst-layout-mobile-b13265ab3654.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1510
+        },
+        {
+          "path": "/fonts/Manrope-700.woff2",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "font/woff2",
+          "bytes": 14580
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "origin": "http://localhost:8010",
+          "status": 200,
+          "mime": "application/json",
+          "bytes": 393778
+        },
+        {
+          "path": "/assets/GdpPanel-RHi1Kndw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 1900
+        },
+        {
+          "path": "/assets/IndicatorPanel-Db9Y0A5X.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 3808
+        },
+        {
+          "path": "/assets/CanonicalChart-typFgkxw.js",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 117136
+        },
+        {
+          "path": "/design/india-96-93d86d877cce.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 11182
+        },
+        {
+          "path": "/design/trade-384-df1a88c2f41b.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 67440
+        },
+        {
+          "path": "/design/world-96-54e408409514.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 14360
+        },
+        {
+          "path": "/design/us-96-c130e0cee877.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 10852
+        },
+        {
+          "path": "/design/gst-average-192-99b8721538a2.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 39384
+        },
+        {
+          "path": "/design/gst-192-eae7f03b7596.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 25604
+        },
+        {
+          "path": "/design/inflation-layout-mobile-8e53d4c5c828.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1513
+        },
+        {
+          "path": "/design/target-384-6401e6b282f7.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 72846
+        },
+        {
+          "path": "/design/inflation-192-a2869ac751f9.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 36734
+        },
+        {
+          "path": "/design/expenditure-384-27e64ebf40e4.webp",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/webp",
+          "bytes": 73580
+        },
+        {
+          "path": "/design/expenditure-layout-mobile-1a7554be2d58.svg",
+          "origin": "http://localhost:5175",
+          "status": 200,
+          "mime": "image/svg+xml",
+          "bytes": 1474
+        }
+      ]
+    }
+  ]
+}

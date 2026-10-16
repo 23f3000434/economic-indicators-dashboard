@@ -67,8 +67,21 @@ def main():
         "source_dimensions": manifest["source_dimensions"],
         "checks": checks,
         "total_asset_bytes": sum(v["byte_length"] for a in manifest["assets"] for v in a["variants"]),
-        "omitted_asset": "image1_0_1 is the LIVE dot; no accepted market feed.",
+        "omitted_asset": "image1_0_1 is the illustrative LIVE dot; actual ticker state comes from stored quotes/status.",
     }
+    layouts = json.loads((ROOT / "frontend/public/design/layout.json").read_text())
+    assert layouts["source_svg_sha256"] == manifest["source_svg_sha256"]
+    layout_calls = (ROOT / "frontend/src/layout.ts").read_text()
+    for entry in layouts["entries"]:
+        path = ROOT / "frontend/public/design" / entry["file"]
+        raw = path.read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == entry["sha256"]
+        assert len(raw) == entry["bytes"] and entry["file"] in layout_calls
+        tree = ET.fromstring(raw)
+        assert not list(tree.iter("{http://www.w3.org/2000/svg}text"))
+        if entry["density"] == "mobile":
+            assert not list(tree.iter("{http://www.w3.org/2000/svg}image"))
+    result["decorative_layouts_verified"] = len(layouts["entries"])
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n")
     print(

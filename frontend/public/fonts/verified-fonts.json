@@ -1,0 +1,15 @@
+[
+  {
+    "file": "Roboto-latin-variable.woff2",
+    "source": "https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ.woff2",
+    "sha256": "0a44e0bb6ba5c8537e8814c148ef7755f1bce12112361231f595ecc584a18d7a",
+    "bytes": 37520,
+    "weights": "100 900"
+  },
+  {
+    "file": "Manrope-700.woff2",
+    "source": "https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk4aE9_C-bnTfc7AGrY.woff2",
+    "sha256": "cf6a6475e0057d865b8b0d98c9d8d907463aa1a77e1079c618032445e1b8b6a9",
+    "bytes": 14260
+  }
+]

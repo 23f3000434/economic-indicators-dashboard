@@ -2,6 +2,8 @@
 
 The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope from af5ff07 is precise design and data completion: measured Figma reproduction, actual market snapshots, comparable India/US debt, current official-release checks and source-to-screen/visual acceptance. Preserve GDP/authentication, canonical measurements, independent collection and delivery safeguards. Public deployment remains pending completion review. Unavailable debt/market states do not fulfil those required data features.
 
+The final local checkpoint is limited to the confirmed cross-tab logout defect, its unchanged browser regression, one subsequent complete sequential browser suite, evidence and commits. No further features/refactors or public deployment are authorised at this checkpoint.
+
 References read without modification:
 - `Interview_Round_2_Full_Stack_Application_Challenge.docx` supplied from Downloads.
 - Supplied Figma file `brsbeMh0t7dB6ibf3cJN4D`, assignment frame `1:2`; supplied URL opens page `0:1`.
@@ -15,7 +17,7 @@ References read without modification:
 | R02 | Faithful supplied design at **1214 × 2159 CSS pixels**, legible without clipping, unintended horizontal scrolling, or disruptive layout shifts | Exact-viewport screenshots and layout/asset review against frame `1:2`; reserved skeleton geometry |
 | R03 | Live market ticker and GDP India/World, India debt/US comparison, trade, GST/monthly average, India inflation/RBI target, government total/capital expenditure | Metric/source catalogue, source checks, six-panel and ticker acceptance tests |
 | R04 | Correct charts, cards, legends, labels, periods, comparisons, and visible controls | Values and summaries trace to canonical points; chart/table agreement and keyboard/interaction tests; reasonable unspecified behaviour documented |
-| R05 | NSE principal source for applicable data; named public alternatives for indicators it does not publish | Source/access register; explicit non-NSE attribution in UI and README; market access still unresolved |
+| R05 | NSE principal source for applicable data; named public alternatives for indicators it does not publish | Source/access register; explicit non-NSE attribution in UI and README; NSE/Upstox local paths verified; public display/host acceptance pending |
 | R06 | Source and observation "as of" information for each indicator/group; transformations and limitations documented | Inspect panel metadata and compare selected stored observations with the source; collection time never substituted for the reporting period |
 | R07 | Independent scheduled collector, timeouts, caching, validation, rate-aware refresh, frontend update mechanism | Job and failure tests, collection-run records, browser polling audit; more users do not increase upstream fetch rates |
 | R08 | Provider failures isolated; last valid observations retained and marked stale; missing values shown as `—` | Malformed/timeout/missing-value fixtures; one provider fails while other panels still render; no replacement with invalid/zero data |
@@ -32,7 +34,7 @@ The SVG is `1248 × 2193`, with outlined text and embedded images. Browser read-
 
 | Deliverable | Verification/completion gate |
 | --- | --- |
-| Repository with frontend/backend, schema/migrations, README | Locked local setup, verified macro backend/aggregate and full authenticated frontend implemented. Debt/market access and external acceptance gates remain pending |
+| Repository with frontend/backend, schema/migrations, README | Locked local setup, verified macro backend/aggregate and full authenticated frontend implemented. Debt/market local paths verified; exact-font and hosted acceptance gates remain pending |
 | Frontend URL, API/docs URL, health URL | Accessible during evaluation; production HTTPS/CORS/health checks pass |
 | Evaluation account or instructions shared separately | Login works; no passwords, signing keys, refresh tokens, or production credentials committed |
 | Portfolio URL and flagship project links | User supplies working links plus accurate role, technologies, and contribution summaries |

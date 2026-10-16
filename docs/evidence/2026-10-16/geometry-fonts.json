@@ -1,0 +1,143 @@
+{
+  "checked_at": "2026-10-16T04:12:34.218Z",
+  "viewport": {
+    "width": 1214,
+    "height": 2159
+  },
+  "mapping": {
+    "visual_frame": [
+      1248,
+      2193
+    ],
+    "factor": 0.9727564102564102,
+    "canvas_height": 2133.2548076923076
+  },
+  "geometry": [
+    {
+      "id": "gdp-title",
+      "x": 29.18269157409668,
+      "y": 157.58653259277344,
+      "width": 566.1442260742188,
+      "height": 529.179443359375,
+      "heading": {
+        "font": "Roboto, sans-serif",
+        "weight": "500",
+        "size": "20px"
+      }
+    },
+    {
+      "id": "debt-title",
+      "x": 618.6730346679688,
+      "y": 157.58653259277344,
+      "width": 567.1170043945312,
+      "height": 529.179443359375,
+      "heading": {
+        "font": "Roboto, sans-serif",
+        "weight": "500",
+        "size": "20px"
+      }
+    },
+    {
+      "id": "trade-title",
+      "x": 29.18269157409668,
+      "y": 710.1121826171875,
+      "width": 566.1442260742188,
+      "height": 529.179443359375,
+      "heading": {
+        "font": "Roboto, sans-serif",
+        "weight": "500",
+        "size": "20px"
+      }
+    },
+    {
+      "id": "gst-title",
+      "x": 618.6730346679688,
+      "y": 710.1121826171875,
+      "width": 567.1170043945312,
+      "height": 529.179443359375,
+      "heading": {
+        "font": "Roboto, sans-serif",
+        "weight": "500",
+        "size": "20px"
+      }
+    },
+    {
+      "id": "inflation-title",
+      "x": 29.18269157409668,
+      "y": 1262.6378173828125,
+      "width": 566.1442260742188,
+      "height": 529.179443359375,
+      "heading": {
+        "font": "Roboto, sans-serif",
+        "weight": "500",
+        "size": "20px"
+      }
+    },
+    {
+      "id": "expenditure-title",
+      "x": 618.6730346679688,
+      "y": 1262.6378173828125,
+      "width": 567.1170043945312,
+      "height": 529.179443359375,
+      "heading": {
+        "font": "Roboto, sans-serif",
+        "weight": "500",
+        "size": "20px"
+      }
+    }
+  ],
+  "actual_platform_fonts": {
+    "#gdp-title": [
+      {
+        "familyName": "Roboto",
+        "postScriptName": "Roboto-Medium",
+        "isCustomFont": true,
+        "glyphCount": 34
+      }
+    ],
+    ".kpi-value": [
+      {
+        "familyName": "Roboto",
+        "postScriptName": "Roboto-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 5
+      }
+    ],
+    ".kpi-label": [
+      {
+        "familyName": "Roboto",
+        "postScriptName": "Roboto-Regular",
+        "isCustomFont": true,
+        "glyphCount": 5
+      }
+    ],
+    ".ticker-item": [
+      {
+        "familyName": "Roboto",
+        "postScriptName": "Roboto-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 39
+      }
+    ]
+  },
+  "browser_errors": [],
+  "comparison": {
+    "reference_and_application_pixels": [
+      1214,
+      2159
+    ],
+    "raw_pixel_equality_claimed": false,
+    "reason": "Real economic values/units/periods, accessible controls and provisional fallback font differ from illustrative reference; differences are categorised in design-completion.md.",
+    "unobscured_background_box": [
+      0,
+      1810,
+      1214,
+      2120
+    ],
+    "background_mean_absolute_RGB_difference": [
+      0.012129988839878833,
+      0.012143274698411012,
+      0.012177817930594675
+    ]
+  }
+}

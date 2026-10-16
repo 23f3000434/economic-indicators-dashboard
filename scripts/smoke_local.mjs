@@ -18,6 +18,20 @@ const credentials = JSON.parse(
     "utf8",
   ),
 );
+function expectedDisplay(point, unit, id) {
+  const raw = Number(point.value);
+  const number = (unit === "inr_crore" ? raw / 100000 : raw).toLocaleString(
+    "en-IN",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+  );
+  return point.value === null
+    ? "—"
+    : unit === "percent"
+      ? number + "%"
+      : unit === "inr_crore"
+        ? `₹${number} L cr`
+        : `$${id === "trade_balance" && raw > 0 ? "+" : ""}${number} B`;
+}
 assert.equal((await fetch(api + "/healthz")).status, 200);
 assert.equal((await fetch(api + "/api/v1/dashboard")).status, 401);
 const browser = await chromium.launch({
@@ -50,32 +64,34 @@ try {
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
   const dashboard = await (await response).json();
   for (const panel of dashboard.panels) {
-    if (panel.id === "debt") {
-      assert.equal(panel.availability, "blocked");
-      await page
-        .getByTestId("card-debt_india")
-        .filter({ hasText: "—" })
-        .waitFor();
-      continue;
-    }
     assert(["ready", "stale"].includes(panel.state));
     const ids =
       panel.id === "gdp"
         ? ["gdp_india", "gdp_world"]
-        : panel.id === "trade"
-          ? ["trade_exports", "trade_imports", "trade_balance"]
-          : panel.id === "gst"
-            ? ["gst_fy_total", "gst_fy_average"]
-            : panel.id === "inflation"
-              ? ["cpi_yoy_2024"]
-              : ["expenditure_total", "expenditure_capital"];
+        : panel.id === "debt"
+          ? ["debt_india", "debt_us"]
+          : panel.id === "trade"
+            ? ["trade_exports", "trade_imports", "trade_balance"]
+            : panel.id === "gst"
+              ? ["gst_fy_total", "gst_fy_average"]
+              : panel.id === "inflation"
+                ? ["cpi_yoy_2024"]
+                : ["expenditure_total", "expenditure_capital"];
+    await page
+      .locator(`.${panel.id}-panel`)
+      .getByRole("button", { name: /Details & data/ })
+      .click();
     for (const id of ids) {
       const summary = panel.summaries.find((s) =>
         panel.id === "gdp"
           ? s.series_id === id
           : s.current.series_id === id &&
             s.period_kind ===
-              (panel.id === "inflation" ? "month" : "fiscal_year"),
+              (panel.id === "inflation"
+                ? "month"
+                : id === "debt_us"
+                  ? "calendar_year"
+                  : "fiscal_year"),
       );
       const key =
         panel.id === "gdp"
@@ -85,21 +101,7 @@ try {
       const point = series.points.find(
         (p) => (panel.id === "gdp" ? p.period_key : p.period.key) === key,
       );
-      const raw = Number(point.value);
-      const value = (
-        series.unit === "inr_crore" ? raw / 100000 : raw
-      ).toLocaleString("en-IN", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-      const display =
-        point.value === null
-          ? "—"
-          : series.unit === "percent"
-            ? value + "%"
-            : series.unit === "inr_crore"
-              ? `₹${value} L cr`
-              : `$${id === "trade_balance" && raw > 0 ? "+" : ""}${value} B`;
+      const display = expectedDisplay(point, series.unit, id);
       await page
         .getByTestId("card-" + id)
         .filter({ hasText: display })
@@ -117,7 +119,65 @@ try {
         retained: point.retained,
       });
     }
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: /^Close / })
+      .click();
   }
+  const currentReleaseAgreement = [];
+  for (const [id, grain, ids] of [
+    ["trade", "month", ["trade_exports", "trade_imports", "trade_balance"]],
+    ["gst", "month", ["gst_gross_ex_cess"]],
+    [
+      "expenditure",
+      "fiscal_year_to_date",
+      ["expenditure_total", "expenditure_capital"],
+    ],
+  ]) {
+    const panel = dashboard.panels.find((p) => p.id === id);
+    await page
+      .locator(`.${id}-panel`)
+      .getByRole("button", { name: /Details & data/ })
+      .click();
+    await page.getByLabel(`${id} reporting period`).selectOption(grain);
+    for (const sid of ids) {
+      const summary = panel.summaries.find(
+        (s) => s.current.series_id === sid && s.period_kind === grain,
+      );
+      const series = panel.series.find((s) => s.id === sid),
+        point = series.points.find(
+          (p) => p.period.key === summary.current.period_key,
+        ),
+        display = expectedDisplay(point, series.unit, sid);
+      await page
+        .getByTestId("card-" + sid)
+        .filter({ hasText: display })
+        .waitFor();
+      assert.equal(
+        await page.getByTestId(`table-${sid}-${point.period.key}`).innerText(),
+        display,
+      );
+      currentReleaseAgreement.push({
+        series: sid,
+        period: point.period,
+        value: point.value,
+        unit: series.unit,
+        published_at: point.definition.published_at,
+        retrieved_at: point.retrieved_at,
+        source_url: point.source_url,
+        response_sha256: point.response_sha256,
+        display,
+      });
+    }
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: /^Close / })
+      .click();
+  }
+  await page.screenshot({
+    path: root + "/.verification/completion/current-reporting-view.png",
+    fullPage: true,
+  });
   assert.deepEqual(
     await page.evaluate(() => [
       Object.keys(localStorage),
@@ -166,6 +226,45 @@ try {
     path: root + "/.verification/live-full-mobile.png",
     fullPage: true,
   });
+  const beforeTicker = await (
+    await fetch(api + "/api/v1/ticker", {
+      headers: { Authorization: "Bearer " + access },
+    })
+  ).json();
+  const nextTicker = await page.waitForResponse(
+    (r) => r.url() === api + "/api/v1/ticker" && r.status() === 200,
+    { timeout: 35000 },
+  );
+  const afterTicker = await nextTicker.json();
+  assert(
+    Date.parse(afterTicker.generated_at) >
+      Date.parse(beforeTicker.generated_at),
+  );
+  assert(
+    afterTicker.ticker.some(
+      (q) =>
+        Date.parse(q.retrieved_at) >
+        Date.parse(beforeTicker.ticker.find((p) => p.id === q.id).retrieved_at),
+    ),
+  );
+  for (const q of afterTicker.ticker) {
+    const display = Number(q.value).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    await page
+      .locator(".ticker-item")
+      .filter({ hasText: q.label })
+      .filter({ hasText: display })
+      .first()
+      .waitFor();
+  }
+  const tickerRefresh = {
+    before: beforeTicker,
+    after: afterTicker,
+    method:
+      "Actual normal API supervisor and browser 30-second poll; no fixture, synthetic clock or invented change",
+  };
   const timings = [];
   for (let i = 0; i < 5; i++) {
     const started = performance.now();
@@ -200,7 +299,7 @@ try {
       "unauthenticated aggregate denied",
       "login",
       "canonical card/table agreement across all implemented panels",
-      "actual debt/market unavailable states",
+      "actual debt and three timestamped market snapshots",
       "reload renewal",
       "memory-only JWT",
       "persistent HttpOnly local cookie",
@@ -208,8 +307,12 @@ try {
       "API-only browser data fetches",
       "logout revokes prior access JWT",
       "no browser runtime errors",
+      "current-release selections agree with canonical stored source observations",
+      "actual ticker automatic refresh and source timestamps advance",
     ],
     canonical_agreement: agreement,
+    current_release_agreement: currentReleaseAgreement,
+    ticker_refresh: tickerRefresh,
     panels: dashboard.panels.map((p) => ({ id: p.id, state: p.state })),
     ticker: dashboard.ticker,
     collection_groups: dashboard.collection_groups,

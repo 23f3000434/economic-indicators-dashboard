@@ -40,6 +40,11 @@ assert(
     .filter((p) => p.endsWith(".webp"))
     .every((p) => /-[0-9]+-[a-f0-9]{12}\.webp$/.test(p)),
 );
+assert(
+  paths
+    .filter((p) => p.endsWith(".svg") && p.includes("/design/"))
+    .every((p) => /-layout-(?:[12]x|mobile)-[a-f0-9]{12}\.svg$/.test(p)),
+);
 console.log(
   "Production frontend contains no fixture/control data or local API URLs; configured origin/CSP/hash assets verified.",
 );

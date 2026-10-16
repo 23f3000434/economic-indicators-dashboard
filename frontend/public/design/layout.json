@@ -1,0 +1,555 @@
+{
+  "source_svg_sha256": "dd84037be981dbcfb33dac67eebf28ea483e93c3f905cb6fbec83cad598bbc59",
+  "method": "Original SVG decorative nodes and clipping; existing deterministic WebP variants; no sample observations/text/curves in panel skins.",
+  "entries": [
+    {
+      "name": "gdp",
+      "density": 1,
+      "file": "gdp-layout-1x-ae354ba4366e.svg",
+      "sha256": "ae354ba4366eb2ea259cb31b07c1e0cf9ed4ae15e007587f86f837d7ad774b82",
+      "bytes": 15122,
+      "bounds": [
+        30.0,
+        162.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip2_0_1",
+        "clip3_0_1",
+        "clip4_0_1",
+        "filter1_f_0_1",
+        "filter2_f_0_1",
+        "image3_0_1",
+        "image4_0_1",
+        "paint2_linear_0_1",
+        "paint3_linear_0_1",
+        "paint4_linear_0_1",
+        "paint73_linear_0_1",
+        "pattern3_0_1",
+        "pattern4_0_1"
+      ]
+    },
+    {
+      "name": "gdp",
+      "density": 2,
+      "file": "gdp-layout-2x-bec03d269611.svg",
+      "sha256": "bec03d269611cfe784e92e9e0dde4e8412e9dcfcb3e3eb18bfd5ce11cb0cb48d",
+      "bytes": 37746,
+      "bounds": [
+        30.0,
+        162.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip2_0_1",
+        "clip3_0_1",
+        "clip4_0_1",
+        "filter1_f_0_1",
+        "filter2_f_0_1",
+        "image3_0_1",
+        "image4_0_1",
+        "paint2_linear_0_1",
+        "paint3_linear_0_1",
+        "paint4_linear_0_1",
+        "paint73_linear_0_1",
+        "pattern3_0_1",
+        "pattern4_0_1"
+      ]
+    },
+    {
+      "name": "gdp",
+      "density": "mobile",
+      "file": "gdp-layout-mobile-d746aaf39455.svg",
+      "sha256": "d746aaf3945527d254951624b632ff30ad28e6a55332eec3ace1f9836bd07631",
+      "bytes": 3549,
+      "bounds": [
+        30.0,
+        162.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip2_0_1",
+        "clip3_0_1",
+        "clip4_0_1",
+        "filter1_f_0_1",
+        "filter2_f_0_1",
+        "paint2_linear_0_1",
+        "paint3_linear_0_1",
+        "paint4_linear_0_1",
+        "paint73_linear_0_1"
+      ]
+    },
+    {
+      "name": "trade",
+      "density": 1,
+      "file": "trade-layout-1x-580082ba2224.svg",
+      "sha256": "580082ba2224d48276d1745b805b839de945183e76f6f4d06bca9542c7e705b5",
+      "bytes": 34368,
+      "bounds": [
+        30.0,
+        730.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip5_0_1",
+        "clip6_0_1",
+        "clip7_0_1",
+        "filter14_f_0_1",
+        "filter16_f_0_1",
+        "filter6_f_0_1",
+        "filter7_f_0_1",
+        "image5_0_1",
+        "paint29_linear_0_1",
+        "paint30_linear_0_1",
+        "paint31_linear_0_1",
+        "paint32_linear_0_1",
+        "paint33_linear_0_1",
+        "pattern5_0_1",
+        "pattern6_0_1"
+      ]
+    },
+    {
+      "name": "trade",
+      "density": 2,
+      "file": "trade-layout-2x-a6e7b9992c19.svg",
+      "sha256": "a6e7b9992c19fde0e418116c958188b3c9b6c265f69cb814017c0bd28277aa75",
+      "bytes": 95024,
+      "bounds": [
+        30.0,
+        730.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip5_0_1",
+        "clip6_0_1",
+        "clip7_0_1",
+        "filter14_f_0_1",
+        "filter16_f_0_1",
+        "filter6_f_0_1",
+        "filter7_f_0_1",
+        "image5_0_1",
+        "paint29_linear_0_1",
+        "paint30_linear_0_1",
+        "paint31_linear_0_1",
+        "paint32_linear_0_1",
+        "paint33_linear_0_1",
+        "pattern5_0_1",
+        "pattern6_0_1"
+      ]
+    },
+    {
+      "name": "trade",
+      "density": "mobile",
+      "file": "trade-layout-mobile-31a8738fb9ce.svg",
+      "sha256": "31a8738fb9ce4826e3bf73d1fee1ed87454b5ee5a94a2d1a95d5e35790ab119e",
+      "bytes": 4733,
+      "bounds": [
+        30.0,
+        730.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip5_0_1",
+        "clip6_0_1",
+        "clip7_0_1",
+        "filter14_f_0_1",
+        "filter16_f_0_1",
+        "filter6_f_0_1",
+        "filter7_f_0_1",
+        "paint29_linear_0_1",
+        "paint30_linear_0_1",
+        "paint31_linear_0_1",
+        "paint32_linear_0_1",
+        "paint33_linear_0_1"
+      ]
+    },
+    {
+      "name": "inflation",
+      "density": 1,
+      "file": "inflation-layout-1x-12a8cc953739.svg",
+      "sha256": "12a8cc953739a1a360735e3d39ddd0104de624e32a992d50159d59ae6c40bfee",
+      "bytes": 52322,
+      "bounds": [
+        30.0,
+        1298.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip10_0_1",
+        "clip8_0_1",
+        "clip9_0_1",
+        "filter18_f_0_1",
+        "filter19_f_0_1",
+        "filter20_f_0_1",
+        "filter22_f_0_1",
+        "filter24_f_0_1",
+        "image6_0_1",
+        "image7_0_1",
+        "paint34_linear_0_1",
+        "paint35_linear_0_1",
+        "paint38_linear_0_1",
+        "paint39_linear_0_1",
+        "pattern7_0_1",
+        "pattern8_0_1"
+      ]
+    },
+    {
+      "name": "inflation",
+      "density": 2,
+      "file": "inflation-layout-2x-f7891bc3949b.svg",
+      "sha256": "f7891bc3949b96778ec3eb917e6a739c1860f61839d1b8ca1ec9f880623ffe7b",
+      "bytes": 151198,
+      "bounds": [
+        30.0,
+        1298.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip10_0_1",
+        "clip8_0_1",
+        "clip9_0_1",
+        "filter18_f_0_1",
+        "filter19_f_0_1",
+        "filter20_f_0_1",
+        "filter22_f_0_1",
+        "filter24_f_0_1",
+        "image6_0_1",
+        "image7_0_1",
+        "paint34_linear_0_1",
+        "paint35_linear_0_1",
+        "paint38_linear_0_1",
+        "paint39_linear_0_1",
+        "pattern7_0_1",
+        "pattern8_0_1"
+      ]
+    },
+    {
+      "name": "inflation",
+      "density": "mobile",
+      "file": "inflation-layout-mobile-8e53d4c5c828.svg",
+      "sha256": "8e53d4c5c828ddbe6c1a8e898a3788768c6f5b78593786fd10f3f33673ab914c",
+      "bytes": 4975,
+      "bounds": [
+        30.0,
+        1298.0,
+        582.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip10_0_1",
+        "clip8_0_1",
+        "clip9_0_1",
+        "filter18_f_0_1",
+        "filter19_f_0_1",
+        "filter20_f_0_1",
+        "filter22_f_0_1",
+        "filter24_f_0_1",
+        "paint34_linear_0_1",
+        "paint35_linear_0_1",
+        "paint38_linear_0_1",
+        "paint39_linear_0_1"
+      ]
+    },
+    {
+      "name": "debt",
+      "density": 1,
+      "file": "debt-layout-1x-0a41f3cbd100.svg",
+      "sha256": "0a41f3cbd1005b744b642d2af2d6974809aabd29acf68f69faf6249bfd53747e",
+      "bytes": 13695,
+      "bounds": [
+        636.0,
+        162.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip11_0_1",
+        "clip12_0_1",
+        "clip13_0_1",
+        "filter27_f_0_1",
+        "filter28_f_0_1",
+        "image3_0_1",
+        "image8_0_1",
+        "paint40_linear_0_1",
+        "paint41_linear_0_1",
+        "paint44_linear_0_1",
+        "paint45_linear_0_1",
+        "pattern10_0_1",
+        "pattern9_0_1"
+      ]
+    },
+    {
+      "name": "debt",
+      "density": 2,
+      "file": "debt-layout-2x-3ec3c9b8db7c.svg",
+      "sha256": "3ec3c9b8db7c353254626cbee82a8040e84343cacba94cef2c88e86c49ed9a20",
+      "bytes": 33091,
+      "bounds": [
+        636.0,
+        162.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip11_0_1",
+        "clip12_0_1",
+        "clip13_0_1",
+        "filter27_f_0_1",
+        "filter28_f_0_1",
+        "image3_0_1",
+        "image8_0_1",
+        "paint40_linear_0_1",
+        "paint41_linear_0_1",
+        "paint44_linear_0_1",
+        "paint45_linear_0_1",
+        "pattern10_0_1",
+        "pattern9_0_1"
+      ]
+    },
+    {
+      "name": "debt",
+      "density": "mobile",
+      "file": "debt-layout-mobile-0123b48204af.svg",
+      "sha256": "0123b48204af145594f85d1fa4268df1540d9898dfe3c7ddf69e49d50c285b2b",
+      "bytes": 3572,
+      "bounds": [
+        636.0,
+        162.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip11_0_1",
+        "clip12_0_1",
+        "clip13_0_1",
+        "filter27_f_0_1",
+        "filter28_f_0_1",
+        "paint40_linear_0_1",
+        "paint41_linear_0_1",
+        "paint44_linear_0_1",
+        "paint45_linear_0_1"
+      ]
+    },
+    {
+      "name": "gst",
+      "density": 1,
+      "file": "gst-layout-1x-6de7a17d967e.svg",
+      "sha256": "6de7a17d967e4d0e7af68270d38cb0c1a15ed6ce1c6f65b14d7a331c58f99984",
+      "bytes": 34535,
+      "bounds": [
+        636.0,
+        730.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip14_0_1",
+        "clip15_0_1",
+        "clip16_0_1",
+        "filter37_f_0_1",
+        "filter38_f_0_1",
+        "filter45_f_0_1",
+        "filter47_f_0_1",
+        "image10_0_1",
+        "image9_0_1",
+        "paint52_linear_0_1",
+        "paint53_linear_0_1",
+        "paint54_linear_0_1",
+        "paint55_linear_0_1",
+        "paint56_linear_0_1",
+        "pattern11_0_1",
+        "pattern12_0_1"
+      ]
+    },
+    {
+      "name": "gst",
+      "density": 2,
+      "file": "gst-layout-2x-319d64b52d6b.svg",
+      "sha256": "319d64b52d6b59058349921f9d442294ee81ffaa962da469cb689f5d2d7bd0b1",
+      "bytes": 91443,
+      "bounds": [
+        636.0,
+        730.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip14_0_1",
+        "clip15_0_1",
+        "clip16_0_1",
+        "filter37_f_0_1",
+        "filter38_f_0_1",
+        "filter45_f_0_1",
+        "filter47_f_0_1",
+        "image10_0_1",
+        "image9_0_1",
+        "paint52_linear_0_1",
+        "paint53_linear_0_1",
+        "paint54_linear_0_1",
+        "paint55_linear_0_1",
+        "paint56_linear_0_1",
+        "pattern11_0_1",
+        "pattern12_0_1"
+      ]
+    },
+    {
+      "name": "gst",
+      "density": "mobile",
+      "file": "gst-layout-mobile-b13265ab3654.svg",
+      "sha256": "b13265ab3654aa1b1d507898d23893d099a676e8c9775f8066fbdaeb4067d84a",
+      "bytes": 4693,
+      "bounds": [
+        636.0,
+        730.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip14_0_1",
+        "clip15_0_1",
+        "clip16_0_1",
+        "filter37_f_0_1",
+        "filter38_f_0_1",
+        "filter45_f_0_1",
+        "filter47_f_0_1",
+        "paint52_linear_0_1",
+        "paint53_linear_0_1",
+        "paint54_linear_0_1",
+        "paint55_linear_0_1",
+        "paint56_linear_0_1"
+      ]
+    },
+    {
+      "name": "expenditure",
+      "density": 1,
+      "file": "expenditure-layout-1x-ace073997125.svg",
+      "sha256": "ace0739971253354fdd25a4933202ec53de66d494d233bd80a5be1f4e391cf1a",
+      "bytes": 35754,
+      "bounds": [
+        636.0,
+        1298.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip17_0_1",
+        "clip18_0_1",
+        "clip19_0_1",
+        "filter49_f_0_1",
+        "filter50_f_0_1",
+        "filter52_f_0_1",
+        "filter54_f_0_1",
+        "image11_0_1",
+        "paint57_linear_0_1",
+        "paint58_linear_0_1",
+        "paint71_linear_0_1",
+        "paint72_linear_0_1",
+        "pattern13_0_1",
+        "pattern14_0_1"
+      ]
+    },
+    {
+      "name": "expenditure",
+      "density": 2,
+      "file": "expenditure-layout-2x-7862a912a217.svg",
+      "sha256": "7862a912a217d960f72ddd105e95f2f8e3fde6bce5227356ff30c9f27f3ab2eb",
+      "bytes": 102958,
+      "bounds": [
+        636.0,
+        1298.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip17_0_1",
+        "clip18_0_1",
+        "clip19_0_1",
+        "filter49_f_0_1",
+        "filter50_f_0_1",
+        "filter52_f_0_1",
+        "filter54_f_0_1",
+        "image11_0_1",
+        "paint57_linear_0_1",
+        "paint58_linear_0_1",
+        "paint71_linear_0_1",
+        "paint72_linear_0_1",
+        "pattern13_0_1",
+        "pattern14_0_1"
+      ]
+    },
+    {
+      "name": "expenditure",
+      "density": "mobile",
+      "file": "expenditure-layout-mobile-1a7554be2d58.svg",
+      "sha256": "1a7554be2d58230d5276e091f4b53e723e7f9f35a5ddbca888516c9d78c6b85e",
+      "bytes": 4503,
+      "bounds": [
+        636.0,
+        1298.0,
+        583.0,
+        544.0
+      ],
+      "source_definitions": [
+        "clip17_0_1",
+        "clip18_0_1",
+        "clip19_0_1",
+        "filter49_f_0_1",
+        "filter50_f_0_1",
+        "filter52_f_0_1",
+        "filter54_f_0_1",
+        "paint57_linear_0_1",
+        "paint58_linear_0_1",
+        "paint71_linear_0_1",
+        "paint72_linear_0_1"
+      ]
+    },
+    {
+      "name": "canvas",
+      "density": 1,
+      "file": "canvas-layout-1x-ff8b93fa1c5a.svg",
+      "sha256": "ff8b93fa1c5abce0a0252873e498899983cdef405aff7c4f96b820dc005092cd",
+      "bytes": 374108,
+      "bounds": [
+        0,
+        0,
+        1248,
+        2193
+      ],
+      "source_definitions": [
+        "image0_0_1",
+        "image2_0_1",
+        "paint0_linear_0_1",
+        "pattern0_0_1",
+        "pattern2_0_1"
+      ]
+    },
+    {
+      "name": "canvas",
+      "density": 2,
+      "file": "canvas-layout-2x-b7dbc3bf5848.svg",
+      "sha256": "b7dbc3bf584847301096e5380947612ec7115690360a31e3a363025a491568ef",
+      "bytes": 589956,
+      "bounds": [
+        0,
+        0,
+        1248,
+        2193
+      ],
+      "source_definitions": [
+        "image0_0_1",
+        "image2_0_1",
+        "paint0_linear_0_1",
+        "pattern0_0_1",
+        "pattern2_0_1"
+      ]
+    }
+  ]
+}

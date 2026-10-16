@@ -1,32 +1,65 @@
-import { Component, type ReactNode } from 'react';
+import { Component, useEffect, useState, type ReactNode } from 'react';
 import { ist, published, type PanelId } from './contracts';
 import { periodKeys, valueOf, type ViewPoint, type ViewSeries } from './presentation';
+import { layout } from './layout';
 import { artwork } from './artwork';
 
-const imageSources: Record<string, string> = {
-  exports: 'trade',
-  imports: 'trade',
-  total: 'expenditure',
-  capital: 'expenditure',
-};
-
 export const titles: Record<PanelId, [string, string, string]> = {
-  gdp: ['01', 'GDP Growth · India vs World', 'Annual real growth'],
+  gdp: ['01', 'GDP Growth - India vs World', '(YOY%)'],
   debt: ['02', 'Debt to GDP Ratio', 'India & US · general government'],
   trade: ['03', 'Imports, Exports & Trade Balance', 'Merchandise only · USD billion'],
-  gst: ['04', 'GST Collection', 'Gross · excluding compensation cess'],
-  inflation: ['05', 'Inflation · India', 'All-India combined headline CPI'],
+  gst: ['04', 'GST Tax Collection', '(₹)'],
+  inflation: ['05', 'Inflation', '(IND)'],
   expenditure: ['06', 'Government Expenditure', 'Union Government · actuals'],
 };
+export function PanelSkin({ id }: { id: PanelId }) {
+  return (
+    <picture>
+      <source media="(max-width:760px)" srcSet={layout[id].mobileSrc || undefined} />
+      <img
+        src={layout[id].src}
+        srcSet={layout[id].srcSet}
+        className="panel-skin"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+  );
+}
+function MobileArt({ name }: { name: string }) {
+  const [mobile, setMobile] = useState(() => matchMedia('(max-width:760px)').matches);
+  useEffect(() => {
+    const q = matchMedia('(max-width:760px)');
+    const change = () => setMobile(q.matches);
+    q.addEventListener('change', change);
+    return () => q.removeEventListener('change', change);
+  }, []);
+  const source =
+    (
+      { exports: 'trade', imports: 'trade', total: 'expenditure', capital: 'expenditure' } as Record<
+        string,
+        string
+      >
+    )[name] || name;
+  return mobile && artwork[source] ? (
+    <span className={`card-art ${name}`} aria-hidden="true">
+      <img {...artwork[source]} alt="" loading="lazy" decoding="async" />
+    </span>
+  ) : null;
+}
 export function PanelHeading({ id, state, loading }: { id: PanelId; state?: string; loading: boolean }) {
-  const [number, title, sub] = titles[id];
+  const [, title] = titles[id];
   return (
     <div className="panel-heading">
       <div>
-        <span className="panel-number">{number}</span>
         <h2 id={`${id}-title`}>
           {title}
-          <span>{sub}</span>
+          {['gdp', 'gst', 'inflation'].includes(id) && (
+            <span className="heading-suffix"> {titles[id][2]}</span>
+          )}
+          {id === 'debt' && <span className="heading-suffix"> (IND)</span>}
         </h2>
       </div>
       <span className={`status ${loading ? 'loading' : state || 'empty'}`}>
@@ -38,6 +71,7 @@ export function PanelHeading({ id, state, loading }: { id: PanelId; state?: stri
 export function PanelLoading({ id }: { id: PanelId }) {
   return (
     <section className={`panel ${id}-panel`} aria-labelledby={`${id}-title`} aria-busy="true">
+      <PanelSkin id={id} />
       <PanelHeading id={id} loading />
       <div className="panel-content skeleton-layout" role="status">
         <div className="kpis">
@@ -84,24 +118,35 @@ export function Kpi({
   children?: ReactNode;
 }) {
   return (
-    <article className={`kpi ${series.color}`}>
+    <article className={`kpi ${series.color} ${image || ''}`}>
       <div className="kpi-label">{label}</div>
       <div className="kpi-value" data-testid={`card-${series.id}`}>
-        {valueOf(point, series)}
+        {(() => {
+          const text = valueOf(point, series);
+          const parts = text.match(/^(.*?)( L cr| B)$/);
+          return parts ? (
+            <>
+              {parts[1]}
+              <span className="kpi-unit">{parts[2]}</span>
+            </>
+          ) : (
+            text
+          );
+        })()}
       </div>
-      {image && (
-        <span className={`card-art ${image}`} aria-hidden="true">
-          <img {...artwork[imageSources[image] || image]} alt="" loading="lazy" decoding="async" />
-        </span>
-      )}
       <div className="kpi-foot">
-        <span>{point?.label || 'Reporting period —'}</span>
+        {image && <MobileArt name={image} />}
+        <span className="card-period" title={point?.label}>
+          {point?.label || 'Reporting period —'}
+          {point?.status === 'estimate' ? ' · est.' : ''}
+        </span>
         {delta && (
           <span
             className={`change ${delta.startsWith('-') ? 'negative' : ''}`}
             title={comparison}
             aria-label={`${delta}. ${comparison || 'Comparison unavailable'}`}
           >
+            <span aria-hidden="true">{delta.startsWith('-') ? '▼ ' : delta.startsWith('+') ? '▲ ' : ''}</span>
             {delta}
           </span>
         )}
@@ -132,7 +177,7 @@ export function Legend({
           onClick={() => toggle(s.id)}
           disabled={!hidden.has(s.id) && plotted.filter((p) => !hidden.has(p.id)).length === 1}
         >
-          <i className={`dot ${s.color}`} />
+          <i className={`dot ${s.color} ${s.kind === 'line' ? 'line-marker' : ''}`} />
           {s.label}
         </button>
       ))}

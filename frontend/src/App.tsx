@@ -2,6 +2,8 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type
 import { auth } from './auth';
 import type { Dashboard, IndicatorPanel, Panel, PanelId } from './contracts';
 import { PanelHeading, PanelLoading, ReadNotice, RecoveryBoundary, titles } from './PanelParts';
+import { layout } from './layout';
+import { Ticker, useTicker } from './Ticker';
 
 function PanelSlot({
   id,
@@ -90,6 +92,16 @@ export function App() {
   }, []);
   const signedIn = auth.state === 'signed-in';
   const userId = auth.tokens?.user.id;
+  const ticker = useTicker(signedIn, userId);
+  const [scale, setScale] = useState(() => (innerWidth > 760 ? Math.min(innerWidth, 1248) / 1248 : 1));
+  const wrap = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const observer = new ResizeObserver(([e]) =>
+      setScale(innerWidth > 760 ? Math.min(e.contentRect.width, 1248) / 1248 : 1),
+    );
+    if (wrap.current) observer.observe(wrap.current);
+    return () => observer.disconnect();
+  }, []);
   const load = useCallback((): Promise<void> => {
     if (pending.current) return pending.current;
     if (auth.state !== 'signed-in') return Promise.resolve();
@@ -173,130 +185,139 @@ export function App() {
   }
   const visible = owner === userId ? dashboard : null;
   return (
-    <div className="app-shell">
-      <a className="skip-link" href="#main">
-        Skip to dashboard
-      </a>
-      <header className="masthead">
-        <h1>ECONOMIC INDICATOR</h1>
-        <div className="account">
-          {signedIn ? (
-            <>
-              <span>{auth.tokens?.user.username}</span>
-              <button onClick={() => void load()} disabled={busy} aria-label="Refresh stored dashboard data">
-                {busy ? 'Updating…' : '↻ Refresh view'}
-              </button>
-              <button onClick={() => void signOut()}>Sign out ↗</button>
-            </>
-          ) : (
-            <span>Secure access</span>
-          )}
-        </div>
-      </header>
-      <div className="market-strip" aria-label="Market feed status">
-        <span className="strip-label">
-          MARKETS <small>Unavailable</small>
-        </span>
-        {visible?.ticker.map((t) => (
-          <span className="ticker-item" key={t.id}>
-            <b>{t.id === 'nse_indices' ? 'NSE indices' : 'SENSEX'}</b> — <small>Accepted feed pending</small>
-          </span>
-        )) || <span>NSE / BSE · — · Accepted feed pending</span>}
-      </div>
-      {logoutError && (
-        <p className="global-error" role="alert">
-          {logoutError}
-        </p>
-      )}
-      {!signedIn ? (
-        <main id="main" className="login-layout">
-          <div className="login-intro">
-            <span className="section-kicker">YOUR ECONOMIC OBSERVATORY</span>
-            <h2>
-              Perspective,
-              <br />
-              <em>grounded in data.</em>
-            </h2>
-            <p>
-              Explore India’s growth alongside the world.
-              <br />
-              Clear periods. Traceable sources. One shared picture.
-            </p>
-            <div className="intro-rule" />
-            <span className="intro-foot">
-              WORLD BANK WDI <span>·</span> ANNUAL GDP GROWTH
-            </span>
-          </div>
-          <section className="login-card" aria-labelledby="login-title">
-            <span className="card-overline">MEMBER ACCESS</span>
-            <h2 id="login-title">Welcome back</h2>
-            <p>Sign in to your indicators dashboard.</p>
-            {auth.state === 'checking' ? (
-              <div className="session-check" role="status">
-                Restoring your session…
-              </div>
-            ) : auth.state === 'connection-error' ? (
-              <div className="session-check">
-                <p role="alert">{auth.message}</p>
-                <button className="primary" onClick={() => void auth.bootstrap()}>
-                  Retry connection
+    <div
+      className="app-shell canvas-wrap"
+      ref={wrap}
+      style={{ '--design-scale': scale } as React.CSSProperties}
+    >
+      <div className={`reference-canvas ${signedIn ? 'authenticated' : ''}`}>
+        <img
+          src={layout.canvas.src}
+          srcSet={layout.canvas.srcSet}
+          className="canvas-skin"
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+        />
+        <a className="skip-link" href="#main">
+          Skip to dashboard
+        </a>
+        <header className="masthead">
+          <h1 className="sr-only">ECONOMIC INDICATOR</h1>
+          <div className="account">
+            {signedIn ? (
+              <>
+                <span>{auth.tokens?.user.username}</span>
+                <button
+                  onClick={() => {
+                    void load();
+                    void ticker.reload();
+                  }}
+                  disabled={busy}
+                  aria-label="Refresh stored dashboard data"
+                >
+                  {busy ? 'Updating…' : '↻ Refresh view'}
                 </button>
-              </div>
+                <button onClick={() => void signOut()}>Sign out ↗</button>
+              </>
             ) : (
-              <form onSubmit={signIn}>
-                <label htmlFor="username">Username</label>
-                <input id="username" name="username" autoComplete="username" required maxLength={100} />
-                <label htmlFor="password">Password</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  maxLength={1024}
-                />
-                {loginError && (
-                  <p role="alert" className="login-error">
-                    {loginError}
-                  </p>
-                )}
-                <button className="primary" disabled={submitting}>
-                  {submitting ? 'Signing in…' : 'Sign in'}
-                  <span aria-hidden="true">→</span>
-                </button>
-              </form>
+              <span>Secure access</span>
             )}
-            <p className="login-security">◈ Your session stays signed in for up to seven days.</p>
-          </section>
-        </main>
-      ) : (
-        <main id="main" className="dashboard">
-          <ReadNotice error={error} retained={!!visible} retry={() => void load()} />
-          <div className="sr-only" role="status">
-            {busy ? 'Updating stored dashboard data' : 'Dashboard view ready'}
           </div>
-          <div className="panel-grid">
-            {order.map((id) => (
-              <PanelSlot
-                key={`${userId}-${id}`}
-                id={id}
-                panel={visible?.panels.find((p) => p.id === id)}
-                loading={!visible && busy}
-                refresh={load}
-              />
-            ))}
-          </div>
-          <p className="view-note">
-            Stored data · observation dates appear in each panel · release freshness is unknown. Refresh view
-            reads the database; collection runs independently.
+        </header>
+        <Ticker
+          key={signedIn ? auth.tokens?.csrf_token : 'signed-out'}
+          signedIn={signedIn}
+          items={signedIn ? ticker.snapshot?.ticker || visible?.ticker || [] : []}
+          error={ticker.error}
+          retry={ticker.reload}
+        />
+        {logoutError && (
+          <p className="global-error" role="alert">
+            {logoutError}
           </p>
-        </main>
-      )}
-      <footer>
-        <span>ECONOMIC INDICATOR</span>
-        <p>Public sources. Explicit periods. Traceable observations.</p>
-        <span>INDIA · MACROECONOMIC DASHBOARD</span>
-      </footer>
+        )}
+        {!signedIn ? (
+          <main id="main" className="login-layout">
+            <div className="login-intro">
+              <span className="section-kicker">YOUR ECONOMIC OBSERVATORY</span>
+              <h2>
+                Perspective,
+                <br />
+                <em>grounded in data.</em>
+              </h2>
+              <p>
+                Explore India’s growth alongside the world.
+                <br />
+                Clear periods. Traceable sources. One shared picture.
+              </p>
+              <div className="intro-rule" />
+              <span className="intro-foot">
+                WORLD BANK WDI <span>·</span> ANNUAL GDP GROWTH
+              </span>
+            </div>
+            <section className="login-card" aria-labelledby="login-title">
+              <span className="card-overline">MEMBER ACCESS</span>
+              <h2 id="login-title">Welcome back</h2>
+              <p>Sign in to your indicators dashboard.</p>
+              {auth.state === 'checking' ? (
+                <div className="session-check" role="status">
+                  Restoring your session…
+                </div>
+              ) : auth.state === 'connection-error' ? (
+                <div className="session-check">
+                  <p role="alert">{auth.message}</p>
+                  <button className="primary" onClick={() => void auth.bootstrap()}>
+                    Retry connection
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={signIn}>
+                  <label htmlFor="username">Username</label>
+                  <input id="username" name="username" autoComplete="username" required maxLength={100} />
+                  <label htmlFor="password">Password</label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    maxLength={1024}
+                  />
+                  {loginError && (
+                    <p role="alert" className="login-error">
+                      {loginError}
+                    </p>
+                  )}
+                  <button className="primary" disabled={submitting}>
+                    {submitting ? 'Signing in…' : 'Sign in'}
+                    <span aria-hidden="true">→</span>
+                  </button>
+                </form>
+              )}
+              <p className="login-security">◈ Your session stays signed in for up to seven days.</p>
+            </section>
+          </main>
+        ) : (
+          <main id="main" className="dashboard">
+            <ReadNotice error={error} retained={!!visible} retry={() => void load()} />
+            <div className="sr-only" role="status">
+              {busy ? 'Updating stored dashboard data' : 'Dashboard view ready'}
+            </div>
+            <div className="panel-grid">
+              {order.map((id) => (
+                <PanelSlot
+                  key={`${userId}-${id}`}
+                  id={id}
+                  panel={visible?.panels.find((p) => p.id === id)}
+                  loading={!visible && busy}
+                  refresh={load}
+                />
+              ))}
+            </div>
+          </main>
+        )}
+      </div>
     </div>
   );
 }

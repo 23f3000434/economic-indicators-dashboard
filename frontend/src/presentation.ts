@@ -2,6 +2,7 @@ import { amount, type Measurement, type Point, type Series, type Unit } from './
 
 export interface ViewPoint {
   key: string;
+  axisKey?: string;
   label: string;
   start: string;
   end: string;
@@ -63,6 +64,16 @@ export function periodKeys(series: ViewSeries[]) {
     .map((p) => p.key);
 }
 export function sliceSeries(series: ViewSeries[], count: number) {
-  const keys = new Set(periodKeys(series).slice(-count));
-  return series.map((s) => ({ ...s, points: s.points.filter((p) => keys.has(p.key)) }));
+  const keys = new Set(plotKeys(series).slice(-count));
+  return series.map((s) => ({ ...s, points: s.points.filter((p) => keys.has(p.axisKey || p.key)) }));
+}
+export function plotKeys(series: ViewSeries[]) {
+  return [
+    ...new Set(
+      series
+        .flatMap((s) => s.points)
+        .sort((a, b) => a.end.localeCompare(b.end))
+        .map((p) => p.axisKey || p.key),
+    ),
+  ];
 }

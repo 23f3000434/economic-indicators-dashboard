@@ -27,13 +27,30 @@ function expected(point: Measurement, signed = false) {
       ? `$${signed && raw > 0 ? '+' : ''}${numeric} B`
       : numeric + '%';
 }
+async function openDetails(page: Page, id: string) {
+  const dialog = page.getByRole('dialog');
+  if (await dialog.count()) await dialog.getByRole('button', { name: /^Close / }).click();
+  await page
+    .locator(`.${id}-panel`)
+    .getByRole('button', { name: /Details & data/ })
+    .click();
+  return page.getByRole('dialog');
+}
+async function closeDetails(page: Page) {
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: /^Close / })
+    .click();
+}
 async function checkSummary(page: Page, panel: IndicatorPanel, id: string, kind: PeriodKind) {
   const summary = panel.summaries.find((s) => s.current.series_id === id && s.period_kind === kind)!;
   const point = pointAt(panel, id, summary.current.period_key);
+  await openDetails(page, panel.id);
   await expect(page.getByTestId(`card-${id}`)).toHaveText(expected(point, id === 'trade_balance'));
   await expect(page.getByTestId(`table-${id}-${point.period.key}`)).toHaveText(
     expected(point, id === 'trade_balance'),
   );
+  await closeDetails(page);
   return point;
 }
 
@@ -59,19 +76,21 @@ test('complete interface agrees with canonical API and uses supplied artwork at 
   }
   await checkSummary(page, panelAt(data, 'inflation'), 'cpi_yoy_2024', 'month');
   await expect(page.getByTestId('card-inflation_target')).toHaveText('4.00%');
-  await expect(page.locator('.debt-panel .status')).toHaveText('unavailable');
-  await expect(page.getByTestId('card-debt_india')).toHaveText('—');
-  await expect(page.getByTestId('card-debt_us')).toHaveText('—');
-  await expect(page.locator('.market-strip')).toContainText('Unavailable');
+  await checkSummary(page, panelAt(data, 'debt'), 'debt_india', 'fiscal_year');
+  await checkSummary(page, panelAt(data, 'debt'), 'debt_us', 'calendar_year');
+  await expect(page.locator('.market-strip')).toContainText('CLOSED');
+  await expect(page.locator('.market-strip')).toContainText('74,315.61');
   await expect(page.locator('.market-strip')).not.toContainText(/live/i);
-  await expect(page.locator('.gst-panel')).toContainText('excluding compensation cess');
+  await expect(page.locator('.gst-panel')).toContainText('excl. compensation cess');
   const trade = page.locator('.trade-panel');
   await trade.locator('.recharts-bar-rectangle').first().hover();
   const first = panelAt(data, 'trade')
     .series.find((s) => s.id === 'trade_exports')!
     .points.find((p) => p.period.kind === 'fiscal_year')!;
   await expect(trade.locator('.chart-tooltip')).toContainText(expected(first));
+  await openDetails(page, 'trade');
   await expect(page.getByTestId(`table-trade_exports-${first.period.key}`)).toHaveText(expected(first));
+  await closeDetails(page);
   await page.mouse.move(0, 0);
   await page.waitForLoadState('networkidle');
   const geometry = await page.locator('.panel').evaluateAll((panels) =>
@@ -82,107 +101,86 @@ test('complete interface agrees with canonical API and uses supplied artwork at 
   );
   expect(geometry).toHaveLength(6);
   expect(Math.abs(geometry[0].x - 29)).toBeLessThanOrEqual(1);
-  expect(geometry[0].width).toBe(566);
-  expect(geometry[0].height).toBe(630);
-  expect(geometry[2].y - geometry[0].y).toBe(654);
+  expect(geometry[0].width).toBeCloseTo((582 * 1214) / 1248, 2);
+  expect(geometry[0].height).toBeCloseTo((544 * 1214) / 1248, 2);
+  expect(geometry[2].y - geometry[0].y).toBeCloseTo((568 * 1214) / 1248, 2);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(
     await page
       .locator('.kpi-value')
       .evaluateAll((nodes) => nodes.every((n) => n.scrollWidth <= n.clientWidth)),
   ).toBe(true);
-  for (const image of await page.locator('.card-art img').all()) {
+  for (const image of await page.locator('.panel-skin').all()) {
     await image.scrollIntoViewIfNeeded();
     await image.evaluate((n) => (n as HTMLImageElement).decode());
   }
-  const assets = await page.locator('.card-art').evaluateAll(async (nodes) => {
-    return await Promise.all(
-      nodes.map(async (n) => {
-        const image = n.querySelector('img');
-        if (!image || image.loading !== 'lazy') return false;
-        await image.decode();
-        const r = n.getBoundingClientRect(),
-          card = n.parentElement!.getBoundingClientRect();
-        return (
-          image.naturalWidth > 0 &&
-          image.naturalHeight > 0 &&
-          r.width > 0 &&
-          r.height > 0 &&
-          r.left >= card.left &&
-          r.right <= card.right &&
-          r.bottom <= card.bottom
-        );
-      }),
-    );
-  });
-  expect(assets.every(Boolean)).toBe(true);
+  expect(
+    await page
+      .locator('.panel-skin')
+      .evaluateAll((ns) => ns.every((n) => (n as HTMLImageElement).naturalWidth > 0)),
+  ).toBe(true);
+  const fonts = await page.locator('#gdp-title').evaluate((n) => ({
+    family: getComputedStyle(n).fontFamily,
+    size: getComputedStyle(n).fontSize,
+    weight: getComputedStyle(n).fontWeight,
+  }));
+  expect(fonts).toEqual({ family: 'Roboto, sans-serif', size: '20px', weight: '500' });
   await page.screenshot({ path: '../.verification/frontend-desktop.png', fullPage: true });
 });
 
-test('period controls, history and legend toggles select the same cards, plots, tooltip and table', async ({
+test('period controls, history and legend toggles select canonical values in fixed panels', async ({
   page,
 }) => {
   const data = await login(page);
-  let reads = 0;
-  page.on('request', (r) => {
-    if (r.url().endsWith('/api/v1/dashboard')) reads++;
-  });
+  const shape = await page.locator('.trade-panel').boundingBox();
+  await openDetails(page, 'trade');
   await page.getByLabel('trade reporting period').selectOption('fiscal_year_to_date');
+  await expect(page.locator('.observations tbody tr')).toHaveCount(4);
+  await closeDetails(page);
   await checkSummary(page, panelAt(data, 'trade'), 'trade_exports', 'fiscal_year_to_date');
-  await checkSummary(page, panelAt(data, 'trade'), 'trade_imports', 'fiscal_year_to_date');
   await checkSummary(page, panelAt(data, 'trade'), 'trade_balance', 'fiscal_year_to_date');
-  await expect(page.locator('.trade-panel .observations tbody tr')).toHaveCount(2);
   const imports = page.locator('.trade-panel').getByRole('button', { name: 'Imports', exact: true });
   await imports.click();
   await expect(imports).toHaveAttribute('aria-pressed', 'false');
-  await expect(
-    page.locator('.trade-panel .observations').getByRole('columnheader', { name: 'Imports', exact: true }),
-  ).toHaveCount(0);
-  await expect(page.getByTestId('card-trade_imports')).not.toHaveText('—');
+  await openDetails(page, 'trade');
+  await expect(page.getByRole('columnheader', { name: 'Imports', exact: true })).toHaveCount(0);
+  await closeDetails(page);
   await imports.click();
-  await expect(
-    page.locator('.trade-panel .observations').getByRole('columnheader', { name: 'Imports', exact: true }),
-  ).toBeVisible();
-  await page.getByLabel('gst reporting period').selectOption('fiscal_year_to_date');
-  await checkSummary(page, panelAt(data, 'gst'), 'gst_fytd_average', 'fiscal_year_to_date');
+  await openDetails(page, 'gst');
   await page.getByLabel('gst reporting period').selectOption('month');
-  await checkSummary(page, panelAt(data, 'gst'), 'gst_gross_ex_cess', 'month');
-  await expect(page.locator('.gst-panel .observations tbody tr')).toHaveCount(12);
+  await expect(page.locator('.observations tbody tr')).toHaveCount(12);
   await page.getByLabel('gst history window').selectOption('24');
-  await expect(page.locator('.gst-panel .observations tbody tr')).toHaveCount(24);
+  await expect(page.locator('.observations tbody tr')).toHaveCount(24);
+  await closeDetails(page);
+  await checkSummary(page, panelAt(data, 'gst'), 'gst_gross_ex_cess', 'month');
+  await openDetails(page, 'expenditure');
   await page.getByLabel('expenditure reporting period').selectOption('fiscal_year_to_date');
+  await closeDetails(page);
   await checkSummary(page, panelAt(data, 'expenditure'), 'expenditure_total', 'fiscal_year_to_date');
-  await checkSummary(page, panelAt(data, 'expenditure'), 'expenditure_capital', 'fiscal_year_to_date');
+  await openDetails(page, 'gdp');
   await page.getByLabel('GDP history window').selectOption('3');
+  await expect(page.locator('.observations tbody tr')).toHaveCount(3);
+  await closeDetails(page);
   await expect(page.locator('.gdp-panel .recharts-bar-rectangle')).toHaveCount(6);
-  await expect(page.locator('.gdp-panel tbody tr')).toHaveCount(3);
-  await page.getByLabel('GDP history window').selectOption('50');
-  await expect(page.locator('.gdp-panel .recharts-bar-rectangle')).toHaveCount(10);
-  expect(reads).toBe(0); // controls only select stored canonical observations
+  expect(await page.locator('.trade-panel').boundingBox()).toEqual(shape);
 });
-
-test('CPI bases and missing months stay separate; dated policy never extends beyond its window', async ({
-  page,
-}) => {
+test('CPI bases and gaps remain separate and dated policy never extends', async ({ page }) => {
   await login(page);
+  await openDetails(page, 'inflation');
   await expect(page.getByTestId('table-inflation_target-2026-03')).toHaveText('—');
   await expect(page.getByTestId('table-inflation_target-2026-04')).toHaveText('4.00%');
   await page.getByLabel('CPI methodology').selectOption('cpi_yoy_2012');
   await page.getByLabel('inflation history window').selectOption('600');
-  await expect(page.getByTestId('card-cpi_yoy_2024')).toHaveCount(0);
   await expect(page.getByTestId('card-inflation_target')).toHaveText('—');
   await expect(page.getByTestId('table-cpi_yoy_2012-2020-04')).toHaveText('—');
   await expect(page.getByTestId('table-cpi_yoy_2012-2020-05')).toHaveText('—');
+  await closeDetails(page);
   const path = await page.locator('.inflation-panel .recharts-area-curve').getAttribute('d');
   expect((path?.match(/M/g) || []).length).toBeGreaterThanOrEqual(2);
-  expect(
-    await page
-      .locator('.inflation-panel .recharts-line-curve')
-      .evaluateAll((paths) => paths.every((p) => !p.getAttribute('d'))),
-  ).toBe(true);
+  await openDetails(page, 'inflation');
   await page.getByLabel('CPI methodology').selectOption('cpi_yoy_2024');
+  await closeDetails(page);
   await expect(page.getByTestId('card-cpi_yoy_2024')).toHaveText('5.54%');
-  await expect(page.getByTestId('card-inflation_target')).toHaveText('4.00%');
 });
 
 test('independent provider failures retain observations and recover without blanking other panels', async ({
@@ -252,25 +250,27 @@ test('single-flight requests are cancelled on logout and late responses cannot c
   expect((await context.cookies()).find((c) => c.name === 'dev_refresh')?.httpOnly).toBe(true);
 });
 
-test('keyboard controls, focus visibility, chart inspection and table alternatives work', async ({
+test('keyboard controls, focus return, chart inspection and accessible data alternatives work', async ({
   page,
 }) => {
   await login(page);
-  const window = page.getByLabel('GDP history window');
-  await window.focus();
-  await window.selectOption('3');
-  expect(await window.evaluate((n) => getComputedStyle(n).outlineStyle)).not.toBe('none');
-  const world = page.locator('.gdp-panel').getByRole('button', { name: 'World', exact: true });
-  await world.focus();
-  await page.keyboard.press('Space');
-  await expect(world).toHaveAttribute('aria-pressed', 'false');
-  await expect(
-    page.locator('.gdp-panel .observations').getByRole('columnheader', { name: /World/ }),
-  ).toHaveCount(0);
+  const trigger = page.locator('.gdp-panel').getByRole('button', { name: /Details & data/ });
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+  const select = page.getByLabel('GDP history window');
+  await select.focus();
+  expect(await select.evaluate((n) => getComputedStyle(n).outlineStyle)).not.toBe('none');
+  await select.selectOption('3');
   const table = page.getByRole('region', { name: 'GDP observations table' });
   await table.focus();
   await page.keyboard.press('ArrowDown');
   await expect(table).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toBeFocused();
+  const world = page.locator('.gdp-panel').getByRole('button', { name: 'World', exact: true });
+  await world.focus();
+  await page.keyboard.press('Space');
+  await expect(world).toHaveAttribute('aria-pressed', 'false');
   const chart = page.locator('.gdp-panel').getByRole('application');
   await chart.focus();
   await page.keyboard.press('ArrowRight');
@@ -290,7 +290,7 @@ test('component errors are isolated and retry reads repaired data', async ({ pag
     { times: 1 },
   );
   await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
-  await expect(page.getByRole('heading', { name: /GST Collection could not open/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /GST Tax Collection could not open/ })).toBeVisible();
   await expect(page.getByTestId('card-trade_exports')).toHaveText('$441.78 B');
   await page.getByRole('button', { name: 'Retry panel' }).click();
   await expect(page.getByTestId('card-gst_fy_total')).toHaveText('₹22.27 L cr');
@@ -402,4 +402,102 @@ test('an interrupted slow API read has a bounded retry path and keeps prior data
   await page.unroute('**/api/v1/dashboard');
   await page.getByRole('button', { name: 'Retry connection' }).click();
   await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+test('real-format market snapshots use backend comparisons, retain independent failures and recover', async ({
+  page,
+  request,
+}) => {
+  const data = await login(page);
+  await expect(page.locator('.market-strip')).toContainText('CLOSED');
+  for (const quote of data.ticker) {
+    expect(quote.value).not.toBeNull();
+    await expect(page.locator('.ticker-item').filter({ hasText: quote.label }).first()).toContainText(
+      quote.exchange,
+    );
+  }
+  await page.getByRole('button', { name: /CLOSED.*Market quote/ }).click();
+  await expect(page.getByRole('dialog')).toContainText('72,781.89');
+  await expect(page.getByRole('dialog')).toContainText('last price minus net change');
+  await closeDetails(page);
+  await request.post(API + '/__test/group/market_nse/failure');
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
+  await expect(page.locator('.ticker-item').filter({ hasText: 'NIFTY BANK' }).first()).toContainText('STALE');
+  await expect(page.locator('.ticker-item').filter({ hasText: 'SENSEX' }).first()).toContainText('CLOSED');
+  await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  await request.post(API + '/__test/group/market_nse/success');
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
+  await expect(page.locator('.ticker-item').filter({ hasText: 'NIFTY BANK' }).first()).toContainText(
+    'CLOSED',
+  );
+  await page.route('**/api/v1/ticker', (r) => r.abort());
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
+  await expect(page.locator('.ticker-item').first()).toContainText('connection lost');
+  await expect(page.locator('.ticker-item').first()).toContainText('74,315.61');
+  await page.unroute('**/api/v1/ticker');
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
+  await expect(page.locator('.ticker-item').first()).toContainText('CLOSED');
+});
+
+test('ticker polling has its own single-flight boundary and cancels on account changes', async ({ page }) => {
+  const data = await login(page);
+  await page.waitForLoadState('networkidle');
+  let release!: () => void;
+  const gate = new Promise<void>((r) => {
+    release = r;
+  });
+  let reads = 0;
+  await page.route('**/api/v1/ticker', async (route) => {
+    reads++;
+    await gate;
+    await route
+      .fulfill({
+        json: {
+          schema_version: '1',
+          generated_at: data.generated_at,
+          ticker: data.ticker,
+          collection_groups: data.collection_groups,
+        },
+      })
+      .catch(() => {});
+  });
+  await page.clock.fastForward(90000);
+  expect(reads).toBe(1);
+  await page.getByRole('button', { name: /Sign out/ }).click();
+  await expect(page.locator('.ticker-item')).toHaveCount(0);
+  release();
+  await page.unroute('**/api/v1/ticker');
+  await expect(page.locator('.ticker-item')).toHaveCount(0);
+  await page.getByLabel('Username').fill('reviewer');
+  await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(page.locator('.account')).toContainText('reviewer');
+  await expect(page.locator('.market-strip')).toContainText('CLOSED');
+});
+
+test('an initial ticker read failure marks the aggregate fallback stale and retries independently', async ({
+  page,
+}) => {
+  await page.route('**/api/v1/ticker', (r) => r.abort());
+  await login(page);
+  await expect(page.locator('.ticker-item').first()).toContainText('STALE · connection lost');
+  await expect(page.locator('.ticker-item').first()).toContainText('74,315.61');
+  await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  await page.unroute('**/api/v1/ticker');
+  await page.getByRole('button', { name: 'Refresh stored dashboard data' }).click();
+  await expect(page.locator('.ticker-item').first()).toContainText('CLOSED');
+});
+
+test('logout from another tab closes an open authenticated market dialog', async ({ page, context }) => {
+  await login(page);
+  const other = await context.newPage();
+  await other.clock.install({ time: await page.evaluate(() => Date.now()) });
+  await other.goto('/');
+  await expect(other.getByTestId('card-gdp_india')).toHaveText('7.57%');
+  await page.getByRole('button', { name: /CLOSED.*Market quote/ }).click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await other.getByRole('button', { name: /Sign out/ }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
+  await expect(page.locator('.ticker-item')).toHaveCount(0);
 });

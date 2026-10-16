@@ -85,6 +85,20 @@ export function ist(value: string | null): string {
 }
 
 export type PanelId = 'gdp' | 'debt' | 'trade' | 'gst' | 'inflation' | 'expenditure';
+export function exchangeTime(value: string | null, precision: TickerItem['exchange_timestamp_precision']) {
+  if (!value) return '—';
+  return (
+    new Intl.DateTimeFormat('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      ...(precision === 'millisecond' ? ({ second: '2-digit', fractionalSecondDigits: 3 } as const) : {}),
+      timeZone: 'Asia/Kolkata',
+    }).format(new Date(value)) + ' IST'
+  );
+}
 export type Unit = 'inr_crore' | 'usd_billion' | 'percent';
 export type PeriodKind =
   | 'month'
@@ -109,12 +123,15 @@ export interface Measurement {
   value: string | null;
   definition: {
     group: 'expenditure' | 'gst' | 'trade' | 'inflation' | 'inflation_policy' | 'debt';
-    provider: 'cga' | 'gstn' | 'commerce' | 'mospi' | 'gazette' | 'imf';
+    provider: 'cga' | 'gstn' | 'commerce' | 'mospi' | 'gazette' | 'imf' | 'world_bank_data360';
     unit: Unit;
     methodology: string;
     status: 'actual' | 'unspecified' | 'provisional' | 'final' | 'estimate';
     published_at: string | null;
     publication_note: string;
+    vintage_date: string | null;
+    source_status: string | null;
+    supporting_sources: { role: 'metadata' | 'methodology'; url: string; response_sha256: string }[];
     inputs: Reference[];
   };
   source_url: string | null;
@@ -165,17 +182,40 @@ export interface IndicatorPanel {
   report_years: number;
 }
 export interface TickerItem {
-  id: 'nse_indices' | 'bse_sensex';
+  id: 'sensex' | 'nifty_bank' | 'nifty_it';
   label: string;
-  state: 'unavailable';
-  availability: 'blocked';
+  exchange: 'NSE' | 'BSE';
+  provider_id: 'nse' | 'upstox';
+  state: 'live' | 'snapshot' | 'delayed' | 'closed' | 'stale' | 'unavailable';
+  availability: 'implemented';
   unit: 'index_points';
-  value: null;
-  previous_close: null;
-  change_percent: null;
-  exchange_timestamp: null;
-  source_url: null;
-  error_kind: 'market_access_unresolved';
+  value: string | null;
+  previous_close: string | null;
+  previous_close_basis: 'published_previous_close' | 'last_price_minus_net_change' | null;
+  change_points: string | null;
+  change_percent: string | null;
+  exchange_timestamp: string | null;
+  exchange_timestamp_precision: 'minute' | 'millisecond' | null;
+  provider_timestamp: string | null;
+  retrieved_at: string | null;
+  source_url: string | null;
+  response_sha256: string | null;
+  market_state: 'open' | 'closed' | 'closing' | 'preopen' | 'unknown';
+  market_status_at: string | null;
+  market_status_checked_at: string | null;
+  market_status_source_url: string | null;
+  market_status_sha256: string | null;
+  market_session_close_at: string | null;
+  market_timings_source_url: string | null;
+  market_timings_sha256: string | null;
+  retained: boolean;
+  error_kind: string | null;
+}
+export interface TickerSnapshot {
+  schema_version: '1';
+  generated_at: string;
+  ticker: TickerItem[];
+  collection_groups: GroupCollection[];
 }
 export interface Dashboard {
   schema_version: '1';

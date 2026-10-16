@@ -1,3 +1,27 @@
+# Current completion verification
+
+Completion stage from af5ff07: measured Figma reproduction, real market snapshots, comparable debt and official-release/source-to-screen verification. Public deployment remains pending. The dated sections below are historical checkpoints; their former debt/market/Figma gates are superseded by the current completion evidence in [design-completion.md](design-completion.md).
+
+- Backend: **107 tests + 9 subtests passed in 41.22s**, including GDP/authentication, provider isolation/cooldowns, retention, strict parsers, annual debt gaps and schema 4 recovery.
+- Frontend: **14 units pass**; strict TypeScript, production builds, formatting, locked dependencies and zero npm audit findings are checked. Actual source/style font inspection distinguishes Roboto/Manrope from the provisional Segoe fallback.
+- Compiled browser acceptance covers full canonical panels, drawers/controls, nulls, source and browser failures, lazy/component recovery, fixed geometry, ticker polling, authentication/reload/renewal/expiry/revocation and concurrent/interrupted sessions. Final requested sequence: cross-tab dialog regression **1/1 passed (25.5s)**, then complete suite **22/23 passed (5.6m)** with one 35-second test deadline during held-confirmation setup. Its second tab used wall-clock time against the fixed first-tab/server clock; align that fixture clock without changing assertions. Only that case was rerun: **1/1 passed (31.8s)**. No second full suite followed the fixture repair; a fully green final full-suite result is not claimed.
+- Normal application: actual provider data in private persistent SQLite; 12 default card/table agreements plus 6 current-release agreements, automatic ticker refresh with advancing source retrieval, API-only data traffic, reload/HttpOnly persistence, mobile layout, and logout401. No test harness/fixtures seed that database.
+- Real markets: actual closed-session responses/protected reads, actual open-session SENSEX/NSE snapshots, explicitly injected NSE timeout, actual rejection of a regressing cached timestamp, original quote provenance retention, real recovery and network-disabled stored reads/restart proof.
+- Online normal-database backup/isolated restore: 412 observations, 3 quotes, 2 status/schedule snapshots and run/cooldown/user records preserved exactly; restored sessions removed; source snapshot unchanged; 0700/0600 permissions. The active database was never restored or overwritten. [Evidence](evidence/2026-10-16/recovery-v4.json).
+- Delivery: locked 27-package API runtime excludes pytest/Pillow/tests/fixtures; production frontend origin/CSP/hash guards pass with non-deployed example domains. SVG artwork renders under the unchanged production image/font policy; test-only API connection origin is mapped locally. No cloud resources or DNS were changed.
+
+Precise screenshots, transfer measurements, source definitions and remaining inputs are in [design-completion.md](design-completion.md). Exact Segoe UI font acceptance and real-host/domain/market-display acceptance remain open. Existing Starlette HTTPX deprecation and rotated-PDF diagnostics are reported, not hidden.
+
+## Final logout checkpoint
+
+The cross-tab regression first reproduced a retained authenticated market dialog: `toHaveCount(0)` received one dialog after logout. Keying the ticker subtree by the authenticated session identity unmounts that dialog on logout/account change. The original strict zero-dialog assertion, sign-in visibility and zero-ticker-item assertions remain intact. GDP/panel subtrees and session-owned reads retain their existing clearing/cancellation behaviour.
+
+The final commands used the compiled production bundle with test-only servers on 5174/8001, one Playwright worker and no overlapping browser invocations. The prior in-flight suite was allowed to close before the requested focused → full sequence. An earlier overlapping invocation had caused a trace-file ENOENT; it is distinct from the final held-confirmation timeout. The timeout trace/screenshots remain in ignored verification storage. No application authentication behaviour or timeout/expectation limits were relaxed. The earlier compiled run passed 23/23; it does not replace the final 22/23 result. Backend/unit/delivery/performance checks above were already performed during this stage and were not repeated at the finish checkpoint.
+
+See [completion-checks.json](evidence/2026-10-16/completion-checks.json) for the exact final command results and remaining gates. The local normal-API build is refreshed after the focused rerun; no public deployment occurs.
+
+## Earlier checkpoint records
+
 # Local verification
 
 Run the commands in README from a locked checkout. This is local acceptance, not deployment or final design acceptance. Fixtures and clock/control endpoints exist only under `tests/`; the normal app imports none of them. The browser fixture server is a test harness on ports 8001/5174 and must never be deployed.

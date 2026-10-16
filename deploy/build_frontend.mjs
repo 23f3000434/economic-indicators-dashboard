@@ -73,6 +73,7 @@ export async function build() {
   run(["ci", "--prefix", "frontend"]);
   run(["run", "build", "--prefix", "frontend"]);
   await rm(root + "/frontend/dist/design/assets.json"); // engineering provenance stays in Git, outside immutable asset routes
+  await rm(root + "/frontend/dist/design/layout.json");
   await writeFile(root + "/frontend/dist/_headers", headers(config.api));
   // Only this safe origin is exposed in build metadata; never copy server environment variables.
   await writeFile(

@@ -1,6 +1,6 @@
 # Economic Indicators Dashboard
 
-Implemented locally: independent scheduled GDP/CGA/GST/merchandise-trade/CPI/policy collection → strict validation → private persistent SQLite → protected FastAPI dashboard. The authenticated React dashboard now renders all verified macro panels from the protected aggregate, with shared canonical selectors, functional period/legend controls and accessible observation tables. Debt and market sections show their actual unavailable status. [Source coverage and evidence](docs/multi-provider.md) distinguish completed paths from unavailable features. Public deployment and final Figma acceptance remain pending.
+Implemented locally: independent GDP/debt/CGA/GST/trade/CPI/policy and market collection → strict validation → private persistent SQLite → authenticated FastAPI → one canonical React dashboard. NSE principally supplies NIFTY BANK/IT; read-only Upstox supplies BSE SENSEX and verified exchange status/schedules. The measured Figma layout now uses six 544-pixel panels and accessible data/control dialogs. Exact Segoe UI font delivery remains pending; public deployment is not performed. See [current source/design evidence and remaining inputs](docs/design-completion.md).
 
 ## Local setup
 
@@ -32,9 +32,9 @@ PYTHONPATH=backend .venv/bin/python -m uvicorn app.main:create_app --factory --h
 - Frontend: [localhost:5173](http://localhost:5173)
 - Health: [localhost:8010/healthz](http://localhost:8010/healthz)
 - API docs: [localhost:8010/docs](http://localhost:8010/docs), [OpenAPI schema](http://localhost:8010/openapi.json)
-- Protected data: `GET http://localhost:8010/api/v1/dashboard`; dedicated GDP/expenditure/GST/trade/inflation panel routes under `/api/v1/panels/`.
+- Protected data: `GET http://localhost:8010/api/v1/dashboard`; dedicated GDP/debt/expenditure/GST/trade/inflation panel routes under `/api/v1/panels/`.
 
-Independent startup supervisors collect when due: GDP weekly, CGA/GST/trade/CPI daily, policy weekly by default. Failures retry after the shorter of one hour or their configured interval, subject to durable provider cooldowns. Each group commits independently and keeps its own history/last success. The frontend polls the protected stored-data dashboard each minute while visible; “Refresh view” never triggers upstream work. Ctrl-C stops each server; restart preserves users, sessions and observations. Run one worker/replica. Never serve `data/` statically.
+Independent startup supervisors collect when due: GDP/debt/policy weekly, CGA/GST/trade/CPI daily, market quotes/status every30 seconds by default. Failures retry after the shorter of one hour or their configured interval, subject to durable provider cooldowns. Each group commits independently and keeps its own history/last success. The frontend polls the protected stored-data dashboard each minute and the smaller `/api/v1/ticker` every30 seconds while visible; “Refresh view” never triggers upstream work. Ctrl-C stops each server; restart preserves users, sessions and observations. Run one worker/replica. Never serve `data/` statically.
 
 If frontend port 5173 is occupied, leave unrelated services alone. For example, run Vite with `npm run dev -- --port 5175 --strictPort` and start this API with `FRONTEND_ORIGIN=http://localhost:5175` prefixed to its command. Both hosts must remain `localhost`. The unrelated 5173 service is left untouched; its URL is not this repository's frontend. The verified current production preview runs at [localhost:5175](http://localhost:5175), using API 8010 with that matching frontend Origin.
 
@@ -43,7 +43,7 @@ For an explicit diagnostic collection or stored projection (stop the API before 
 ```sh
 PYTHONPATH=backend .venv/bin/python -m app.cli collect-gdp
 PYTHONPATH=backend .venv/bin/python -m app.cli read-gdp
-PYTHONPATH=backend .venv/bin/python -m app.cli collect expenditure gst trade inflation inflation_policy
+PYTHONPATH=backend .venv/bin/python -m app.cli collect debt expenditure gst trade inflation inflation_policy market_nse market_bse market_status
 PYTHONPATH=backend .venv/bin/python -m app.cli read-dashboard
 ```
 
@@ -118,4 +118,6 @@ This uses actual public responses and an ignored private proof database with ran
 - [Frontend-stage checks](docs/evidence/2026-10-16/frontend-checks.json)
 - [Normal full-interface live-data check](docs/evidence/2026-10-16/frontend-live.json)
 
-Exact Figma frame 1:2 access remains denied after both context and screenshot requests. The full frontend follows the supplied SVG structure and artwork with accurate observations/units/periods; exact fonts, editable constraints, interaction states and revision parity cannot be established from that export. See [frontend acceptance and design differences](docs/frontend.md). IMF debt routes return 403 and FRED mirror requests timed out; no debt adapter is promoted. NSE now returns public quote JSON, but an authorised collection/display arrangement remains unresolved; BSE still has no proven quote route. Neither is a completed adapter. Final submission still requires deployed frontend/API/health URLs, separately shared credentials, user-supplied portfolio/project roles and the post-assessment video. Rehearsal stays outside this repository.
+Figma frame1:2 is inspectable through the browser's read-only Properties panel; additional edit access is not required. Connector edit restrictions remain specific to MCP. [Measurements, matched screenshots, loaded fonts and necessary content corrections](docs/design-completion.md) identify the provisional Segoe UI fallback. Comparable debt and the three real market indices now have proven source/storage/protected-API paths. Source access from the production host, public market display/redistribution acceptance, real domain/cookie setup, hosted recovery and final design acceptance remain pending. Submission still needs deployed URLs, evaluation credentials shared separately, portfolio/project roles and the post-assessment video.
+
+`UPSTOX_ANALYTICS_TOKEN` belongs only in the ignored server `.env` or API secret manager. No `VITE_` equivalent. The free read-only Analytics Token was verified against actual quotes/status/timings; it does not authorise trading. Replace the credential supplied through chat before production. `MARKET_COLLECTION_INTERVAL_SECONDS` defaults30 (30–3600); `MARKET_REQUEST_TIMEOUT_SECONDS` defaults10. NSE has no verified latency SLA, so its fresh open-state label is Snapshot. Closed/live/delayed/stale classification uses exchange time and a verified schedule, not collection time. See [contracts](docs/contracts.md).

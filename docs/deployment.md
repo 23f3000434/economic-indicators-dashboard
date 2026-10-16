@@ -19,7 +19,7 @@ No Pages Functions or proxy was added. The previously documented same-origin API
 | Location | Names / purpose |
 | --- | --- |
 | Render required | `APP_ENV=production`, `API_ORIGIN`, `FRONTEND_ORIGIN`, `COOKIE_SITE_DOMAIN`, `SQLITE_PATH=/var/data/private/dashboard.sqlite3`, `PERSISTENT_DATA_DIR=/var/data`, host `PORT`, `TRUSTED_PROXY_CIDRS` |
-| Render secrets | Distinct `JWT_SECRET`, `CSRF_SECRET`, `ROTATION_SECRET`, generated once through the host/secret manager. Preserve across normal redeploys; back up separately and privately. No `VITE_` prefix |
+| Render secrets | Server-only read-only `UPSTOX_ANALYTICS_TOKEN` (rotate the chat-supplied token before production); distinct `JWT_SECRET`, `CSRF_SECRET`, `ROTATION_SECRET`, generated once through the host/secret manager. Preserve across normal redeploys; back up separately and privately. No `VITE_` prefix |
 | Session | Fixed 900s access JWT in memory; `SESSION_MAX_AGE_SECONDS` at most 604800; `REFRESH_SETTLE_SECONDS` 25–120. Production cookie is Secure/HttpOnly/Strict `__Host-refresh`, host-only, Path=/ |
 | Collection | `COLLECTOR_ENABLED=true`; per-group intervals, rolling/reporting windows, request/attempt/job budgets and reviewed policy/history URLs in `.env.example`; browser traffic never changes these |
 | Pages build | `NODE_VERSION=22.23.3`, `VITE_API_BASE_URL` (API HTTPS origin), `FRONTEND_ORIGIN`, `COOKIE_SITE_DOMAIN`. These are public configuration; no API secrets or credentials belong here |
@@ -67,6 +67,6 @@ The workflow is prepared, not run on GitHub in this stage. Local command results
 | Linux verified TLS and each provider's egress/discovery/history behaviour | Hosted acceptance pending |
 | Real-domain cookies with third-party cookies blocked; exact CORS/CSRF/reload/concurrent tabs | Hosted acceptance pending |
 | Private off-host backups, operational schedule/alerts and restore drill on host | Required setup/input |
-| Comparable debt and authorised NSE/BSE source-to-storage-to-API features | Still unmet; precise gates in sources.md |
-| Exact Figma frame 1:2 access/design acceptance | Still blocked; SVG differences explicitly recorded |
+| Comparable debt and real NSE/BSE source-to-storage-to-API/UI paths | Verified locally; market public-display/redistribution and host egress acceptance remain pending |
+| Figma frame 1:2 access/design acceptance | Browser Properties verified; measured geometry and source artwork reproduced. Licensed Segoe UI font/fallback decision and final visual review remain pending |
 | Evaluation URLs/account, portfolio roles/links, post-assessment video | Final submission inputs |

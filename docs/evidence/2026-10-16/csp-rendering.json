@@ -1,0 +1,10 @@
+[
+  {
+    "csp_enabled": false,
+    "violations": []
+  },
+  {
+    "csp_enabled": true,
+    "violations": []
+  }
+]

@@ -86,19 +86,21 @@ try {
     await page.waitForLoadState("networkidle");
     const initial = snapshot();
     const readyMs = performance.now() - loginAt;
-    const before = await page.locator(".card-art img").evaluateAll((nodes) =>
-      nodes.map((img) => ({
-        complete: img.complete && img.naturalWidth > 0,
-        loading: img.loading,
-        src: new URL(img.currentSrc || img.src).pathname,
-        y: img.getBoundingClientRect().y,
-      })),
-    );
+    const before = await page
+      .locator(".panel-skin, .card-art img")
+      .evaluateAll((nodes) =>
+        nodes.map((img) => ({
+          complete: img.complete && img.naturalWidth > 0,
+          loading: img.loading,
+          src: new URL(img.currentSrc || img.src).pathname,
+          y: img.getBoundingClientRect().y,
+        })),
+      );
     // Visit every panel, since a single jump to the bottom need not load intervening lazy images.
     for (const panel of await page.locator(".panel").all()) {
       await panel.scrollIntoViewIfNeeded();
       await panel
-        .locator(".card-art img")
+        .locator(".panel-skin, .card-art img")
         .evaluateAll((nodes) => Promise.all(nodes.map((img) => img.decode())));
     }
     await page.waitForLoadState("networkidle");

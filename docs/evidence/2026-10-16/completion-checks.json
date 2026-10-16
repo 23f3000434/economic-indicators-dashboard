@@ -1,0 +1,73 @@
+{
+  "recorded_at": "2026-10-16T05:01:08.045962+00:00",
+  "stage_base": "af5ff07",
+  "scope": "Finish existing design/data work; cross-tab logout repair; sequential browser verification; no deployment",
+  "browser_mode": "Compiled application bundle, test-only fixture API on 8001 and preview on 5174, one worker",
+  "sequence": [
+    {
+      "command": "E2E_PREVIEW=1 npm run test:browser -- --grep 'closes an open authenticated market dialog'",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "elapsed_seconds": 25.5
+    },
+    {
+      "command": "E2E_PREVIEW=1 npm run test:browser",
+      "exit_code": 1,
+      "passed": 22,
+      "failed": 1,
+      "elapsed_display": "5.6m",
+      "failure": "35-second test deadline during held-confirmation setup in a late confirmed renewal cannot undo another tab logout or account change"
+    },
+    {
+      "repair": "Align the secondary tab with the same fixed clock as the primary tab and test API. No application authentication change, assertion removal, timeout increase or retry setting change."
+    },
+    {
+      "command": "E2E_PREVIEW=1 npm run test:browser -- --grep 'a late confirmed renewal cannot undo another tab logout or account change'",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "elapsed_seconds": 31.8
+    },
+    {
+      "command": "VITE_API_BASE_URL=http://localhost:8010 npm run build",
+      "exit_code": 0,
+      "typescript": "passed",
+      "vite_build_seconds": 2.25
+    }
+  ],
+  "cross_tab_logout": {
+    "reproduced_before_fix": "Expected zero dialogs after logout, received one",
+    "fix": "Ticker subtree keyed by session-bound CSRF identity; logout/account changes unmount authenticated dialog",
+    "assertions_preserved": [
+      "dialog count zero",
+      "sign-in button visible",
+      "ticker item count zero"
+    ],
+    "passes": "Focused run and scenario 16 in the complete run"
+  },
+  "earlier_stage_checks_not_repeated": {
+    "backend_tests": 107,
+    "backend_subtests": 9,
+    "frontend_unit_tests": 14,
+    "earlier_compiled_browser_suite": "23/23 passed before the final requested sequence; does not replace the final 22/23 result",
+    "other_checks": [
+      "strict parsers/provider isolation/recovery",
+      "locked production delivery checks",
+      "source-to-screen proof",
+      "reference geometry/font comparison",
+      "cold artwork transfers"
+    ]
+  },
+  "final_full_suite_rerun_after_fixture_repair": false,
+  "reason_no_full_rerun": "User requested one complete sequential suite and no repeats of unaffected checks. Only the failed case was rerun.",
+  "remaining_design_differences": [
+    "Segoe UI is unavailable locally; cards, axes and SENSEX use Roboto fallback. Licensed webfonts or explicit fallback acceptance remains pending.",
+    "Real observations require corrected units, FY/CY labels, actual chart ranges/period counts, annual debt and separate CPI bases instead of illustrative reference marks.",
+    "Monetary unit suffixes are smaller and the US debt comparison is repositioned inside its original badge to fit actual values.",
+    "Functional account/details/source controls are retained within the reference footprint. No mobile Figma frame was supplied.",
+    "Committed normal-application comparison captures predate final axis/bar refinements and the logout fix; they establish geometry and the earlier visual checkpoint, not final pixel equality."
+  ],
+  "figma_access": "Browser read-only Properties works; edit access is not required. Frame export timed out; supplied SVG plus measured Properties is the comparison basis.",
+  "public_deployment": "Not performed; pending review, controlled HTTPS origins/hosting checks, off-host backups, credential rotation and market public-display acceptance"
+}

@@ -34,7 +34,7 @@ jobs:
       - name: Backend, recovery, security and data regressions (no providers)
         run: |
           uv run --frozen pytest -q
-          uv run --frozen ruff check backend tests deploy scripts/prepare_artwork.py scripts/verify_design.py scripts/probe_delivery_sources.py
+          uv run --frozen ruff check backend tests deploy scripts/prepare_artwork.py scripts/verify_design.py scripts/probe_delivery_sources.py scripts/prepare_layout.py scripts/verify_market_flow.py scripts/probe_market_sources.py
       - name: Frontend unit, format and artifact verification
         run: |
           npm run test --prefix frontend

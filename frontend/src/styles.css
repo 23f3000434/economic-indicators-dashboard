@@ -1,36 +1,43 @@
-@import './artwork.css';
 @font-face {
-  font-family: 'Barlow Condensed';
-  font-style: normal;
-  font-weight: 500;
+  font-family: Roboto;
+  src: url('/fonts/Roboto-latin-variable.woff2') format('woff2');
+  font-weight: 100 900;
   font-display: swap;
-  src: url('/fonts/BarlowCondensed-500.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Barlow Condensed';
-  font-style: normal;
+  font-family: Manrope;
+  src: url('/fonts/Manrope-700.woff2') format('woff2');
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/BarlowCondensed-700.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 400 700;
+  font-family: 'Reference Segoe';
+  src: local('Segoe UI');
+  font-weight: 400;
   font-display: swap;
-  src: url('/fonts/DMSans-400-700.woff2') format('woff2');
 }
-
+@font-face {
+  font-family: 'Reference Segoe';
+  src: local('Segoe UI Semibold');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Reference Segoe';
+  src: local('Segoe UI Bold');
+  font-weight: 700;
+  font-display: swap;
+}
 :root {
-  font-family: 'DM Sans', Arial, sans-serif;
+  font-family: 'Reference Segoe', Roboto, sans-serif;
   font-synthesis: none;
-  color: #f0f3f7;
-  background: #03080e;
+  color: #fff;
+  background: #080808;
   color-scheme: dark;
-  --cyan: #00c8f4;
-  --amber: #ffc124;
-  --green: #38dc68;
-  --muted: #b1bbc8;
+  --cyan: #00b9e5;
+  --amber: #ffad03;
+  --green: #3be600;
+  --muted: #ccc;
 }
 * {
   box-sizing: border-box;
@@ -38,16 +45,6 @@
 body {
   margin: 0;
   min-width: 320px;
-}
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(#000000ef, #000000f2),
-    var(--background-image) center / cover;
-  z-index: -1;
-  pointer-events: none;
 }
 button,
 input,
@@ -61,7 +58,7 @@ summary {
   cursor: pointer;
 }
 button {
-  border: 1px solid #5a6a7c;
+  border: 1px solid #536779;
   border-radius: 4px;
   padding: 7px 10px;
   background: #132237;
@@ -70,18 +67,16 @@ button:disabled {
   cursor: default;
   opacity: 0.55;
 }
+button:hover:not(:disabled) {
+  background: #253a4b;
+}
+a {
+  color: #9ce1fa;
+  text-underline-offset: 3px;
+}
 :focus-visible {
   outline: 2px solid #75e3ff;
   outline-offset: 3px;
-}
-a {
-  color: #b6e4f1;
-  text-underline-offset: 3px;
-}
-button:hover:not(:disabled),
-summary:hover {
-  color: #fff;
-  background-color: #253a4b;
 }
 .skip-link {
   position: absolute;
@@ -94,368 +89,451 @@ summary:hover {
 .skip-link:focus {
   top: 5px;
 }
-.app-shell {
-  max-width: 1480px;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.canvas-wrap {
+  overflow: clip;
+  max-width: 1248px;
+  width: 100%;
+  height: calc(2193px * var(--design-scale));
   margin: auto;
+  position: relative;
+}
+.reference-canvas {
+  width: 1248px;
+  height: 2193px;
+  position: relative;
+  transform: scale(var(--design-scale));
+  transform-origin: top left;
+  isolation: isolate;
+}
+.canvas-skin {
+  position: absolute;
+  inset: 0;
+  width: 1248px;
+  height: 2193px;
+  z-index: -2;
+  pointer-events: none;
 }
 .masthead {
-  height: 84px;
+  height: 86px;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background:
-    linear-gradient(90deg, #0005, #02070ccc 40%, #02070ccc 60%, #0006),
-    var(--masthead-image) center 52% / cover;
-}
-.masthead h1 {
-  font-size: 30px;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 0.3px;
-  text-shadow: 0 2px 5px #000;
 }
 .account {
   position: absolute;
-  right: 20px;
-  bottom: 5px;
+  right: 12px;
+  bottom: 4px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
-  color: #d5dae2;
+  font:
+    10px Roboto,
+    sans-serif;
+  color: #ddd;
 }
 .account button {
-  padding: 3px 6px;
-  background: #0b1825c9;
   font-size: 10px;
+  padding: 3px 6px;
+  background: #091521cc;
 }
 .market-strip {
-  min-height: 47px;
-  padding: 10px 29px;
+  position: absolute;
+  top: 86px;
+  left: 1px;
+  width: 1248px;
+  height: 49px;
   display: flex;
-  gap: 22px;
+  gap: 4px;
   align-items: center;
-  background: linear-gradient(90deg, #034e7d55, #0d1023, #034e7d55);
-  border-block: 1px solid #59647b;
-  font-size: 11px;
-  color: #c7cfdb;
+  padding: 0 24px;
+  overflow: hidden;
 }
-.strip-label {
-  font-size: 10px;
-  letter-spacing: 0.5px;
+.market-strip > .details-button {
+  position: relative;
+  inset: auto;
+  flex: 0 0 92px;
+  width: 92px;
+  height: 29px;
+  font:
+    16px Roboto,
+    sans-serif;
+  margin-right: 4px;
+  background: #17405a;
+  border: 0;
+  color: white;
+  border-radius: 6px;
+}
+.market-strip > .details-button.closed {
+  background: #404959;
+}
+.ticker-track {
   display: flex;
-  gap: 7px;
   align-items: center;
+  overflow: auto;
+  scrollbar-width: none;
+  flex: 1;
+  height: 49px;
 }
-.strip-label small {
-  background: #39332a;
-  color: #efc790;
-  border: 1px solid #897450;
-  padding: 3px 5px;
-  font-size: 9px;
-  border-radius: 3px;
+.ticker-track::-webkit-scrollbar {
+  display: none;
 }
 .ticker-item {
   white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 39px;
+  gap: 2px;
+  padding: 0 12px;
+  border-left: 1px solid #466382;
+  font-size: 17.08px;
+  font-weight: 600;
+  line-height: 21.32px;
 }
 .ticker-item b {
-  font-size: 11px;
-  color: #dce6f0;
-  font-weight: 500;
+  font-weight: 600;
+  margin-right: 5px;
+}
+.ticker-item .manrope {
+  font:
+    700 17.08px Manrope,
+    sans-serif;
+}
+.ticker-item strong {
+  font-weight: 600;
+}
+.up {
+  color: #69f6b8;
+}
+.down {
+  color: #ff716a;
 }
 .ticker-item small {
   font-size: 9px;
-  color: #c1af99;
+  line-height: 10px;
+  color: #c3c8d1;
+}
+.ticker-item.stale small {
+  color: #ffcf83;
+}
+.ticker-empty {
+  font-size: 13px;
+  padding-inline: 12px;
+  color: #ccc;
 }
 .dashboard {
-  padding: 24px 29px 18px;
+  position: static;
 }
 .panel-grid {
+  position: absolute;
+  left: 30px;
+  top: 162px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 582px 583px;
+  grid-auto-rows: 544px;
   gap: 24px;
-  align-items: start;
 }
 .panel {
+  width: 100%;
+  height: 544px;
   min-width: 0;
-  min-height: 630px;
-  border: 1px solid #32404e;
-  border-radius: 12px;
-  background:
-    radial-gradient(ellipse at 2% 0, #047b803c, transparent 40%),
-    radial-gradient(ellipse at 100% 110%, #007c9a65, transparent 53%), #060d1eeb;
-  overflow: hidden;
   position: relative;
-  box-shadow: inset 0 1px #b2d5e039;
+  border-radius: 12px;
+  isolation: isolate;
 }
-.panel::before {
-  content: '';
+.panel-skin {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 26px;
-  height: 26px;
-  background: linear-gradient(135deg, #fff 10%, #ffffff80 44%, transparent 46%);
-  z-index: 1;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  z-index: -1;
   pointer-events: none;
 }
 .panel-heading {
-  height: 64px;
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  background: #2c2c2d99;
-  border-bottom: 1px solid #495161;
-}
-.panel-heading > div {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  min-width: 0;
-}
-.panel-number {
-  color: #a2b1c2;
-  font-size: 11px;
-  border-right: 1px solid #6d768155;
-  padding-right: 9px;
+  height: 68px;
+  position: relative;
 }
 .panel-heading h2 {
+  position: absolute;
+  left: 26px;
+  top: 26px;
   margin: 0;
-  font-size: 15px;
-  line-height: 1.2;
-  font-weight: 600;
-}
-.panel-heading h2 span {
-  display: block;
-  color: #b1bfce;
-  font-weight: 400;
-  font-size: 10px;
-  margin-top: 5px;
-}
-.status {
-  font-size: 9px;
-  padding: 4px 6px;
-  border: 1px solid #5b8b92;
-  border-radius: 4px;
-  color: #b6ecf3;
+  font:
+    500 20px/20px Roboto,
+    sans-serif;
   white-space: nowrap;
 }
-.status.stale {
-  color: #ffda98;
-  border-color: #9b7e4f;
+.heading-suffix {
+  color: #0fcbf0;
 }
-.status.unavailable,
-.status.empty {
-  color: #d9c8ad;
-  border-color: #7a7268;
+.debt-panel .panel-heading h2 {
+  left: 28px;
+  top: 23px;
 }
-.panel-content {
-  padding: 0 18px 12px;
+.trade-panel .panel-heading h2 {
+  left: 37px;
+}
+.gst-panel .panel-heading h2 {
+  left: 19px;
+  top: 24px;
+}
+.inflation-panel .panel-heading h2 {
+  left: 22px;
+  top: 25px;
+}
+.expenditure-panel .panel-heading h2 {
+  left: 29px;
+  top: 22px;
+}
+.status {
+  position: absolute;
+  right: 26px;
+  top: 72px;
+  color: #b7d6e1;
+  font:
+    10px/16px Roboto,
+    sans-serif;
+}
+.status.ready {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+.status.stale,
+.status.unavailable {
+  color: #ffcc85;
 }
 .panel-notice {
-  font-size: 9px;
-  min-height: 28px;
-  padding: 7px 0 5px;
-  line-height: 16px;
-  color: #b5c5d3;
+  position: absolute;
+  top: 70px;
+  left: 26px;
+  max-width: 390px;
+  font:
+    10px/17px Roboto,
+    sans-serif;
+  color: #ddd;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .panel-notice.warning {
   color: #ffd49a;
 }
+.panel-notice:empty {
+  display: none;
+}
 .kpis {
+  position: absolute;
+  top: 90px;
+  left: 26px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  grid-template-columns: 254px 254px;
+  gap: 22px;
 }
 .kpi {
   position: relative;
+  height: 111px;
   min-width: 0;
-  height: 106px;
-  padding: 10px 11px;
-  border: 1px solid #2e526050;
-  border-top: 1px solid #7fadb650;
-  border-radius: 7px;
-  background: linear-gradient(120deg, #07577935, #0b16234f);
-  overflow: hidden;
-}
-.kpi.amber {
-  background: linear-gradient(120deg, #05648238, #0d16234f);
 }
 .kpi-label {
-  font-size: 11px;
-  line-height: 16px;
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  font-size: 18px;
+  line-height: 24px;
+  white-space: nowrap;
 }
 .kpi-value {
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 35px;
+  position: absolute;
+  left: 12px;
+  top: 34px;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 44px;
+  white-space: nowrap;
+  max-width: calc(100% - 20px);
   font-variant-numeric: tabular-nums;
-  position: relative;
-  z-index: 1;
-  white-space: nowrap;
-  letter-spacing: -0.6px;
+  letter-spacing: -0.3px;
 }
-.kpi-foot {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 5px;
-  font-size: 8px;
+.kpi-unit {
+  font-size: 20px;
+  letter-spacing: 0;
+}
+.kpi-foot .card-period {
+  position: absolute;
+  left: 12px;
+  top: 76px;
+  font-size: 10.5px;
   line-height: 13px;
-  position: relative;
-  z-index: 1;
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #ddd;
 }
-.kpi-foot > span:first-child {
-  max-width: 68%;
-}
-.change {
-  font-size: 9px;
-  color: #75f29b;
-  background: #0060273b;
-  border-radius: 3px;
-  padding: 1px 3px;
+.kpi-foot .change {
+  position: absolute;
+  top: 92px;
+  left: 12px;
+  color: #45ff53;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
   white-space: nowrap;
 }
-.change.negative {
-  color: #ffb8a5;
-  background: #7227183b;
-}
-.kpi-extra {
-  font-size: 8px;
-  line-height: 10px;
-  color: #cad3df;
-  display: block;
-  position: relative;
-  z-index: 1;
+.kpi-foot .change.negative {
+  color: #ff9185;
 }
 .kpi-retained {
-  font-size: 8px;
-  color: #edd7b7;
   position: absolute;
-  bottom: 2px;
-  left: 11px;
-}
-.card-art {
-  position: absolute;
-  width: 75px;
-  height: 66px;
-  right: 4px;
-  top: 24px;
-  opacity: 0.9;
-  overflow: hidden;
-  pointer-events: none;
-}
-.card-art img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: right center;
-}
-.card-art.india,
-.card-art.world,
-.card-art.us {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  top: 8px;
-  right: 8px;
-}
-.card-art.india img,
-.card-art.world img,
-.card-art.us img {
-  width: 125%;
-  height: auto;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.card-art.exports,
-.card-art.imports {
-  width: 76px;
-  height: 55px;
-}
-.card-art.exports img,
-.card-art.imports img {
-  width: 175px;
-  height: auto;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.card-art.exports img,
-.card-art.total img {
-  left: 0;
-}
-.card-art.imports img,
-.card-art.capital img,
-.card-art.target img {
-  right: 0;
-}
-.card-art.target img {
-  width: 155px;
-  height: auto;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.card-art.total,
-.card-art.capital {
-  width: 75px;
-  height: 66px;
-}
-.card-art.total img,
-.card-art.capital img {
-  width: 154px;
-  height: auto;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.chart-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-height: 36px;
+  right: 5px;
+  bottom: 0;
   font-size: 9px;
-  color: #c1cbd6;
+  color: #ffd49a;
+  background: #10172a;
 }
-.chart-controls label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.kpi-extra {
+  position: absolute;
+  top: 94px;
+  left: 21px;
+  font-size: 11px;
+  color: #ddd;
+}
+.kpi.india .kpi-label,
+.kpi.world .kpi-label,
+.kpi.us .kpi-label {
+  left: 63.12px;
+  top: 16px;
+}
+.kpi.india .kpi-value,
+.kpi.world .kpi-value,
+.kpi.us .kpi-value {
+  top: 55.46px;
+  left: 12.12px;
+}
+.kpi.india .card-period,
+.kpi.world .card-period,
+.kpi.us .card-period {
+  top: 40px;
+  left: 63.12px;
+  max-width: 185px;
+}
+.kpi.india .change,
+.kpi.world .change,
+.kpi.us .change {
+  top: 82px;
+  left: 142px;
+  font-size: 16px;
+}
+.trade-panel .kpis {
+  left: 35px;
+  top: 86px;
+  grid-template-columns: 245px 245px;
+}
+.trade-panel .kpi {
+  height: 110px;
+}
+.trade-panel .kpi-value {
+  left: 13px;
+  font-size: 32px;
+}
+.trade-panel .card-period {
+  top: 68px;
+}
+.trade-panel .change {
+  top: 87px;
+}
+.gst-panel .kpis {
+  left: 27px;
+  top: 88px;
+}
+.gst-panel .kpi-value {
+  top: 30px;
+  font-size: 32px;
+}
+.gst-panel .card-period {
+  top: 66px;
+}
+.gst-panel .change {
+  top: 87px;
+}
+.inflation-panel .kpis,
+.expenditure-panel .kpis {
+  top: 95px;
+}
+.inflation-panel .kpi,
+.expenditure-panel .kpi {
+  height: 116px;
+}
+.inflation-panel .kpi-label,
+.inflation-panel .kpi-value,
+.inflation-panel .card-period,
+.inflation-panel .change {
+  left: 16px;
+}
+.inflation-panel .target .kpi-label,
+.inflation-panel .target .kpi-value,
+.inflation-panel .target .card-period {
+  left: 21px;
+}
+.inflation-panel .target .card-period {
+  max-width: 220px;
   font-size: 9px;
 }
-.chart-controls select {
-  border: 1px solid #567088;
-  border-radius: 4px;
-  background: #0f1b2a;
-  font-size: 10px;
-  padding: 4px 6px;
-  max-width: 190px;
+.expenditure-panel .capital .kpi-label {
+  left: 18px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ccc;
+}
+.expenditure-panel .capital .kpi-value {
+  left: 15px;
+  top: 35px;
+}
+.expenditure-panel .kpi-value {
+  top: 36px;
+  font-size: 36px;
+}
+.expenditure-panel .kpi-unit {
+  font-size: 18px;
 }
 .legend {
+  position: absolute;
+  top: 213px;
+  right: 26px;
+  left: 22px;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 8px;
-  min-height: 28px;
+  justify-content: flex-end;
+  gap: 24px;
+  min-height: 24px;
 }
 .legend button {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 3px;
+  gap: 7px;
+  padding: 0;
   border: 0;
   background: transparent;
-  font-size: 10px;
-  color: #d2d8e0;
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 600;
+  color: #ccc;
+  white-space: nowrap;
 }
 .legend button[aria-pressed='false'] {
-  opacity: 0.55;
+  opacity: 0.5;
   text-decoration: line-through;
 }
 .legend button:disabled {
@@ -463,39 +541,88 @@ summary:hover {
 }
 .dot {
   display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-right: 3px;
-  border-radius: 1px;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
   flex-shrink: 0;
 }
 .dot.cyan {
-  background: var(--cyan);
+  background: linear-gradient(#09b9df, #005373);
 }
 .dot.amber {
-  background: var(--amber);
+  background: linear-gradient(#ffb128, #915005);
 }
 .dot.green {
-  background: var(--green);
+  height: 3px;
+  width: 20px;
+  background: #3be600;
 }
 .dot.muted {
-  background: #b6bfce;
+  background: #bcc7d6;
+}
+.trade-panel .legend,
+.gst-panel .legend {
+  top: 218px;
+  gap: 20px;
+}
+.expenditure-panel .legend {
+  top: 241px;
+  gap: 24px;
+}
+.expenditure-panel .dot.cyan {
+  background: linear-gradient(#168aff, #003e90);
+}
+.inflation-panel .legend {
+  top: 216px;
+}
+.inflation-panel .legend button {
+  font-size: 13px;
 }
 .chart-space {
-  height: 181px;
-  width: 100%;
+  position: absolute;
+  left: 18.09px;
+  top: 238.53px;
+  width: 532.91px;
+  height: 299.23px;
   min-width: 0;
-  position: relative;
+}
+.trade-panel .chart-space,
+.gst-panel .chart-space {
+  left: 24px;
+  top: 253px;
+  width: 530px;
+  height: 275px;
+}
+.debt-panel .chart-space {
+  left: 14px;
+  top: 238px;
+  width: 538px;
+  height: 291px;
+}
+.expenditure-panel .chart-space {
+  left: 24px;
+  top: 275px;
+  width: 532.91px;
+  height: 252px;
+}
+.inflation-panel .chart-space {
+  left: 20px;
+  top: 241px;
+  width: 540px;
+  height: 286px;
 }
 .chart-tooltip {
   border: 1px solid #7790a3;
   border-radius: 5px;
   padding: 10px;
   color: #e4ebf1;
-  background: #071421f5;
+  background: #071421fa;
   box-shadow: 0 5px 20px #000b;
-  font-size: 10px;
-  max-width: 315px;
+  font:
+    12px Roboto,
+    sans-serif;
+  max-width: 340px;
+  z-index: 10;
 }
 .chart-tooltip strong {
   display: block;
@@ -512,7 +639,12 @@ summary:hover {
   margin-top: 4px;
   color: #c1c9d3;
   line-height: 1.5;
-  font-size: 9px;
+  font-size: 10px;
+}
+.chart-tooltip .dot {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
 }
 .chart-empty,
 .chart-skeleton {
@@ -523,177 +655,58 @@ summary:hover {
   justify-content: center;
   color: #b2c1d2;
   gap: 10px;
-  font-size: 11px;
+  font-size: 13px;
 }
 .chart-empty > span {
   font-size: 30px;
 }
-.period-note {
-  font-size: 9px;
-  line-height: 15px;
-  color: #c0cbd7;
-  margin: 6px 0 8px;
-  min-height: 30px;
-}
-.balance-summary {
-  margin-left: 8px;
-  white-space: nowrap;
-}
-.balance-summary b {
-  color: #dbf0d9;
-}
-.observations {
-  height: 66px;
-  overflow: auto;
-  border: 1px solid #405167;
-  border-radius: 4px;
-  scrollbar-width: thin;
-  scrollbar-color: #657a8e #142336;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 9px;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-th,
-td {
-  padding: 5px 7px;
-  border-bottom: 1px solid #52607033;
-  white-space: nowrap;
-}
-th:first-child {
-  text-align: left;
-}
-thead th {
-  position: sticky;
-  top: 0;
-  background: #14283d;
-  color: #d1d7e2;
-  font-weight: 500;
-}
-tbody th {
-  color: #c4ceda;
-  font-weight: 400;
-}
-tbody tr:hover {
-  background: #ffffff06;
-}
 .source-note {
-  font-size: 8px;
-  line-height: 14px;
-  min-height: 34px;
-  padding-top: 6px;
-  color: #b8c4d2;
+  position: absolute;
+  bottom: 3px;
+  left: 26px;
+  right: 20px;
+  font:
+    10px/13px Roboto,
+    sans-serif;
+  color: #c0ccd8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.provenance {
-  font-size: 9px;
-  line-height: 1.7;
-  color: #bccbd9;
+.details-button {
+  position: absolute;
+  right: 26px;
+  top: 70px;
+  font:
+    10px/16px Roboto,
+    sans-serif;
+  padding: 0 3px;
+  height: 19px;
+  border: 0;
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
-.provenance summary {
-  padding: 3px 0;
-  width: fit-content;
-}
-.provenance p {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-}
-.provenance ul {
-  padding-left: 18px;
-}
-.source-host {
-  color: #b0bfcd;
-  font-size: 8px;
+.panel:has(.status.stale) > .panel-content > .details-button,
+.panel:has(.status.unavailable) > .panel-content > .details-button {
+  top: 47px;
 }
 .unavailable-chart {
-  min-height: 330px;
+  height: 390px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 7px;
-  text-align: center;
-  color: #b5c4d5;
-  font-size: 11px;
-  padding: 25px 15px;
-}
-.unavailable-chart > span {
-  font-size: 38px;
-  color: #8c9eaf;
-}
-.unavailable-chart h3 {
   font-size: 14px;
-  font-weight: 500;
-  margin: 10px 0 3px;
-  color: #d5dce7;
-}
-.unavailable-chart p {
-  margin: 3px 0;
-  line-height: 1.9;
-}
-.notice {
-  border: 1px solid #a06c50;
-  border-radius: 5px;
-  font-size: 12px;
-  line-height: 1.7;
-  padding: 10px 12px;
-  margin-bottom: 16px;
-  color: #ffd6bc;
-  background: #32241fe6;
-}
-.notice button {
-  padding: 1px 4px;
-  margin-left: 8px;
-  background: transparent;
-  border: 0;
-  text-decoration: underline;
-}
-.view-note {
-  font-size: 9px;
-  color: #b3bdcb;
-  margin: 16px 0 0;
-  line-height: 1.8;
-}
-.skeleton-layout {
-  padding-top: 28px;
-}
-.skeleton-layout .chart-skeleton {
-  margin-top: 64px;
-  height: 300px;
-  border-radius: 5px;
-}
-.skeleton {
-  background: linear-gradient(90deg, #203442 20%, #304d5d 50%, #203442 80%);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-@keyframes shimmer {
-  from {
-    background-position: 200% 0;
-  }
-  to {
-    background-position: -200% 0;
-  }
-}
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  color: #bbb;
+  padding: 25px;
 }
 .recovery {
   padding: 32px;
+  background: #0a1424;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
   gap: 14px;
 }
 .recovery h2 {
@@ -704,40 +717,179 @@ tbody tr:hover {
   font-size: 13px;
   color: #c0cbd6;
 }
-footer {
+.skeleton {
+  background: #15334566;
+  animation: pulse 2s infinite;
+}
+.skeleton-layout .chart-skeleton {
+  position: absolute;
+  left: 26px;
+  top: 245px;
+  width: 530px;
+  height: 260px;
+}
+.skeleton-layout .kpi {
+  border-radius: 12px;
+}
+.notice {
+  border: 1px solid #a06c50;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 10px 12px;
+  color: #ffd6bc;
+  background: #32241ff5;
+}
+.dashboard > .notice {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  margin: 0;
+  width: min(700px, calc(100% - 28px));
+  z-index: 30;
+  box-shadow: 0 8px 30px #000a;
+}
+.notice button {
+  padding: 1px 4px;
+  margin-left: 8px;
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+}
+.global-error {
+  position: absolute;
+  top: 138px;
+  right: 30px;
+  color: #ffd49a;
+  font-size: 12px;
+  margin: 0;
+}
+.details-drawer {
+  width: min(900px, calc(100% - 32px));
+  max-height: calc(100vh - 40px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid #66859a;
+  border-radius: 12px;
+  color: #eef5ff;
+  background: #091627;
+  font:
+    14px/1.6 Roboto,
+    sans-serif;
+  box-shadow: 0 20px 90px #000a;
+}
+.details-drawer::backdrop {
+  background: #000b;
+}
+.drawer-title {
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  border-top: 1px solid #424854;
-  padding: 17px 29px;
-  min-height: 61px;
-  font-size: 9px;
-  color: #bcc4cf;
-  background: #03080ed9;
+  padding: 18px 24px;
+  background: #102439;
+  border-bottom: 1px solid #354d60;
+  z-index: 2;
 }
-footer > span:first-child {
-  font-size: 11px;
-  letter-spacing: 1px;
-}
-footer p {
+.drawer-title h2 {
+  font-size: 21px;
   margin: 0;
 }
+.drawer-body {
+  padding: 12px 24px 24px;
+}
+.drawer-body section {
+  border-top: 1px solid #496075;
+  margin-top: 20px;
+}
+.chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-block: 14px;
+  font-size: 13px;
+}
+.chart-controls label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.chart-controls select {
+  padding: 8px;
+  border: 1px solid #66859a;
+  border-radius: 4px;
+  background: #102439;
+  font-size: 14px;
+}
+.observations {
+  max-height: 380px;
+  overflow: auto;
+  border: 1px solid #405167;
+  border-radius: 4px;
+  scrollbar-width: thin;
+}
+.observations table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.observations th,
+.observations td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #52607066;
+  white-space: nowrap;
+}
+.observations th:first-child {
+  text-align: left;
+}
+.observations thead th {
+  position: sticky;
+  top: 0;
+  background: #14283d;
+  color: #d1d7e2;
+  font-weight: 500;
+}
+.observations tbody th {
+  color: #c4ceda;
+  font-weight: 400;
+}
+.provenance {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #bccbd9;
+}
+.provenance p,
+.provenance a {
+  overflow-wrap: anywhere;
+}
+.provenance ul {
+  padding-left: 18px;
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
 .login-layout {
-  min-height: calc(100vh - 276px);
+  position: relative;
+  margin-top: 74px;
+  min-height: 600px;
   padding: 80px 9%;
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 65px;
   align-items: center;
-  background: radial-gradient(ellipse at 10% 55%, #1b3a4933, transparent 55%);
 }
 .login-intro h2 {
-  font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-  font-size: 58px;
-  font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: 0.1px;
+  font:
+    500 56px/1.1 Roboto,
+    sans-serif;
   margin: 18px 0 22px;
 }
 .login-intro h2 em {
@@ -745,23 +897,20 @@ footer p {
   color: #70c5df;
 }
 .login-intro p {
-  font-size: 12px;
-  color: #8fa5bd;
+  font-size: 14px;
+  color: #b5c8da;
   line-height: 1.9;
+}
+.section-kicker,
+.intro-foot {
+  font-size: 11px;
+  color: #b6cede;
 }
 .intro-rule {
   height: 1px;
   width: 46px;
   background: #3eabc7;
   margin: 30px 0 20px;
-}
-.intro-foot {
-  font-size: 8px;
-  letter-spacing: 1px;
-  color: #6e8aa5;
-}
-.intro-foot span {
-  margin: 0 8px;
 }
 .login-card {
   border: 1px solid #35516b;
@@ -771,19 +920,18 @@ footer p {
   box-shadow: 0 20px 70px #0003;
 }
 .card-overline {
-  font-size: 8px;
+  font-size: 11px;
   color: #6dc9e4;
   letter-spacing: 1.6px;
 }
 .login-card h2 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 500;
-  letter-spacing: -0.7px;
   margin: 12px 0 8px;
 }
 .login-card > p {
-  font-size: 10px;
-  color: #94aac3;
+  font-size: 13px;
+  color: #b8cada;
   margin: 0 0 25px;
 }
 .login-card form {
@@ -791,18 +939,18 @@ footer p {
   flex-direction: column;
 }
 .login-card label {
-  font-size: 10px;
+  font-size: 14px;
   color: #bfd0e1;
   margin-bottom: 8px;
 }
 .login-card input {
-  height: 40px;
-  border: 1px solid #3b536f;
+  height: 44px;
+  border: 1px solid #59708b;
   border-radius: 5px;
   background: #101f33;
   padding: 0 12px;
   margin-bottom: 20px;
-  font-size: 13px;
+  font-size: 16px;
   color: white;
   min-width: 0;
 }
@@ -814,18 +962,15 @@ footer p {
   background: #7dd3e9;
   color: #102b3c;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 14px;
   border: 1px solid #97e7f8;
   border-radius: 4px;
   padding: 13px 14px;
   margin-top: 5px;
 }
-.primary span {
-  font-size: 16px;
-}
 .login-card .login-security {
-  font-size: 8px;
-  color: #7e9ab5;
+  font-size: 11px;
+  color: #b2cadf;
   margin: 23px 0 0;
   padding-top: 20px;
   border-top: 1px solid #314761;
@@ -833,247 +978,318 @@ footer p {
 }
 .login-error,
 .session-check {
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.8;
   color: #edbfb2;
 }
 .session-check {
   min-height: 160px;
 }
-.global-error {
-  margin: 10px 30px;
-  font-size: 12px;
-  color: #edbfb2;
-}
-@media (min-width: 1300px) {
-  .chart-space {
-    height: 195px;
+@media (max-width: 760px) {
+  .canvas-wrap {
+    height: auto;
+    max-width: 100%;
+    min-height: 100vh;
   }
-  .panel {
-    min-height: 650px;
+  .reference-canvas {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    transform: none;
+    padding-bottom: 24px;
+    overflow: hidden;
   }
-}
-@media (max-width: 1000px) {
-  .panel-heading h2 {
-    font-size: 13px;
+  .canvas-skin {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
-  .panel-number {
-    display: none;
-  }
-  .kpi-value {
-    font-size: 25px;
-  }
-  .card-art {
-    opacity: 0.6;
-  }
-  .chart-controls {
-    flex-wrap: wrap;
-    padding-block: 5px;
-  }
-  .kpi {
-    height: 116px;
-  }
-  .account {
-    right: 12px;
-  }
-  .market-strip {
-    gap: 12px;
-    padding-inline: 20px;
-  }
-  .login-layout {
-    padding: 70px 6%;
-    grid-template-columns: 1fr 330px;
-    gap: 30px;
-  }
-}
-@media (max-width: 700px) {
   .masthead {
     height: 98px;
-    align-items: start;
-    padding-top: 20px;
+    background: #07122099;
   }
   .masthead h1 {
-    font-size: 25px;
+    position: static;
+    clip: auto;
+    width: auto;
+    height: auto;
+    white-space: normal;
+    margin: 0;
+    padding-top: 19px;
+    text-align: center;
+    font:
+      700 22px/26px Roboto,
+      sans-serif;
   }
   .account {
-    left: 16px;
-    right: 16px;
-    justify-content: flex-end;
-    bottom: 10px;
+    bottom: 8px;
+    left: 12px;
+    right: 12px;
+    font-size: 11px;
+    gap: 8px;
   }
   .account > span {
     margin-right: auto;
   }
   .account button {
-    padding: 5px 8px;
-    font-size: 10px;
+    font-size: 11px;
+    min-height: 30px;
   }
   .market-strip {
-    min-height: 62px;
-    flex-wrap: wrap;
-    gap: 8px 16px;
-    padding: 10px 16px;
-    font-size: 9px;
-  }
-  .strip-label {
+    position: relative;
+    top: auto;
+    left: 0;
     width: 100%;
+    height: 61px;
+    padding: 0 12px;
+    background: #071b34;
   }
-  .ticker-item b {
-    font-size: 10px;
+  .market-strip > .details-button {
+    flex-basis: 74px;
+    width: 74px;
+    font-size: 13px;
+    height: 34px;
   }
-  .ticker-item small {
-    font-size: 8px;
+  .ticker-track {
+    height: 61px;
   }
-  .dashboard {
-    padding: 20px 14px;
+  .ticker-item {
+    font-size: 14px;
+    height: 46px;
+    padding-inline: 10px;
   }
-  .panel-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
-  }
-  .panel {
-    min-height: 680px;
-  }
-  .panel-heading {
-    height: 64px;
-    padding: 12px 16px;
-  }
-  .panel-heading h2 {
+  .ticker-item .manrope {
     font-size: 14px;
   }
-  .panel-content {
-    padding-inline: 14px;
+  .ticker-item small {
+    font-size: 9px;
   }
-  .panel-number {
-    display: none;
+  .panel-grid {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 480px;
+    gap: 18px;
+    margin: 22px 12px 0;
+  }
+  .panel {
+    height: 480px;
+  }
+  .panel-skin {
+    object-fit: fill;
+  }
+  .panel-heading h2,
+  .debt-panel .panel-heading h2,
+  .trade-panel .panel-heading h2,
+  .gst-panel .panel-heading h2,
+  .inflation-panel .panel-heading h2,
+  .expenditure-panel .panel-heading h2 {
+    left: 16px;
+    top: 24px;
+    font-size: 17px;
+  }
+  .trade-panel .panel-heading h2 {
+    font-size: 16px;
+  }
+  .heading-suffix {
+    font-size: 16px;
+  }
+  .status {
+    right: 16px;
+    top: 62px;
   }
   .panel-notice {
-    font-size: 9px;
-  }
-  .kpis {
-    gap: 10px;
-  }
-  .kpi {
-    padding: 9px;
-    height: 112px;
-  }
-  .kpi-label {
+    left: 16px;
+    top: 61px;
+    max-width: 62%;
     font-size: 10px;
   }
-  .kpi-value {
-    font-size: 26px;
-    line-height: 35px;
-  }
-  .kpi-foot {
-    font-size: 8px;
-  }
-  .kpi-foot > span:first-child {
-    max-width: 60%;
-  }
-  .change {
-    font-size: 8px;
-  }
-  .card-art {
-    width: 53px;
-    height: 50px;
-    top: 36px;
-    opacity: 0.5;
-  }
-  .card-art.india,
-  .card-art.world,
-  .card-art.us {
-    width: 24px;
-    height: 24px;
-    top: 8px;
-  }
-  .card-art.total,
-  .card-art.capital {
-    width: 58px;
-  }
-  .card-art.total img,
-  .card-art.capital img {
-    width: 120px;
-  }
-  .card-art.exports,
-  .card-art.imports {
-    width: 57px;
-  }
-  .card-art.exports img,
-  .card-art.imports img {
-    width: 132px;
-  }
-  .chart-controls {
-    min-height: 41px;
-    justify-content: flex-start;
-  }
-  .chart-controls > span {
-    margin-right: auto;
-  }
-  .chart-controls select {
+  .details-button {
+    right: 16px;
+    top: 60px;
+    height: 25px;
     font-size: 11px;
-    padding: 5px;
-    max-width: 170px;
   }
-  .legend {
-    flex-wrap: wrap;
-    min-height: 32px;
-    gap: 6px;
+  .kpis,
+  .trade-panel .kpis,
+  .gst-panel .kpis,
+  .inflation-panel .kpis,
+  .expenditure-panel .kpis {
+    left: 16px;
+    right: 16px;
+    top: 84px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
-  .legend button {
-    padding: 6px 2px;
-    font-size: 10px;
+  .kpi,
+  .trade-panel .kpi,
+  .inflation-panel .kpi,
+  .expenditure-panel .kpi {
+    height: 106px;
   }
-  .chart-space {
-    height: 185px;
+  .kpi-label,
+  .kpi.india .kpi-label,
+  .kpi.world .kpi-label,
+  .kpi.us .kpi-label,
+  .inflation-panel .kpi-label,
+  .inflation-panel .target .kpi-label,
+  .expenditure-panel .capital .kpi-label {
+    font-size: 12px;
+    line-height: 18px;
+    left: 8px;
+    top: 12px;
   }
-  .period-note {
+  .kpi.india .kpi-label,
+  .kpi.world .kpi-label,
+  .kpi.us .kpi-label {
+    left: 43px;
+  }
+  .kpi-value,
+  .kpi.india .kpi-value,
+  .kpi.world .kpi-value,
+  .kpi.us .kpi-value,
+  .trade-panel .kpi-value,
+  .gst-panel .kpi-value,
+  .inflation-panel .kpi-value,
+  .inflation-panel .target .kpi-value,
+  .expenditure-panel .kpi-value,
+  .expenditure-panel .capital .kpi-value {
+    left: 8px;
+    top: 34px;
+    font-size: 25px;
+    line-height: 35px;
+    letter-spacing: -0.4px;
+  }
+  .kpi-unit,
+  .expenditure-panel .kpi-unit {
+    font-size: 13px;
+  }
+  .kpi-foot .card-period,
+  .kpi.india .card-period,
+  .kpi.world .card-period,
+  .kpi.us .card-period,
+  .trade-panel .card-period,
+  .gst-panel .card-period,
+  .inflation-panel .card-period,
+  .inflation-panel .target .card-period {
+    left: 8px;
+    top: 68px;
     font-size: 9px;
-    min-height: 38px;
+    max-width: calc(100% - 12px);
   }
-  .observations {
-    height: 72px;
+  .kpi-foot .change,
+  .kpi.india .change,
+  .kpi.world .change,
+  .kpi.us .change,
+  .trade-panel .change,
+  .gst-panel .change,
+  .inflation-panel .change {
+    top: 84px;
+    left: 8px;
+    font-size: 11px;
+  }
+  .kpi-extra {
+    left: 8px;
+    top: 87px;
+    font-size: 9px;
+  }
+  .legend,
+  .trade-panel .legend,
+  .gst-panel .legend,
+  .inflation-panel .legend,
+  .expenditure-panel .legend {
+    top: 200px;
+    left: 16px;
+    right: 16px;
+    gap: 12px;
+    height: 28px;
+  }
+  .legend button,
+  .inflation-panel .legend button {
+    font-size: 11px;
+    line-height: 16px;
+    min-height: 28px;
+    gap: 4px;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+  .chart-space,
+  .trade-panel .chart-space,
+  .gst-panel .chart-space,
+  .debt-panel .chart-space,
+  .inflation-panel .chart-space,
+  .expenditure-panel .chart-space {
+    left: 8px;
+    top: 233px;
+    width: calc(100% - 24px);
+    height: 219px;
+  }
+  .chart-space text {
+    font-size: 10px;
   }
   .source-note {
-    min-height: 46px;
-    font-size: 8px;
+    left: 16px;
+    right: 12px;
+    font-size: 9px;
+    bottom: 5px;
+    white-space: normal;
+    line-height: 12px;
+    max-height: 24px;
   }
-  .provenance {
-    font-size: 10px;
+  .skeleton-layout .chart-skeleton {
+    left: 16px;
+    top: 233px;
+    width: calc(100% - 32px);
+    height: 210px;
   }
-  .provenance summary {
-    padding-block: 6px;
+  .details-drawer {
+    width: calc(100% - 16px);
+    max-height: calc(100dvh - 16px);
+    font-size: 14px;
+  }
+  .drawer-title {
+    padding: 16px;
+  }
+  .drawer-title h2 {
+    font-size: 18px;
+  }
+  .drawer-title button {
+    min-height: 44px;
+  }
+  .drawer-body {
+    padding: 12px 16px 20px;
   }
   .login-layout {
-    min-height: calc(100vh - 230px);
     display: block;
-    padding: 40px 22px 45px;
+    margin-top: 0;
+    padding: 35px 20px;
+    min-height: 600px;
   }
   .login-intro {
     display: none;
   }
   .login-card {
-    max-width: 400px;
     margin: auto;
-    padding: 29px;
+    max-width: 400px;
+    padding: 25px;
   }
-  .login-card h2 {
-    font-size: 27px;
+  .global-error {
+    position: fixed;
+    top: auto;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    z-index: 30;
+    background: #3a211b;
+    padding: 12px;
   }
-  .login-card input {
-    font-size: 16px;
-  }
-  .login-card label,
-  .login-card > p {
-    font-size: 12px;
-  }
-  footer {
-    padding: 20px 16px;
-    flex-wrap: wrap;
-    gap: 10px;
-    font-size: 8px;
-  }
-  footer > span:last-child {
-    display: none;
+  .chart-tooltip {
+    max-width: 260px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1081,58 +1297,171 @@ footer p {
     animation: none;
   }
 }
-
-.kpi:has(.card-art.india) .kpi-label,
-.kpi:has(.card-art.world) .kpi-label,
-.kpi:has(.card-art.us) .kpi-label {
-  padding-left: 30px;
-  line-height: 25px;
-}
-.card-art.india,
-.card-art.world,
-.card-art.us {
-  left: 8px;
-  right: auto;
-}
-
-.kpi-foot {
-  display: block;
-}
-.kpi-foot > span:first-child {
-  display: block;
-  max-width: 100%;
-  padding-right: 38px;
-}
-.kpi-foot .change {
-  display: inline-block;
-  margin-top: 2px;
-}
-.kpi-retained {
-  left: auto;
-  right: 7px;
-  background: #071522dd;
-  padding-inline: 3px;
-  border-radius: 2px;
-}
-
-@media (min-width: 1001px) {
-  .panel-heading h2 {
-    font-size: 17px;
+/* Mobile uses flexible surfaces and separate proportional source artwork. */
+@media (max-width: 760px) {
+  .card-art {
+    position: absolute;
+    width: 60px;
+    height: 63px;
+    right: 0;
+    top: 38px;
+    overflow: hidden;
+    pointer-events: none;
   }
-  .kpi-label {
-    font-size: 13px;
+  .card-art img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: right center;
   }
-  .kpi-value {
-    font-size: 30px;
+  .card-art.india,
+  .card-art.world,
+  .card-art.us {
+    left: 7px;
+    top: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .card-art.india img,
+  .card-art.world img,
+  .card-art.us img {
+    width: 125%;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .card-art.exports,
+  .card-art.imports {
+    width: 60px;
+    height: 51px;
+    top: 51px;
+  }
+  .card-art.exports img,
+  .card-art.imports img {
+    width: 148px;
+    height: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .card-art.exports img,
+  .card-art.total img {
+    left: 0;
+  }
+  .card-art.imports img,
+  .card-art.capital img,
+  .card-art.target img {
+    right: 0;
+  }
+  .card-art.total img,
+  .card-art.capital img,
+  .card-art.target img {
+    width: 130px;
+    height: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .kpi-label,
+  .kpi-value,
+  .kpi-foot,
+  .kpi-extra,
+  .kpi-retained {
+    z-index: 1;
   }
 }
-.dashboard > .notice {
-  position: fixed;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  margin: 0;
-  width: min(700px, calc(100% - 28px));
-  z-index: 30;
-  box-shadow: 0 8px 30px #000a;
+/* Plot bounds measured from the supplied vector export, independent of data values. */
+.trade-panel .chart-space {
+  top: 254.44px;
+  width: 532.91px;
+  height: 275.97px;
+  --plot-axis: 36.02px;
+  --plot-right: 1.61px;
+}
+.gst-panel .chart-space {
+  top: 254.44px;
+  width: 532.91px;
+  height: 275.97px;
+  --plot-axis: 35.12px;
+  --plot-right: 2.51px;
+}
+.expenditure-panel .chart-space {
+  top: 271.76px;
+  height: 255.28px;
+  --plot-axis: 37.02px;
+  --plot-right: 0.61px;
+}
+.inflation-panel .chart-space {
+  top: 240px;
+  height: 291.79px;
+}
+.chart-space::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: var(--plot-axis, 37px);
+  right: var(--plot-right, 1px);
+  bottom: 38px;
+  border: 1px solid #5b5b5b;
+  border-radius: 0 0 12px 12px;
+  pointer-events: none;
+}
+.debt-panel .chart-space::before,
+.inflation-panel .chart-space::before {
+  display: none;
+}
+@media (max-width: 760px) {
+  .trade-panel .chart-space,
+  .gst-panel .chart-space,
+  .expenditure-panel .chart-space,
+  .inflation-panel .chart-space {
+    left: 8px;
+    top: 233px;
+    width: calc(100% - 24px);
+    height: 219px;
+  }
+}
+.dot.cyan {
+  background: linear-gradient(#107494, #18647c);
+}
+.dot.amber {
+  background: linear-gradient(#ffa73f, #996426);
+}
+.dot.green {
+  background: #22d700;
+}
+.expenditure-panel .dot.cyan {
+  background: linear-gradient(#107494, #0253bc);
+}
+.dot.line-marker {
+  height: 2.48px;
+  width: 20px;
+  position: relative;
+}
+.dot.line-marker::after {
+  content: '';
+  position: absolute;
+  width: 5.32px;
+  height: 5.32px;
+  border-radius: 50%;
+  background: inherit;
+  left: 7.34px;
+  top: -1.42px;
+}
+.gst-panel .dot.line-marker {
+  background: #f4e15c;
+}
+/* A three-digit US ratio needs right alignment within the original comparison badge. */
+@media (min-width: 761px) {
+  .debt-panel .kpi.us .change {
+    left: auto;
+    right: 7px;
+  }
+}
+@media (min-width: 761px) {
+  .debt-panel .chart-space {
+    width: 539.41px;
+    height: 292.3px;
+  }
 }

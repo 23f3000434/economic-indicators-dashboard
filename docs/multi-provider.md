@@ -2,6 +2,10 @@
 
 This records the completed backend stage from 03aa914 to b3ca864. It preserves GDP/authentication and implements one source path at a time. The subsequent [frontend stage](frontend.md) consumes these stored-data contracts; no new feed is promoted by UI integration. Application inputs are live official responses; fixtures are compressed original responses used only by offline tests. Diagnostic caches and private proof databases stay ignored.
 
+## Current completion checkpoint (16 October 2026 IST)
+
+The historical implementation evidence below remains valid for its recorded windows. Current trade discovery additionally uses the live PIB index and September2026 paired monthly/FYTD release (45 stored trade observations). Comparable debt is now implemented through the official Data360 IMF WEO mirror and a matching official appendix. Actual NSE NIFTY BANK/IT and read-only Upstox BSE SENSEX/status/timing paths are implemented with independent schedules, private snapshots, authenticated API and normal UI reads. No extra application dependency is needed. See [current source/evidence register](sources.md), [contracts](contracts.md) and [source-to-screen/visual review](design-completion.md); earlier blocked debt/market checkpoints are superseded. Public-host/display acceptance remains pending.
+
 ## CGA — implemented
 
 - Discovery: [CGA home](https://cga.gov.in/Index.aspx), selected published month and latest fiscal-year options; archive document paths are period-validated, never blindly trusted.
