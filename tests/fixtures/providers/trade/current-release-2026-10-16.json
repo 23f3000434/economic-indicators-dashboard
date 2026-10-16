@@ -1,0 +1,34 @@
+[
+  {
+    "name": "current_20261016_index",
+    "url": "https://www.commerce.gov.in/ministryofcommerce/taxonomy/term/530",
+    "checked_at": "2026-10-16T10:08:01.860965+00:00",
+    "sha256": "b478db83ffeed9404ebd04f3025b5b7165822ca337429b59953d0e559bfbbe27"
+  },
+  {
+    "name": "current_20261016_node",
+    "url": "https://www.commerce.gov.in/ministryofcommerce/node/5206",
+    "checked_at": "2026-10-16T10:08:01.860965+00:00",
+    "sha256": "58f7a32707ab88805074b16f7f64ddd8b0f99fb734d7f17862983ab22305f06f"
+  },
+  {
+    "name": "current_20261016_pdf",
+    "url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+    "checked_at": "2026-10-16T10:05:29.782299+00:00",
+    "sha256": "414235a6f299ad336f12245ed334dbf6641f9b8b4a35c9a0a3c94ee323216fb6",
+    "reviewed_values": {
+      "trade_exports:2026-09": "44.40",
+      "trade_imports:2026-09": "74.61",
+      "trade_balance:2026-09": "-30.21",
+      "trade_exports:2025-09": "36.08",
+      "trade_imports:2025-09": "69.08",
+      "trade_balance:2025-09": "-33.00",
+      "trade_exports:FY2026-27:09": "259.89",
+      "trade_imports:FY2026-27:09": "437.53",
+      "trade_balance:FY2026-27:09": "-177.64",
+      "trade_exports:FY2025-26:09": "219.30",
+      "trade_imports:FY2025-26:09": "376.17",
+      "trade_balance:FY2025-26:09": "-156.87"
+    }
+  }
+]

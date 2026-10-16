@@ -188,11 +188,23 @@ def parse_pdf(body, url, at):
                 raise ValueError("Trade monthly comparison mismatch")
             periods = [month(*current_ym), month(current_ym[0] - 1, current_ym[1])]
         else:
-            years = list(
-                dict.fromkeys(
-                    int(y) for y in re.findall(r"(20\d\d)-\d{2}", band[: band.index("Merchandise")])
+            layout_header = re.search(r"Table\s*2\s*:\s*Trade during(.+?)Merchandise", text, re.S | re.I)[1]
+            headers = re.findall(r"(20\d\d)-(\d{2})", layout_header)
+            lines = layout_header.splitlines()
+            for line, following in zip(lines, lines[1:]):
+                wrapped = re.findall(
+                    r"April-" + calendar.month_name[current_ym[1]] + r"\s+(20\d\d)-(?=\s|$)", line
                 )
-            )
+                if wrapped:
+                    # PDF columns wrap both suffixes onto the next line. Do not
+                    # flatten them: that would pair the prior year with the
+                    # current column's suffix and silently corrupt the period.
+                    if len(wrapped) != 2 or not re.fullmatch(r"\s*\d{2}\s+\d{2}\s*", following):
+                        raise ValueError("Trade wrapped FY headers changed")
+                    headers.extend(zip(wrapped, following.split()))
+            if any(int(end) != (int(begin) + 1) % 100 for begin, end in headers):
+                raise ValueError("Trade FY end-year mismatch")
+            years = list(dict.fromkeys(int(begin) for begin, _ in headers))
             start = current_ym[0] - (current_ym[1] <= 3)
             if years != [start, start - 1] or ("April-" + calendar.month_name[current_ym[1]]) not in band:
                 raise ValueError("Trade FY comparison mismatch")

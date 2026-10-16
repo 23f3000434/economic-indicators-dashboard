@@ -113,6 +113,49 @@ def test_historical_period_mismatch_is_rejected():
         )
 
 
+def test_current_commerce_wrapped_headers_to_storage_and_api(settings, clock, monkeypatch):
+    manifest = json.loads((FIXTURES / "current-release-2026-10-16.json").read_text())
+    replacements = {unquote(m["url"]): m for m in manifest}
+
+    def response(request):
+        entry = replacements.get(unquote(str(request.url)))
+        if entry:
+            raw = body(entry["name"])
+            assert hashlib.sha256(raw).hexdigest() == entry["sha256"]
+            return httpx.Response(200, content=raw)
+        return trade_response(request)
+
+    pdf = manifest[-1]
+    raw = body(pdf["name"])
+    parsed = parse_pdf(raw, pdf["url"], pdf["checked_at"])
+    assert {f"{p.series_id}:{p.period.key}": p.value for p in parsed} == pdf["reviewed_values"]
+    app = create_app(settings, clock, httpx.AsyncClient(transport=httpx.MockTransport(response)))
+    with TestClient(app) as client:
+        app.state.auth.create_user("analyst", PASSWORD)
+        assert asyncio.run(app.state.jobs["trade"].collect_once())
+        data = client.get(
+            "/api/v1/panels/trade",
+            headers={"Authorization": "Bearer " + login(client).json()["access_token"]},
+        ).json()
+        points = {f"{s['id']}:{p['period']['key']}": p for s in data["series"] for p in s["points"]}
+        for key, value in pdf["reviewed_values"].items():
+            assert points[key]["value"] == value
+            assert points[key]["definition"]["published_at"] == "2026-10-15"
+        assert points["trade_exports:FY2026-27:09"]["period"]["kind"] == "fiscal_year_to_date"
+
+    from app.providers import trade
+    from app.providers.files import pdf_pages
+
+    pages = pdf_pages(raw, layout=True)
+    changed = [
+        p.replace("27                               26", "28                               26") for p in pages
+    ]
+    assert changed != pages
+    monkeypatch.setattr(trade, "pdf_pages", lambda *args, **kwargs: changed)
+    with pytest.raises(ValueError, match="end-year"):
+        parse_pdf(raw, pdf["url"], pdf["checked_at"])
+
+
 def test_current_release_discovery_and_mismatched_tables_fail_closed():
     urls = current_releases(body("pib_current_index"))
     assert urls == ["https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2323944&lang=1&reg=3"]
