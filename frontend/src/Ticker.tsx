@@ -3,6 +3,28 @@ import { auth } from './auth';
 import { change, exchangeTime, ist, metric, type TickerItem, type TickerSnapshot } from './contracts';
 import { Details } from './Details';
 
+export function tickerStatus(items: Pick<TickerItem, 'value' | 'state'>[], error: string) {
+  if (!items.length) return 'NO DATA';
+  const states = new Set(items.map((t) => (t.value === null ? 'unavailable' : error ? 'stale' : t.state)));
+  return states.size === 1 ? [...states][0].toUpperCase() : 'MIXED';
+}
+
+function quoteAsOf(t: TickerItem) {
+  if (!t.exchange_timestamp) return 'time unavailable';
+  const time = new Date(t.exchange_timestamp);
+  if (!Number.isFinite(time.getTime())) return 'time unavailable';
+  return (
+    new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(time) + ' IST'
+  );
+}
+
 export function useTicker(signedIn: boolean, userId: string | undefined) {
   const sessionKey = auth.tokens?.csrf_token || null;
   const [result, setResult] = useState<{
@@ -99,21 +121,23 @@ export function Ticker({
   retry: () => Promise<void>;
   signedIn: boolean;
 }) {
-  const allClosed = items.length === 3 && items.every((t) => t.state === 'closed');
-  const track = useRef<HTMLDivElement>(null),
+  const status = tickerStatus(items, error);
+  const strip = useRef<HTMLDivElement>(null),
+    track = useRef<HTMLDivElement>(null),
     group = useRef<HTMLDivElement>(null);
   const hasItems = items.length > 0;
   useEffect(() => {
-    const node = track.current,
+    const container = strip.current,
+      node = track.current,
       first = group.current;
-    if (!hasItems || !node || !first) return;
+    if (!hasItems || !container || !node || !first) return;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let width = 0,
       frame = 0,
       previous = performance.now(),
       holdUntil = 0;
-    let hovered = node.matches(':hover'),
-      focused = node.contains(document.activeElement);
+    let hovered = container.matches(':hover'),
+      focused = container.contains(document.activeElement);
     const resize = () => {
       width = parseFloat(getComputedStyle(first).width);
     };
@@ -130,7 +154,7 @@ export function Ticker({
       focused = true;
     };
     const blur = () => {
-      focused = node.contains(document.activeElement);
+      focused = container.contains(document.activeElement);
     };
     const manual = () => {
       holdUntil = performance.now() + 1800;
@@ -145,30 +169,35 @@ export function Ticker({
       }
       frame = requestAnimationFrame(tick);
     };
-    node.addEventListener('mouseenter', enter);
-    node.addEventListener('mouseleave', leave);
-    node.addEventListener('focusin', focus);
-    node.addEventListener('focusout', blur);
+    container.addEventListener('mouseenter', enter);
+    container.addEventListener('mouseleave', leave);
+    container.addEventListener('focusin', focus);
+    container.addEventListener('focusout', blur);
     for (const event of ['wheel', 'pointerdown', 'touchmove', 'keydown'])
       node.addEventListener(event, manual, { passive: true });
     frame = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
-      node.removeEventListener('mouseenter', enter);
-      node.removeEventListener('mouseleave', leave);
-      node.removeEventListener('focusin', focus);
-      node.removeEventListener('focusout', blur);
+      container.removeEventListener('mouseenter', enter);
+      container.removeEventListener('mouseleave', leave);
+      container.removeEventListener('focusin', focus);
+      container.removeEventListener('focusout', blur);
       for (const event of ['wheel', 'pointerdown', 'touchmove', 'keydown'])
         node.removeEventListener(event, manual);
     };
   }, [hasItems]);
   return (
-    <div className="market-strip" aria-label="Market snapshots">
+    <div className="market-strip" aria-label="Market snapshots" ref={strip}>
       <Details
         label="Market quote sources and timestamps"
-        className={`market-badge ${allClosed ? 'closed' : ''}`}
-        button={allClosed && !error ? 'CLOSED' : 'QUOTES'}
+        className="market-badge"
+        button={
+          <>
+            <span>{status}</span>
+            <span className="market-dot" aria-hidden="true" />
+          </>
+        }
       >
         {error && (
           <p role="alert">
@@ -247,8 +276,7 @@ export function Ticker({
                     <small>
                       {t.exchange}
                       {t.provider_id === 'upstox' ? ' / Upstox' : ''} ·{' '}
-                      {error ? 'STALE · connection lost' : t.state.toUpperCase()} ·{' '}
-                      {exchangeTime(t.exchange_timestamp, t.exchange_timestamp_precision)}
+                      {error ? 'STALE · connection lost' : t.state.toUpperCase()} · {quoteAsOf(t)}
                     </small>
                   </span>
                 ))}

@@ -21,8 +21,12 @@ test('login, canonical values, reload, memory-only JWT and database-only browser
   context,
 }) => {
   const dataHosts = new Set<string>();
+  const authHosts = new Set<string>();
   page.on('request', (request) => {
-    if (request.resourceType() === 'fetch') dataHosts.add(new URL(request.url()).origin);
+    if (request.resourceType() === 'fetch') {
+      const url = new URL(request.url());
+      (url.pathname.startsWith('/api/v1/auth/') ? authHosts : dataHosts).add(url.origin);
+    }
   });
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -54,6 +58,7 @@ test('login, canonical values, reload, memory-only JWT and database-only browser
   await page.reload();
   await expect(page.getByTestId('card-gdp_india')).toHaveText('7.57%');
   expect([...dataHosts]).toEqual([API]);
+  expect([...authHosts]).toEqual(['http://localhost:5174']);
   expect(errors).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: '../.verification/browser-desktop.png', fullPage: true });

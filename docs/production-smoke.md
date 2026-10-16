@@ -4,9 +4,9 @@
 
 ## Entry conditions
 
-- Reviewed release commit and passing relevant CI; frontend/API hosted separately at the controlled same-site HTTPS subdomains.
+- Reviewed release commit and passing relevant CI; frontend/API hosted separately at the exact HTTPS provider origins, with an auth-only same-origin Vercel rewrite.
 - Compiled frontend API origin, exact CORS/CSRF origin and Secure host-only refresh cookie; no insecure production override.
-- One API worker/replica, mounted private SQLite, migrations applied, reviewed actual ingress trust, distinct host-managed secrets, rotated Upstox credential and permitted market audience/display arrangement.
+- One API worker/replica, same-region internal Render PostgreSQL with public ingress completely disabled, checksummed migrations applied, explicit ingress trust or ignored forwarding headers, distinct host-managed secrets, rotated Upstox credential and permitted market audience/display arrangement.
 - Dedicated account privately provisioned on the mounted production database. Backup path private; no secret values or auth bodies in captured output.
 
 ## Procedure and time bound
@@ -15,7 +15,7 @@ Allow about 20 minutes for the foreground sign-in/renewal pass, plus one control
 
 | Check | Action and pass criterion | Safe evidence |
 | --- | --- | --- |
-| Origins/build/TLS | Open both HTTPS origins; confirm valid certificates and the frontend's public `build-config.json` points at the exact API origin. Inspect returned Pages CSP/security/cache headers and API health/docs. No test/local origin in bundle. | URLs, release/build identifiers, response codes and non-secret headers. |
+| Origins/build/TLS | Open both HTTPS origins; confirm valid certificates and the frontend's public `build-config.json` points at the exact API origin. Inspect returned Vercel CSP/security/cache headers and API health/docs. No test/local origin in bundle. | URLs, release/build identifiers, response codes and non-secret headers. |
 | Health/protection | Public `/healthz`200 with DB ready/collectors running; `/docs` and `/openapi.json`200. Unauthenticated `/api/v1/dashboard`, `/api/v1/ticker`, `/api/v1/panels/gdp`401. Test-control/static DB paths 404. | Status codes only; no database files or route-debug output. |
 | CORS/CSRF | Frontend requests receive only its exact allow-origin plus credentials. Foreign-origin preflight does not grant CORS; missing/foreign Origin/custom-header cookie mutations are403. Use invalid bodies/credentials for negative checks without logging real credentials. | Allowed/disallowed origin and response codes. |
 | Sign-in/reload | With third-party cookies blocked, sign in; all six panels and three indices resolve stored data. Verify `__Host-refresh` Secure/HttpOnly/Strict/Path=/, no Domain. Reload and observe session bootstrap → refresh → confirm without sign-in prompt. JWT/CSRF stay out of localStorage/sessionStorage. | Redacted cookie attributes and route names/statuses; never cookie/token contents. |
@@ -32,8 +32,10 @@ For read-only HTTP checks, use exact deployment origins in local variables rathe
 
 ## Failure handling and evidence
 
-Capture a safe failing assertion/status first; fix only the confirmed configuration/implementation defect and rerun its affected checks. Wrong compiled origin requires a new frontend build; wrong cookie site requires corrected domains/configuration, never SameSite=None or insecure cookies. Storage failure requires mount/permissions/owner recovery, never ephemeral SQLite. Source rejection remains a provider/host-access finding; retain valid observations and honest labels.
+Capture a safe failing assertion/status first; fix only the confirmed configuration/implementation defect and rerun its affected checks. Wrong compiled origin requires a new frontend build; wrong cookie routing requires corrected Vercel auth-only rewrite/configuration, never SameSite=None or insecure cookies. Storage failure requires internal PostgreSQL/lease recovery, never ephemeral SQLite or public DB ingress. Source rejection remains a provider/host-access finding; retain valid observations and honest labels.
 
 Absolute7-day expiry, interrupted refresh, identity-conflict logout, malicious data, provider timeout/cooldown and socket-disabled DB-only reads are already covered by recorded offline/browser regressions. Do not weaken production lifetimes or inject failures solely to re-enact them. Production smoke supplements those checks with real-site renewal/logout/cookie/persistence behaviour. Evidence must state which checks were observed here and which reuse local results.
 
 The production record must contain: release commit, frontend/API/docs/health URLs, host service/build identifiers, actual start/end times, each check's pass/fail/pending result, source states and any concrete failure/repair. Do not include secrets, usernames/passwords, cookies, private backup objects or unrelated personal browser content.
+
+Free acceptance must also record: API cold sleep/wake behaviour without a keepalive pinger; coalesced due jobs; resource plan/no-card cost controls; PostgreSQL expiry15 November2026; external ingress disabled before storing data; same-origin POST session bootstrap; protected reads still direct to Render; persistent sessions/observations after API restart. No hosted result is implied by the prepared checklist.

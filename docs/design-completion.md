@@ -107,5 +107,9 @@ The subsequent focused interaction pass preserves the measured layout while repl
 
 - Font input resolved: user accepted the documented Roboto fallback on 16 October. Keep its visual difference and the separate real-data corrections visible in the submission.
 - Replace the token supplied through chat before production; confirm the accepted market display/redistribution arrangement for the deployed audience.
-- The agreed controlled domain/two HTTPS origins, deployment account/project access, actual proxy trust/mount/egress/cookie checks and private off-host backup operation are part of the now-authorised final delivery stage. Account/domain/provider inputs and actual hosted acceptance are tracked in delivery-status.md; none is claimed as already deployed.
+- The zero-budget provider origins/auth-only rewrite supersede purchased domains and paid disks. Actual hosted acceptance and account actions are tracked in free-deployment.md; no API/frontend deployment is claimed yet.
 - Final submission still needs deployed frontend/API/docs/health URLs, separately shared evaluation credentials, portfolio/project role links and the required post-assessment recording. Rehearsal remains outside the repository.
+
+## Ticker correction,16 October2026
+
+[Matched-scale comparison](evidence/2026-10-16/free-ticker-comparison.png) and [measured bounds/fonts](evidence/2026-10-16/free-ticker-geometry.json) show the red rounded badge/dot,17.08px quote type and single row at1214×2159. Badge height29 design px, top97/left25, radius6.8526; labels follow actual feed status. CLOSED/SNAPSHOT/MIXED can require more width than illustrative LIVE. Required concise inline source/as-of text also changes quote widths; extended metadata remains in Details. Roboto and Manrope are loaded; Segoe is absent locally and its accepted fallback is not an exact font match. Panels retain measured582/583×544 design bounds; real observations/correct units and gaps replace illustrative numbers.

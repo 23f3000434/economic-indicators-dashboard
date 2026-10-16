@@ -1,6 +1,6 @@
 # Economic Indicators Dashboard
 
-React/TypeScript + FastAPI dashboard with six economic panels, a three-index market ticker, private persistent SQLite and refreshable server-revocable authentication. Scheduled collectors validate upstream responses independently of browser requests. Every card, chart, tooltip and table resolves canonical observations and backend comparison references.
+React/TypeScript + FastAPI dashboard with six economic panels, a three-index market ticker, private PostgreSQL (free production) / SQLite (local) storage and refreshable server-revocable authentication. Scheduled collectors validate upstream responses independently of browser requests. Every card, chart, tooltip and table resolves canonical observations and backend comparison references.
 
 **Implemented and locally verified:** GDP, comparable India/US general-government debt, merchandise trade, gross GST excluding compensation cess, combined CPI with dated inflation policy, CGA actual expenditure, NSE NIFTY BANK/IT and Upstox BSE SENSEX snapshots. These are working source → storage → protected API → UI paths, not placeholder unavailable panels. Production hosting/source access is a separate acceptance step. [Delivery status and remaining inputs](docs/delivery-status.md).
 
@@ -46,8 +46,8 @@ The initial empty database is populated by independent startup collectors. A mis
 
 ## Data and request flow
 
-1. One supervised task per group fetches bounded upstream responses, validates identities/periods/units/status/consistency, then commits a short SQLite transaction. GDP/debt/policy default weekly; CGA/GST/trade/CPI daily; quotes/status every 30 seconds. Durable provider cooldowns and independent last-success/history survive restart.
-2. Protected FastAPI reads use SQLite only. A source timeout does not delay a dashboard request. Failed or scoped-omitted observations retain original provenance and become stale; never-seen missing observations remain null.
+1. One supervised task per group fetches bounded upstream responses, validates identities/periods/units/status/consistency, then commits a short database transaction. GDP/debt/policy default weekly; CGA/GST/trade/CPI daily; quotes/status every 30 seconds. Durable provider cooldowns and independent last-success/history survive restart.
+2. Protected FastAPI reads use stored observations only. A source timeout does not delay a dashboard request. Failed or scoped-omitted observations retain original provenance and become stale; never-seen missing observations remain null.
 3. React polls `/api/v1/dashboard` each minute and `/api/v1/ticker` every 30 seconds while visible, with cancellation and single-flight requests. Browser connection failures retain the prior screen with a notice. “Refresh view” reads storage; it never calls a provider.
 4. Backend Decimal comparisons and canonical summary references drive cards/charts/compact shared tooltips/Details tables. Missing values display `—` and chart gaps. Period/legend controls operate on those same observations.
 
@@ -59,9 +59,11 @@ GDP input is a rolling 12-year window ending in the previous UTC year, with conf
 
 Login returns a 15-minute access JWT held only in memory. A persistent session has a configurable absolute lifetime of at most seven days. HttpOnly refresh cookies and hashed active/pending/retired tokens support rotation, concurrent tabs and lost-response recovery. Server-side session checks immediately revoke associated JWTs on logout. Account/logout changes clear authenticated data/dialogs; CSRF uses exact Origin, JSON/custom headers and session-bound tokens. [Auth/API request and response contracts](docs/contracts.md#selected-authentication-contract).
 
-Local mode uses `dev_refresh`, HttpOnly/Strict without Secure on loopback HTTP. Production requires **separate same-site HTTPS subdomains** on different hosting environments, with Secure host-only `__Host-refresh`, exact-origin credentialed CORS and no insecure override. API secrets stay server-only. SQLite has no network listener or public/static route; directories/files use 0700/0600 and queries bind parameters.
+Local mode uses `dev_refresh`, HttpOnly/Strict without Secure on loopback HTTP. Free production uses separate **Vercel Hobby frontend / Render Free API** HTTPS provider URLs. Only `/api/v1/auth/*` travels through a same-origin Vercel rewrite; the Secure/HttpOnly/Strict host-only `__Host-refresh` cookie belongs to the frontend site. Protected dashboard/ticker reads still go directly to Render with a memory bearer token and credentials omitted. Exact frontend Origin, JSON/custom-header CSRF and session revocation remain enforced. Same-origin bootstrap uses POST so browsers naturally supply Origin. No third-party cookie, purchased domain or SameSite=None is required.
 
-Approved delivery: **Cloudflare Pages frontend + one paid Render API instance with a 1 GB private persistent disk**, locked allowlisted runtime and a single SQLite owner. `render.yaml` and `deploy/` prepare reproducible builds. The real parent domain, origins, proxy trust, host source access and cookies must be verified; provider domains alone are not the accepted cookie arrangement. [Deployment/configuration/backup/restore instructions](docs/deployment.md), [bounded production acceptance](docs/production-smoke.md). No public deployment is claimed until that checklist has actual results.
+Render Free PostgreSQL uses the API's region and internal URL, with **all external database ingress disabled**. Direct psycopg parameter binding, checksummed migrations, serialized short writes and fenced collector ownership preserve sessions/provenance across process restarts. SQLite's existing migrations and owner-only files remain supported locally. Production startup refuses ephemeral SQLite. [Deployment/configuration/recovery](docs/deployment.md).
+
+**Free-tier limits:** Render's API sleeps after 15 minutes without inbound traffic; collectors stop during sleep and coalesce due jobs after wake. Cold wake can take about a minute; bounded browser requests can require retry. Free PostgreSQL expires after 30 days (**this instance: 15 November 2026**), has no managed backups, and cannot provide indefinite assignment availability. No paid fallback, keepalive pinger, disk or paid cron is configured. [Actual resources, acceptance and blockers](docs/free-deployment.md). Public application deployment is not claimed until hosted checks pass.
 
 ## Verification
 
@@ -79,9 +81,17 @@ For one sequential compiled browser suite:
 
 ```sh
 # Linux: first run `npx --no-install playwright install --with-deps chromium` inside frontend.
-VITE_API_BASE_URL=http://localhost:8001 npm run build --prefix frontend -- --outDir ../.verification/browser-dist --emptyOutDir
+VITE_API_BASE_URL=http://localhost:8001 VITE_AUTH_SAME_ORIGIN_PROXY=true npm run build --prefix frontend -- --outDir ../.verification/browser-dist --emptyOutDir
 E2E_PREVIEW=1 npm run test:browser --prefix frontend
 ```
+
+For actual PostgreSQL regressions, use a disposable PostgreSQL database (never production):
+
+```sh
+TEST_DATABASE_URL=postgresql://<test-user>:<test-password>@localhost:5432/<test-db> .venv/bin/pytest -q tests/test_postgres.py tests/test_auth.py tests/test_dashboard.py tests/test_trade.py
+```
+
+Each test creates/drops only its own random schema. The tests cover concurrent refresh, lost responses, logout/reuse revocation, persisted observations, scoped omissions, migrations and ownership fencing. CI runs the same path against PostgreSQL 18.
 
 Browser tests own isolated ports 5174/8001; do not overlap invocations. macOS uses installed Chrome or `CHROME_PATH`; Linux uses locked Playwright Chromium. Fixtures, synthetic clocks and failure controls exist only under tests and are excluded from the production runtime. Live proof scripts instead use actual providers and ignored private databases; see `scripts/verify_sources.py --help` and `scripts/verify_market_flow.py --help`. Do not use the local smoke script with production credentials.
 

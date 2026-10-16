@@ -21,6 +21,7 @@ const tokens = (id = 'a'): Tokens => ({
 });
 beforeEach(() => {
   vi.resetModules();
+  vi.unstubAllEnvs();
   vi.stubGlobal('navigator', {});
   vi.stubGlobal(
     'BroadcastChannel',
@@ -34,6 +35,24 @@ beforeEach(() => {
 });
 
 describe('auth state authority under delayed responses', () => {
+  it('proxies cookie actions only, with POST bootstrap and direct bearer reads', async () => {
+    vi.stubEnv('VITE_AUTH_SAME_ORIGIN_PROXY', 'true');
+    vi.stubEnv('VITE_API_BASE_URL', 'https://api.onrender.com');
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(json(tokens()))
+      .mockResolvedValueOnce(json(tokens()))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }))
+      .mockResolvedValueOnce(json({ ok: true }));
+    vi.stubGlobal('fetch', fetch);
+    const { auth } = await import('./auth');
+    await auth.read('/api/v1/dashboard');
+    expect(fetch.mock.calls[0][0]).toBe('/api/v1/auth/session');
+    expect(fetch.mock.calls[0][1]).toMatchObject({ method: 'POST', body: '{}', credentials: 'include' });
+    expect(fetch.mock.calls[0][1].headers).toMatchObject({ 'X-CSRF-Protection': '1' });
+    expect(fetch.mock.calls[3][0]).toBe('https://api.onrender.com/api/v1/dashboard');
+    expect(fetch.mock.calls[3][1]).toMatchObject({ credentials: 'omit' });
+  });
   it('does not publish an interrupted renewal after another tab logs out', async () => {
     const confirm = deferred<Response>();
     const fetch = vi

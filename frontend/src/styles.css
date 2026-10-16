@@ -160,20 +160,45 @@ a {
 .market-strip > .details-button {
   position: relative;
   inset: auto;
-  flex: 0 0 92px;
-  width: 92px;
+  flex: 0 0 auto;
+  min-width: 92px;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 11px;
+  padding: 0 12px;
   height: 29px;
   font:
-    16px Roboto,
+    400 18px 'Reference Segoe',
+    Roboto,
     sans-serif;
-  margin-right: 4px;
-  background: #17405a;
-  border: 0;
+  margin-right: 1.5px;
+  text-decoration: none;
+  transform: translateY(1px);
+  background:
+    linear-gradient(#d62d2a, #d62d2a) padding-box,
+    linear-gradient(14deg, #f00, #fff 53.547%, #f00) border-box;
+  border: 1px solid transparent;
   color: white;
-  border-radius: 6px;
+  border-radius: 6.8526px;
 }
-.market-strip > .details-button.closed {
-  background: #404959;
+.market-strip > .details-button:hover:not(:disabled) {
+  background:
+    linear-gradient(#d62d2a, #d62d2a) padding-box,
+    linear-gradient(14deg, #f00, #fff 53.547%, #f00) border-box;
+}
+.market-badge > span:first-child {
+  min-width: 39px;
+  text-align: center;
+}
+.market-dot {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #ffacac;
+  border-radius: 50%;
+  background: #ff0000;
 }
 .ticker-track {
   display: flex;
@@ -199,12 +224,13 @@ a {
   flex: 1 0 auto;
   white-space: nowrap;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  height: 39px;
-  gap: 2px;
+  height: 38.4338px;
+  gap: 10px;
   padding: 0 12px;
-  border-left: 1px solid #466382;
+  border-left: 1.06761px solid #415d88;
   font-size: 17.08px;
   font-weight: 600;
   line-height: 21.32px;
@@ -227,9 +253,12 @@ a {
 .down {
   color: #ff716a;
 }
+.ticker-item .down {
+  color: #ff0000;
+}
 .ticker-item small {
-  font-size: 9px;
-  line-height: 10px;
+  font-size: 12.5px;
+  line-height: 18px;
   color: #c3c8d1;
 }
 .ticker-item.stale small {
@@ -1088,10 +1117,12 @@ a {
     background: #071b34;
   }
   .market-strip > .details-button {
-    flex-basis: 74px;
-    width: 74px;
-    font-size: 13px;
-    height: 34px;
+    flex-basis: auto;
+    min-width: 80px;
+    font-size: 14px;
+    height: 29px;
+    gap: 8px;
+    transform: none;
   }
   .ticker-track {
     height: 61px;
@@ -1105,7 +1136,7 @@ a {
     font-size: 14px;
   }
   .ticker-item small {
-    font-size: 9px;
+    font-size: 11px;
   }
   .panel-grid {
     position: relative;

@@ -62,7 +62,38 @@ test.beforeEach(async ({ request, page }) => {
 test('complete interface agrees with canonical API and uses supplied artwork at desktop size', async ({
   page,
 }) => {
+  const authenticationRequests: { url: string; method: string }[] = [];
+  page.on('request', (request) => {
+    if (request.url().includes('/api/v1/auth/'))
+      authenticationRequests.push({ url: request.url(), method: request.method() });
+  });
   const data = await login(page);
+  expect(authenticationRequests.length).toBeGreaterThan(0);
+  expect(authenticationRequests.every((r) => r.url.startsWith('http://localhost:5174/api/v1/auth/'))).toBe(
+    true,
+  );
+  expect(authenticationRequests.some((r) => r.url.endsWith('/session') && r.method === 'POST')).toBe(true);
+  const badge = page.locator('.market-badge');
+  const badgeStyle = await badge.evaluate((node) => {
+    const style = getComputedStyle(node);
+    return {
+      height: style.height,
+      fontSize: style.fontSize,
+      background: style.backgroundImage,
+      radius: style.borderRadius,
+    };
+  });
+  expect(badgeStyle).toMatchObject({ height: '29px', fontSize: '18px', radius: '6.8526px' });
+  expect(badgeStyle.background).toContain('rgb(214, 45, 42)');
+  expect(await page.locator('.market-dot').evaluate((node) => getComputedStyle(node).width)).toBe('14px');
+  expect(
+    await page
+      .locator('.ticker-item')
+      .first()
+      .evaluate((node) => getComputedStyle(node).flexDirection),
+  ).toBe('row');
+  for (const id of ['trade', 'gst', 'expenditure'])
+    await expect(page.locator(`.${id}-panel .source-note`)).toContainText('Completed FYs');
   for (const [panelId, id] of [
     ['trade', 'trade_exports'],
     ['trade', 'trade_imports'],

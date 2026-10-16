@@ -4,14 +4,15 @@ No default or public test password exists. Local random verification accounts ar
 
 ## Operator provisioning
 
-On the **disk-owning Render service**, open its private authenticated shell. From the deployed repository root:
+Render Free has no shell/SSH or one-off jobs. Provision on ordinary API startup with server-only `BOOTSTRAP_USERNAME` and an Argon2id `BOOTSTRAP_PASSWORD_HASH`. Generate a unique password of at least12 characters in a password manager, hash it locally using the locked `argon2-cffi`, and configure only the hash in the private Render environment. Never put a plaintext evaluator password in Git, Vercel or a command argument. The bootstrap operation inserts only an absent username; a restart cannot overwrite a password or reactivate a disabled account. Remove the bootstrap pair after provisioning if practical; preserve the three signing/rotation secrets across restarts.
+
+For local SQLite or a securely attached disposable PostgreSQL environment, interactive administration remains available:
 
 ```sh
-cd .delivery/api
 PYTHONPATH=backend .venv/bin/python -m app.cli create-user evaluation-2026
 ```
 
-The ordinary production configuration must already identify `/var/data/private/dashboard.sqlite3`; the service starts/migrates that mounted database before provisioning. The CLI prompts twice for a unique password of at least 12 characters. Use a password manager, not a literal command argument or environment value in shell history. Do not use a predeploy/one-off machine: it cannot access the attached disk. Do not run a second collector or API process. A duplicate username is rejected; there is no password-reset/account-admin UI.
+Do not open the production database's external ingress to run this command. No production evaluator has been provisioned or privately handed off yet.
 
 Privately share only the intended evaluator's frontend URL, username/password and access window through an owner-approved secret/password-manager channel. Give each evaluator a separate account where practical. Keep account and host secrets out of Git, CI output, screenshots and public tickets. Repository invitation is a separate action requiring the evaluator's GitHub identity; keep the repository private unless the owner explicitly changes that decision.
 
@@ -23,10 +24,10 @@ Privately share only the intended evaluator's frontend URL, username/password an
 4. Inspect source/as-of/state information. Snapshot/Delayed/Stale/Closed labels reflect actual exchange timestamps and schedule; unchanged quotes are legitimate. Refresh view reads storage, not providers.
 5. Sign out when finished. Server revocation rejects associated access tokens immediately and cross-tab notifications clear authenticated data/dialogs. A session expires at its original absolute deadline, at most seven days after sign-in.
 
-Default provider URLs on unrelated sites are not the accepted production cookie setup. If sign-in/reload fails, give the operator the time, browser and safe error text, never a token/cookie/password. Avoid exporting an unredacted browser HAR.
+On the free provider URLs, cookie actions use the frontend's auth-only rewrite while protected data reads go directly to Render. The HttpOnly cookie belongs to the frontend site. If sign-in/reload fails, give the operator the time, browser and safe error text, never a token/cookie/password. Avoid exporting an unredacted browser HAR.
 
 ## Close access after evaluation
 
-Logout revokes one session; it does not disable the account/password. The operator must disable the evaluation user and revoke its sessions after the agreed review window. There is no automated account expiry feature. On the private disk owner, use a short transaction with **bound parameters**: `UPDATE users SET active = 0 WHERE username = ?`, and set `sessions.revoked_at` for that user's sessions. Verify affected identity/count before committing, preserve other accounts, and confirm fresh login plus an old access token are rejected. Do not concatenate a username into SQL. Back up consistently before an administrative change; see [recovery](deployment.md#consistent-backup-and-restore).
+Logout revokes one session; it does not disable the account/password. The operator must disable the evaluation user and revoke its sessions after the agreed review window. There is no automated account expiry feature. Using a separately authorised internal operator procedure, use a short transaction with **bound parameters**: `UPDATE users SET active = 0 WHERE username = ?`, and set `sessions.revoked_at` for that user's sessions. Verify affected identity/count before committing, preserve other accounts, and confirm fresh login plus an old access token are rejected. Do not concatenate a username into SQL. Free Render has no deployed account-admin interface or shell; post-review disabling must be completed through an authorised internal maintenance procedure, without opening public DB ingress. Recovery limits are explicit; see [recovery](deployment.md#consistent-backup-and-restore).
 
 No account is created, disabled or messaged to another person merely by writing these instructions.

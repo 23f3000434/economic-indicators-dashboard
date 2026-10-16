@@ -5,7 +5,9 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: false,
   workers: 1,
-  timeout: 35000,
+  // Includes rebuilding ten provider groups from real PDF/workbook fixtures.
+  // Request deadlines (12s) and UI assertions (8s) remain independently bounded.
+  timeout: 60000,
   expect: { timeout: 8000 },
   use: {
     baseURL: 'http://localhost:5174',
@@ -36,7 +38,7 @@ export default defineConfig({
         : 'npm run dev -- --port 5174 --strictPort',
       url: 'http://localhost:5174',
       reuseExistingServer: false,
-      env: { VITE_API_BASE_URL: 'http://localhost:8001' },
+      env: { VITE_API_BASE_URL: 'http://localhost:8001', VITE_AUTH_SAME_ORIGIN_PROXY: 'true' },
     },
   ],
 });

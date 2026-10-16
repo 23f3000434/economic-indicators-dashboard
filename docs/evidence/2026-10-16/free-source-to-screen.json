@@ -1,0 +1,1455 @@
+{
+  "checked_at": "2026-10-16T10:13:53.286559+00:00",
+  "scope": "normal local private database and authenticated API; actual collectors only, no fixtures",
+  "database_api_points_verified": 410,
+  "stored_observations": 412,
+  "panels": [
+    {
+      "id": "gdp",
+      "state": "ready",
+      "collection": {
+        "last_attempt_at": "2026-10-16T10:00:50.380721Z",
+        "last_success_at": "2026-10-16T10:00:51.635752Z",
+        "last_error_kind": null,
+        "in_progress": false
+      },
+      "series": [
+        {
+          "series_id": "gdp_india",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "fiscal_year_apr_mar": {
+              "period_key": "2025",
+              "period_label": "FY 2025\u201326",
+              "period_start": "2025-04-01",
+              "period_end": "2026-03-31",
+              "value": "7.56666179284244",
+              "estimate_status": "unspecified",
+              "provider_status": "",
+              "footnote": "",
+              "retrieved_at": "2026-10-16T10:00:51.489228Z",
+              "dataset_updated_on": "2026-10-08",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "gdp_world",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "calendar_year_aggregate": {
+              "period_key": "2025",
+              "period_label": "CY 2025",
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": "2.92127318539153",
+              "estimate_status": "unspecified",
+              "provider_status": "",
+              "footnote": "",
+              "retrieved_at": "2026-10-16T10:00:51.626161Z",
+              "dataset_updated_on": "2026-10-08",
+              "retained": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "debt",
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-16T10:00:51.637847Z",
+          "last_success_at": "2026-10-16T10:01:00.433731Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "debt",
+          "provider_id": "world_bank_data360",
+          "next_request_not_before": null,
+          "interval_seconds": 604800
+        }
+      ],
+      "series": [
+        {
+          "series_id": "debt_india",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "debt_india",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "debt",
+                "provider": "world_bank_data360",
+                "unit": "percent",
+                "methodology": "imf_weo_general_government_gross_debt_percent_gdp",
+                "status": "estimate",
+                "published_at": null,
+                "publication_note": "IMF WEO via World Bank Data360, Latest Version snapshot. Vintage is the mirror's metadata version date, not an observation publication date. Source A means Normal value. Actual/estimate classification uses the matching WEO appendix's Government Finance latest actual year: 2024. India: FY Apr\u2013Mar, central/state coverage, cash; US: CY Jan\u2013Dec, central/state/local, accrual. Coverage/accounting differences limit comparability. Future source years are excluded.",
+                "vintage_date": "2026-10-13",
+                "source_status": "A: Normal value",
+                "supporting_sources": [
+                  {
+                    "role": "metadata",
+                    "url": "https://data360files.worldbank.org/data360-data/metadata/IMF_WEO/IMF_WEO_GGXWDG_NGDP.json",
+                    "response_sha256": "188becca8e104481bb7044adc550c71d5e56b8773a35ee91d0149e6be9ef1c44"
+                  },
+                  {
+                    "role": "methodology",
+                    "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf",
+                    "response_sha256": "cd4e2829d7e621d43134728bfc128547f776e909e08ef1d38b837e2d39e5ae2a"
+                  }
+                ],
+                "inputs": []
+              },
+              "value": "84.260729",
+              "source_url": "https://data360files.worldbank.org/data360-data/data/IMF_WEO/IMF_WEO_GGXWDG_NGDP.csv",
+              "retrieved_at": "2026-10-16T10:00:58.615300Z",
+              "response_sha256": "79c1e31bf2524edaf765dda2477119cc2d84097abd1b03512a964353fd1a47d5",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "debt_us",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "calendar_year": {
+              "series_id": "debt_us",
+              "period": {
+                "key": "2025",
+                "label": "CY 2025",
+                "kind": "calendar_year",
+                "start": "2025-01-01",
+                "end": "2025-12-31"
+              },
+              "definition": {
+                "group": "debt",
+                "provider": "world_bank_data360",
+                "unit": "percent",
+                "methodology": "imf_weo_general_government_gross_debt_percent_gdp",
+                "status": "actual",
+                "published_at": null,
+                "publication_note": "IMF WEO via World Bank Data360, Latest Version snapshot. Vintage is the mirror's metadata version date, not an observation publication date. Source A means Normal value. Actual/estimate classification uses the matching WEO appendix's Government Finance latest actual year: 2025. India: FY Apr\u2013Mar, central/state coverage, cash; US: CY Jan\u2013Dec, central/state/local, accrual. Coverage/accounting differences limit comparability. Future source years are excluded.",
+                "vintage_date": "2026-10-13",
+                "source_status": "A: Normal value",
+                "supporting_sources": [
+                  {
+                    "role": "metadata",
+                    "url": "https://data360files.worldbank.org/data360-data/metadata/IMF_WEO/IMF_WEO_GGXWDG_NGDP.json",
+                    "response_sha256": "188becca8e104481bb7044adc550c71d5e56b8773a35ee91d0149e6be9ef1c44"
+                  },
+                  {
+                    "role": "methodology",
+                    "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf",
+                    "response_sha256": "cd4e2829d7e621d43134728bfc128547f776e909e08ef1d38b837e2d39e5ae2a"
+                  }
+                ],
+                "inputs": []
+              },
+              "value": "124.376732",
+              "source_url": "https://data360files.worldbank.org/data360-data/data/IMF_WEO/IMF_WEO_GGXWDG_NGDP.csv",
+              "retrieved_at": "2026-10-16T10:00:58.615300Z",
+              "response_sha256": "79c1e31bf2524edaf765dda2477119cc2d84097abd1b03512a964353fd1a47d5",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade",
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-16T10:07:38.074576Z",
+          "last_success_at": "2026-10-16T10:07:47.633545Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "trade",
+          "provider_id": "commerce",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        }
+      ],
+      "series": [
+        {
+          "series_id": "trade_exports",
+          "unit": "usd_billion",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "trade_exports",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-04-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "441.78",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIBRelease.pdf",
+              "retrieved_at": "2026-10-16T10:07:45.939807Z",
+              "response_sha256": "f51dc7d939940e8539672ba4ed892a33306d61ae2cff5e9283a7aa3fe6e3801d",
+              "footnote": "",
+              "retained": false
+            },
+            "month": {
+              "series_id": "trade_exports",
+              "period": {
+                "key": "2026-09",
+                "label": "September 2026",
+                "kind": "month",
+                "start": "2026-09-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-10-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "44.40",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+              "retrieved_at": "2026-10-16T10:07:39.958244Z",
+              "response_sha256": "414235a6f299ad336f12245ed334dbf6641f9b8b4a35c9a0a3c94ee323216fb6",
+              "footnote": "",
+              "retained": false
+            },
+            "fiscal_year_to_date": {
+              "series_id": "trade_exports",
+              "period": {
+                "key": "FY2026-27:09",
+                "label": "FY 2026\u201327 April\u2013September",
+                "kind": "fiscal_year_to_date",
+                "start": "2026-04-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-10-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "259.89",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+              "retrieved_at": "2026-10-16T10:07:39.958244Z",
+              "response_sha256": "414235a6f299ad336f12245ed334dbf6641f9b8b4a35c9a0a3c94ee323216fb6",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "trade_imports",
+          "unit": "usd_billion",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "trade_imports",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-04-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "774.98",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIBRelease.pdf",
+              "retrieved_at": "2026-10-16T10:07:45.939807Z",
+              "response_sha256": "f51dc7d939940e8539672ba4ed892a33306d61ae2cff5e9283a7aa3fe6e3801d",
+              "footnote": "",
+              "retained": false
+            },
+            "month": {
+              "series_id": "trade_imports",
+              "period": {
+                "key": "2026-09",
+                "label": "September 2026",
+                "kind": "month",
+                "start": "2026-09-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-10-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "74.61",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+              "retrieved_at": "2026-10-16T10:07:39.958244Z",
+              "response_sha256": "414235a6f299ad336f12245ed334dbf6641f9b8b4a35c9a0a3c94ee323216fb6",
+              "footnote": "",
+              "retained": false
+            },
+            "fiscal_year_to_date": {
+              "series_id": "trade_imports",
+              "period": {
+                "key": "FY2026-27:09",
+                "label": "FY 2026\u201327 April\u2013September",
+                "kind": "fiscal_year_to_date",
+                "start": "2026-04-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-10-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "437.53",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+              "retrieved_at": "2026-10-16T10:07:39.958244Z",
+              "response_sha256": "414235a6f299ad336f12245ed334dbf6641f9b8b4a35c9a0a3c94ee323216fb6",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "trade_balance",
+          "unit": "usd_billion",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "trade_balance",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-04-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": [
+                  {
+                    "series_id": "trade_exports",
+                    "period_key": "FY2025-26"
+                  },
+                  {
+                    "series_id": "trade_imports",
+                    "period_key": "FY2025-26"
+                  }
+                ]
+              },
+              "value": "-333.20",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIBRelease.pdf",
+              "retrieved_at": "2026-10-16T10:07:45.939807Z",
+              "response_sha256": "f51dc7d939940e8539672ba4ed892a33306d61ae2cff5e9283a7aa3fe6e3801d",
+              "footnote": "Calculated merchandise exports \u2212 imports; negative values are deficits. Combined goods/services balance excluded.",
+              "retained": false
+            },
+            "month": {
+              "series_id": "trade_balance",
+              "period": {
+                "key": "2026-09",
+                "label": "September 2026",
+                "kind": "month",
+                "start": "2026-09-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-10-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": [
+                  {
+                    "series_id": "trade_exports",
+                    "period_key": "2026-09"
+                  },
+                  {
+                    "series_id": "trade_imports",
+                    "period_key": "2026-09"
+                  }
+                ]
+              },
+              "value": "-30.21",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+              "retrieved_at": "2026-10-16T10:07:39.958244Z",
+              "response_sha256": "414235a6f299ad336f12245ed334dbf6641f9b8b4a35c9a0a3c94ee323216fb6",
+              "footnote": "Calculated merchandise exports \u2212 imports; negative values are deficits. Combined goods/services balance excluded.",
+              "retained": false
+            },
+            "fiscal_year_to_date": {
+              "series_id": "trade_balance",
+              "period": {
+                "key": "FY2026-27:09",
+                "label": "FY 2026\u201327 April\u2013September",
+                "kind": "fiscal_year_to_date",
+                "start": "2026-04-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "trade",
+                "provider": "commerce",
+                "unit": "usd_billion",
+                "methodology": "india_merchandise_usd_billion_apr_mar",
+                "status": "unspecified",
+                "published_at": "2026-10-15",
+                "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": [
+                  {
+                    "series_id": "trade_exports",
+                    "period_key": "FY2026-27:09"
+                  },
+                  {
+                    "series_id": "trade_imports",
+                    "period_key": "FY2026-27:09"
+                  }
+                ]
+              },
+              "value": "-177.64",
+              "source_url": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+              "retrieved_at": "2026-10-16T10:07:39.958244Z",
+              "response_sha256": "414235a6f299ad336f12245ed334dbf6641f9b8b4a35c9a0a3c94ee323216fb6",
+              "footnote": "Calculated merchandise exports \u2212 imports; negative values are deficits. Combined goods/services balance excluded.",
+              "retained": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "gst",
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-16T10:01:03.199930Z",
+          "last_success_at": "2026-10-16T10:01:11.812456Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "gst",
+          "provider_id": "gstn",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        }
+      ],
+      "series": [
+        {
+          "series_id": "gst_gross_ex_cess",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "month": {
+              "series_id": "gst_gross_ex_cess",
+              "period": {
+                "key": "2026-09",
+                "label": "September 2026",
+                "kind": "month",
+                "start": "2026-09-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "gst",
+                "provider": "gstn",
+                "unit": "inr_crore",
+                "methodology": "gross_cgst_sgst_igst_before_refunds",
+                "status": "provisional",
+                "published_at": "2026-10-01",
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": [
+                  {
+                    "series_id": "gst_reported_gross",
+                    "period_key": "2026-09"
+                  }
+                ]
+              },
+              "value": "203521",
+              "source_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+              "retrieved_at": "2026-10-16T10:01:05.554406Z",
+              "response_sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+              "footnote": "Source-reported gross less compensation cess when included. No refunds deducted. CGST+SGST+IGST reconciliation checked at publication precision.",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "gst_reported_gross",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "month": {
+              "series_id": "gst_reported_gross",
+              "period": {
+                "key": "2026-09",
+                "label": "September 2026",
+                "kind": "month",
+                "start": "2026-09-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "gst",
+                "provider": "gstn",
+                "unit": "inr_crore",
+                "methodology": "gross_excluding_compensation_cess",
+                "status": "provisional",
+                "published_at": "2026-10-01",
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "203521",
+              "source_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+              "retrieved_at": "2026-10-16T10:01:05.554406Z",
+              "response_sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "gst_cess",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "month": {
+              "series_id": "gst_cess",
+              "period": {
+                "key": "2026-03",
+                "label": "March 2026",
+                "kind": "month",
+                "start": "2026-03-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "gst",
+                "provider": "gstn",
+                "unit": "inr_crore",
+                "methodology": "compensation_cess_before_refunds",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "103.2869534",
+              "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+              "retrieved_at": "2026-10-16T10:01:04.311340Z",
+              "response_sha256": "9ce073771b89fc367b0beaccf25becef73704cc9d27a4e333488b1701a6de1d0",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "gst_fy_total",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "gst_fy_total",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "gst",
+                "provider": "gstn",
+                "unit": "inr_crore",
+                "methodology": "gross_ex_cess_completed_fy_total",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "Calculated from 12 published months; no missing month is zero-filled.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": [
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-04"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-05"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-06"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-07"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-08"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-09"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-10"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-11"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-12"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-01"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-02"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-03"
+                  }
+                ]
+              },
+              "value": "2227096.6644980370398",
+              "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+              "retrieved_at": "2026-10-16T10:01:04.311340Z",
+              "response_sha256": "9ce073771b89fc367b0beaccf25becef73704cc9d27a4e333488b1701a6de1d0",
+              "footnote": "Calculated from 12 published months; no missing month is zero-filled.",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "gst_fy_average",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "gst_fy_average",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "gst",
+                "provider": "gstn",
+                "unit": "inr_crore",
+                "methodology": "gross_ex_cess_completed_fy_total_divided_by_12",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "Calculated from 12 published months; no missing month is zero-filled.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": [
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-04"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-05"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-06"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-07"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-08"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-09"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-10"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-11"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2025-12"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-01"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-02"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-03"
+                  }
+                ]
+              },
+              "value": "185591.38870816975331666666666666666666666666666666666666666666666666666666666667",
+              "source_url": "https://tutorial.gst.gov.in/offlineutilities/gst_statistics/Gross_Net_Tax_collection.xlsx",
+              "retrieved_at": "2026-10-16T10:01:04.311340Z",
+              "response_sha256": "9ce073771b89fc367b0beaccf25becef73704cc9d27a4e333488b1701a6de1d0",
+              "footnote": "Calculated from 12 published months; no missing month is zero-filled.",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "gst_fytd_average",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "fiscal_year_to_date": {
+              "series_id": "gst_fytd_average",
+              "period": {
+                "key": "FY2026-27:09",
+                "label": "FY 2026\u201327 April\u2013September",
+                "kind": "fiscal_year_to_date",
+                "start": "2026-04-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "gst",
+                "provider": "gstn",
+                "unit": "inr_crore",
+                "methodology": "gross_ex_cess_average_published_months_04_05_06_07_08_09",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "Calculated from 6 published months; no missing month is zero-filled.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": [
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-04"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-05"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-06"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-07"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-08"
+                  },
+                  {
+                    "series_id": "gst_gross_ex_cess",
+                    "period_key": "2026-09"
+                  }
+                ]
+              },
+              "value": "207713.06620594667",
+              "source_url": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+              "retrieved_at": "2026-10-16T10:01:05.554406Z",
+              "response_sha256": "f9f64007d1edb5e8be7709badb6a424bc6d892cca7aaf06949e54f9b46484b6a",
+              "footnote": "Calculated from 6 published months; no missing month is zero-filled.",
+              "retained": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "inflation",
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-16T10:01:11.815426Z",
+          "last_success_at": "2026-10-16T10:01:14.751022Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "inflation",
+          "provider_id": "mospi",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        },
+        {
+          "last_attempt_at": "2026-10-16T10:01:14.752768Z",
+          "last_success_at": "2026-10-16T10:01:17.357809Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "inflation_policy",
+          "provider_id": "gazette",
+          "next_request_not_before": null,
+          "interval_seconds": 604800
+        }
+      ],
+      "series": [
+        {
+          "series_id": "inflation_target",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "policy_validity": {
+              "series_id": "inflation_target",
+              "period": {
+                "key": "2026-04-01/2031-03-31",
+                "label": "01 April 2026\u201331 March 2031",
+                "kind": "policy_validity",
+                "start": "2026-04-01",
+                "end": "2031-03-31"
+              },
+              "definition": {
+                "group": "inflation_policy",
+                "provider": "gazette",
+                "unit": "percent",
+                "methodology": "india_inflation_target_rbi_act_45za",
+                "status": "final",
+                "published_at": "2026-03-25",
+                "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "4",
+              "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+              "retrieved_at": "2026-10-16T10:01:17.304620Z",
+              "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "inflation_target_lower",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "policy_validity": {
+              "series_id": "inflation_target_lower",
+              "period": {
+                "key": "2026-04-01/2031-03-31",
+                "label": "01 April 2026\u201331 March 2031",
+                "kind": "policy_validity",
+                "start": "2026-04-01",
+                "end": "2031-03-31"
+              },
+              "definition": {
+                "group": "inflation_policy",
+                "provider": "gazette",
+                "unit": "percent",
+                "methodology": "india_inflation_target_rbi_act_45za",
+                "status": "final",
+                "published_at": "2026-03-25",
+                "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "2",
+              "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+              "retrieved_at": "2026-10-16T10:01:17.304620Z",
+              "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "inflation_target_upper",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "policy_validity": {
+              "series_id": "inflation_target_upper",
+              "period": {
+                "key": "2026-04-01/2031-03-31",
+                "label": "01 April 2026\u201331 March 2031",
+                "kind": "policy_validity",
+                "start": "2026-04-01",
+                "end": "2031-03-31"
+              },
+              "definition": {
+                "group": "inflation_policy",
+                "provider": "gazette",
+                "unit": "percent",
+                "methodology": "india_inflation_target_rbi_act_45za",
+                "status": "final",
+                "published_at": "2026-03-25",
+                "publication_note": "S.O. 1580(E), statutory policy; not a monthly CPI observation.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "6",
+              "source_url": "https://egazette.gov.in/WriteReadData/2026/271285.pdf",
+              "retrieved_at": "2026-10-16T10:01:17.304620Z",
+              "response_sha256": "d231cae3742bbfc3306d2d519e1198d8f006734b79e3edd7b4b44a6ddf9e34a7",
+              "footnote": "",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "cpi_yoy_2012",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "month": {
+              "series_id": "cpi_yoy_2012",
+              "period": {
+                "key": "2025-12",
+                "label": "December 2025",
+                "kind": "month",
+                "start": "2025-12-01",
+                "end": "2025-12-31"
+              },
+              "definition": {
+                "group": "inflation",
+                "provider": "mospi",
+                "unit": "percent",
+                "methodology": "all_india_combined_headline_yoy_base_2012",
+                "status": "provisional",
+                "published_at": "2026-01-12",
+                "publication_note": "Last 2012-base release. Historical finality unspecified except explicitly labelled months.",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "1.33",
+              "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1768213461321_53cd35fd-1bbc-4b43-b92d-8fb67474ee74_Press_Release_of_CPI_for_December_2025.pdf",
+              "retrieved_at": "2026-10-16T10:01:13.752576Z",
+              "response_sha256": "e00e487b37b100055014a59929d3ecff13e461c13d009b022e0402c23d05c61e",
+              "footnote": "All-India combined general CPI YoY. Pandemic non-compilation remains null; not food/rural/urban CPI.",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "cpi_yoy_2024",
+          "unit": "percent",
+          "latest_by_period_kind": {
+            "month": {
+              "series_id": "cpi_yoy_2024",
+              "period": {
+                "key": "2026-09",
+                "label": "September 2026",
+                "kind": "month",
+                "start": "2026-09-01",
+                "end": "2026-09-30"
+              },
+              "definition": {
+                "group": "inflation",
+                "provider": "mospi",
+                "unit": "percent",
+                "methodology": "all_india_combined_headline_yoy_base_2024",
+                "status": "provisional",
+                "published_at": "2026-10-12",
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "5.54",
+              "source_url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf",
+              "retrieved_at": "2026-10-16T10:01:12.407894Z",
+              "response_sha256": "a6087e10a1bdb64ebdc9dc32f80605d2905d147602d41cce5879871b5ccefa37",
+              "footnote": "Published All-India combined general CPI YoY. Base 2024=100; not spliced to the 2012 series. Rates use unrounded source indices, not rounded displayed index arithmetic.",
+              "retained": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "expenditure",
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-16T10:01:17.359072Z",
+          "last_success_at": "2026-10-16T10:01:28.305019Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "expenditure",
+          "provider_id": "cga",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        }
+      ],
+      "series": [
+        {
+          "series_id": "expenditure_revenue",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "expenditure_revenue",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "expenditure",
+                "provider": "cga",
+                "unit": "inr_crore",
+                "methodology": "union_government_actual_apr_mar",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "3836032",
+              "source_url": "https://cga.gov.in/writereaddata/MonthAccount/32026/DATA2526.htm",
+              "retrieved_at": "2026-10-16T10:01:28.077922Z",
+              "response_sha256": "c322781d2d4cbf65105941e846c1339c3ba044d4986620436f3bfce5364ea83c",
+              "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+              "retained": false
+            },
+            "fiscal_year_to_date": {
+              "series_id": "expenditure_revenue",
+              "period": {
+                "key": "FY2026-27:08",
+                "label": "FY 2026\u201327 April\u2013August",
+                "kind": "fiscal_year_to_date",
+                "start": "2026-04-01",
+                "end": "2026-08-31"
+              },
+              "definition": {
+                "group": "expenditure",
+                "provider": "cga",
+                "unit": "inr_crore",
+                "methodology": "union_government_actual_apr_mar",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "1568009",
+              "source_url": "https://cga.gov.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+              "retrieved_at": "2026-10-16T10:01:28.262604Z",
+              "response_sha256": "0db8588796a711cc0f2d6f33603cc3f4de6db2bcaa52b2fe657013c24346be7a",
+              "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "expenditure_capital",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "expenditure_capital",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "expenditure",
+                "provider": "cga",
+                "unit": "inr_crore",
+                "methodology": "union_government_actual_apr_mar",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "1069119",
+              "source_url": "https://cga.gov.in/writereaddata/MonthAccount/32026/DATA2526.htm",
+              "retrieved_at": "2026-10-16T10:01:28.077922Z",
+              "response_sha256": "c322781d2d4cbf65105941e846c1339c3ba044d4986620436f3bfce5364ea83c",
+              "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+              "retained": false
+            },
+            "fiscal_year_to_date": {
+              "series_id": "expenditure_capital",
+              "period": {
+                "key": "FY2026-27:08",
+                "label": "FY 2026\u201327 April\u2013August",
+                "kind": "fiscal_year_to_date",
+                "start": "2026-04-01",
+                "end": "2026-08-31"
+              },
+              "definition": {
+                "group": "expenditure",
+                "provider": "cga",
+                "unit": "inr_crore",
+                "methodology": "union_government_actual_apr_mar",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "509949",
+              "source_url": "https://cga.gov.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+              "retrieved_at": "2026-10-16T10:01:28.262604Z",
+              "response_sha256": "0db8588796a711cc0f2d6f33603cc3f4de6db2bcaa52b2fe657013c24346be7a",
+              "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+              "retained": false
+            }
+          }
+        },
+        {
+          "series_id": "expenditure_total",
+          "unit": "inr_crore",
+          "latest_by_period_kind": {
+            "fiscal_year": {
+              "series_id": "expenditure_total",
+              "period": {
+                "key": "FY2025-26",
+                "label": "FY 2025\u201326",
+                "kind": "fiscal_year",
+                "start": "2025-04-01",
+                "end": "2026-03-31"
+              },
+              "definition": {
+                "group": "expenditure",
+                "provider": "cga",
+                "unit": "inr_crore",
+                "methodology": "union_government_actual_apr_mar",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "4905151",
+              "source_url": "https://cga.gov.in/writereaddata/MonthAccount/32026/DATA2526.htm",
+              "retrieved_at": "2026-10-16T10:01:28.077922Z",
+              "response_sha256": "c322781d2d4cbf65105941e846c1339c3ba044d4986620436f3bfce5364ea83c",
+              "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+              "retained": false
+            },
+            "fiscal_year_to_date": {
+              "series_id": "expenditure_total",
+              "period": {
+                "key": "FY2026-27:08",
+                "label": "FY 2026\u201327 April\u2013August",
+                "kind": "fiscal_year_to_date",
+                "start": "2026-04-01",
+                "end": "2026-08-31"
+              },
+              "definition": {
+                "group": "expenditure",
+                "provider": "cga",
+                "unit": "inr_crore",
+                "methodology": "union_government_actual_apr_mar",
+                "status": "provisional",
+                "published_at": null,
+                "publication_note": "",
+                "vintage_date": null,
+                "source_status": null,
+                "supporting_sources": [],
+                "inputs": []
+              },
+              "value": "2077958",
+              "source_url": "https://cga.gov.in/writereaddata/MonthAccount/82026/DATA2627.htm",
+              "retrieved_at": "2026-10-16T10:01:28.262604Z",
+              "response_sha256": "0db8588796a711cc0f2d6f33603cc3f4de6db2bcaa52b2fe657013c24346be7a",
+              "footnote": "Unaudited provisional actuals. BE/RE columns excluded; revenue + capital reconciles exactly to total.",
+              "retained": false
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "ticker": [
+    {
+      "id": "sensex",
+      "label": "SENSEX",
+      "exchange": "BSE",
+      "provider_id": "upstox",
+      "availability": "implemented",
+      "state": "closed",
+      "unit": "index_points",
+      "value": "74729.27",
+      "previous_close": "74315.61",
+      "previous_close_basis": "last_price_minus_net_change",
+      "change_points": "413.66",
+      "change_percent": "0.556625990152001712695354313851423678000",
+      "exchange_timestamp": "2026-10-16T10:13:27.792000Z",
+      "exchange_timestamp_precision": "millisecond",
+      "provider_timestamp": "2026-10-16T10:13:27.967000+00:00",
+      "retrieved_at": "2026-10-16T10:13:27.896621Z",
+      "source_url": "https://api.upstox.com/v3/market-quote/quotes?instrument_key=BSE_INDEX%7CSENSEX",
+      "response_sha256": "8f48cd033950eea63b69021b022316891eaf44528f9f31be57ca41844bcecc50",
+      "market_state": "closed",
+      "market_status_at": "2026-10-16T10:00:00.234000Z",
+      "market_status_checked_at": "2026-10-16T10:13:29.980984Z",
+      "market_status_source_url": "https://api.upstox.com/v2/market/status/BSE",
+      "market_status_sha256": "15275fdafa945ffcd8c28e0c1e1363a31bd4fbb8b3930e466d680e588ad198c8",
+      "market_session_close_at": "2026-10-16T10:00:00Z",
+      "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-16",
+      "market_timings_sha256": "20b87d16fb9ad1a3d352b8d4fdda43babb031266c0f9575b93c9c0edd04b4616",
+      "retained": false,
+      "error_kind": null
+    },
+    {
+      "id": "nifty_bank",
+      "label": "NIFTY BANK",
+      "exchange": "NSE",
+      "provider_id": "nse",
+      "availability": "implemented",
+      "state": "closed",
+      "unit": "index_points",
+      "value": "55844",
+      "previous_close": "55810.5",
+      "previous_close_basis": "published_previous_close",
+      "change_points": "33.5",
+      "change_percent": "0.060024547352200750754786285734763171800",
+      "exchange_timestamp": "2026-10-16T10:00:00Z",
+      "exchange_timestamp_precision": "minute",
+      "provider_timestamp": null,
+      "retrieved_at": "2026-10-16T10:13:29.893957Z",
+      "source_url": "https://www.nseindia.com/api/allIndices",
+      "response_sha256": "87aa5c7d8102481786aeab0f85cb81a4369ac16d54a67c3ac7cf9e407b4be3dc",
+      "market_state": "closed",
+      "market_status_at": "2026-10-16T10:00:00.027000Z",
+      "market_status_checked_at": "2026-10-16T10:13:29.946021Z",
+      "market_status_source_url": "https://api.upstox.com/v2/market/status/NSE",
+      "market_status_sha256": "d3042bbea601af10be102186e61ea07b56177827f67a2be5f15c696b098dc2c4",
+      "market_session_close_at": "2026-10-16T10:00:00Z",
+      "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-16",
+      "market_timings_sha256": "20b87d16fb9ad1a3d352b8d4fdda43babb031266c0f9575b93c9c0edd04b4616",
+      "retained": false,
+      "error_kind": null
+    },
+    {
+      "id": "nifty_it",
+      "label": "NIFTY IT",
+      "exchange": "NSE",
+      "provider_id": "nse",
+      "availability": "implemented",
+      "state": "closed",
+      "unit": "index_points",
+      "value": "31924.1",
+      "previous_close": "30719.8",
+      "previous_close_basis": "published_previous_close",
+      "change_points": "1204.3",
+      "change_percent": "3.920272918443479449736000885422431135600",
+      "exchange_timestamp": "2026-10-16T10:00:00Z",
+      "exchange_timestamp_precision": "minute",
+      "provider_timestamp": null,
+      "retrieved_at": "2026-10-16T10:13:29.893957Z",
+      "source_url": "https://www.nseindia.com/api/allIndices",
+      "response_sha256": "87aa5c7d8102481786aeab0f85cb81a4369ac16d54a67c3ac7cf9e407b4be3dc",
+      "market_state": "closed",
+      "market_status_at": "2026-10-16T10:00:00.027000Z",
+      "market_status_checked_at": "2026-10-16T10:13:29.946021Z",
+      "market_status_source_url": "https://api.upstox.com/v2/market/status/NSE",
+      "market_status_sha256": "d3042bbea601af10be102186e61ea07b56177827f67a2be5f15c696b098dc2c4",
+      "market_session_close_at": "2026-10-16T10:00:00Z",
+      "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-16",
+      "market_timings_sha256": "20b87d16fb9ad1a3d352b8d4fdda43babb031266c0f9575b93c9c0edd04b4616",
+      "retained": false,
+      "error_kind": null
+    }
+  ],
+  "collection_groups": [
+    {
+      "last_attempt_at": "2026-10-16T10:00:50.380721Z",
+      "last_success_at": "2026-10-16T10:00:51.635752Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "gdp",
+      "provider_id": "world_bank_wdi",
+      "next_request_not_before": null,
+      "interval_seconds": 604800
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:00:51.637847Z",
+      "last_success_at": "2026-10-16T10:01:00.433731Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "debt",
+      "provider_id": "world_bank_data360",
+      "next_request_not_before": null,
+      "interval_seconds": 604800
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:07:38.074576Z",
+      "last_success_at": "2026-10-16T10:07:47.633545Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "trade",
+      "provider_id": "commerce",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:01:03.199930Z",
+      "last_success_at": "2026-10-16T10:01:11.812456Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "gst",
+      "provider_id": "gstn",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:01:11.815426Z",
+      "last_success_at": "2026-10-16T10:01:14.751022Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "inflation",
+      "provider_id": "mospi",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:01:14.752768Z",
+      "last_success_at": "2026-10-16T10:01:17.357809Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "inflation_policy",
+      "provider_id": "gazette",
+      "next_request_not_before": null,
+      "interval_seconds": 604800
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:01:17.359072Z",
+      "last_success_at": "2026-10-16T10:01:28.305019Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "expenditure",
+      "provider_id": "cga",
+      "next_request_not_before": null,
+      "interval_seconds": 86400
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:13:29.702713Z",
+      "last_success_at": "2026-10-16T10:13:29.897711Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "market_nse",
+      "provider_id": "nse",
+      "next_request_not_before": null,
+      "interval_seconds": 30
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:13:27.562145Z",
+      "last_success_at": "2026-10-16T10:13:27.900810Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "market_bse",
+      "provider_id": "upstox",
+      "next_request_not_before": null,
+      "interval_seconds": 30
+    },
+    {
+      "last_attempt_at": "2026-10-16T10:13:29.831305Z",
+      "last_success_at": "2026-10-16T10:13:29.982639Z",
+      "last_error_kind": null,
+      "in_progress": false,
+      "group_id": "market_status",
+      "provider_id": "upstox",
+      "next_request_not_before": null,
+      "interval_seconds": 30
+    }
+  ]
+}

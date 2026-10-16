@@ -34,7 +34,7 @@ const config = JSON.parse(
   await readFile(directory + "build-config.json", "utf8"),
 );
 assert(scripts.some((s) => s.includes(config.api_origin)));
-assert(policy.includes("connect-src " + config.api_origin + ";"));
+assert(policy.includes("connect-src 'self' " + config.api_origin + ";"));
 assert(
   paths
     .filter((p) => p.endsWith(".webp"))

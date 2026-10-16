@@ -1,0 +1,60 @@
+{
+  "cards": [
+    {
+      "id": "card-gdp_india",
+      "text": "7.57%"
+    },
+    {
+      "id": "card-gdp_world",
+      "text": "2.92%"
+    },
+    {
+      "id": "card-debt_india",
+      "text": "84.26%"
+    },
+    {
+      "id": "card-debt_us",
+      "text": "124.38%"
+    },
+    {
+      "id": "card-trade_exports",
+      "text": "$44.40 B"
+    },
+    {
+      "id": "card-trade_imports",
+      "text": "$74.61 B"
+    },
+    {
+      "id": "card-gst_gross_ex_cess",
+      "text": "₹2.04 L cr"
+    },
+    {
+      "id": "card-gst_comparison",
+      "text": "₹1.77 L cr"
+    },
+    {
+      "id": "card-cpi_yoy_2024",
+      "text": "5.54%"
+    },
+    {
+      "id": "card-inflation_target",
+      "text": "4.00%"
+    },
+    {
+      "id": "card-expenditure_total",
+      "text": "₹20.78 L cr"
+    },
+    {
+      "id": "card-expenditure_capital",
+      "text": "₹5.10 L cr"
+    }
+  ],
+  "modes": [
+    "World Bank WDI · India FY / World CY · updated 2026-10-08",
+    "IMF WEO via World Bank · vintage 2026-10-13 · India FY / US CY",
+    "Commerce / PIB · Monthly · released 15 Oct 2026",
+    "GSTN · excl. compensation cess · Monthly · released 01 Oct 2026",
+    "MoSPI / Gazette · base 2024 · released 12 Oct 2026",
+    "CGA · actuals, FY to date · Matched FY to date · publication not supplied"
+  ]
+}

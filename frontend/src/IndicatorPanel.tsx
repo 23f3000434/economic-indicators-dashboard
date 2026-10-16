@@ -264,7 +264,10 @@ export function IndicatorPanel({ panel }: { panel: Panel }) {
         />
         <CanonicalChart id={id} series={visible} />
         <div className="source-note">
-          {sourceLabels[id]}
+          {id === 'expenditure' && grain !== 'fiscal_year' ? 'CGA · actuals, FY to date' : sourceLabels[id]}
+          {!isCpi && !isDebt
+            ? ` · ${grain === 'fiscal_year' ? 'Completed FYs' : grain === 'fiscal_year_to_date' ? 'Matched FY to date' : 'Monthly'}`
+            : ''}
           {isCpi ? ` · base ${base.endsWith('2024') ? '2024' : '2012'}` : ''} ·{' '}
           {isDebt
             ? `vintage ${vintage || '—'} · India FY / US CY`

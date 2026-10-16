@@ -1,0 +1,59 @@
+{
+  "checked_at": "2026-10-16T10:15:41.434529+00:00",
+  "scope": "official current-release discovery, independent of retrieval freshness",
+  "cga": {
+    "selector_latest_year_month": [
+      2026,
+      8
+    ],
+    "index": "https://cga.gov.in/Index.aspx",
+    "publication_date": null
+  },
+  "gst": {
+    "latest_month": [
+      2026,
+      9
+    ],
+    "release": "https://tutorial.gst.gov.in/downloads/news/final_gst_revenue_report_for_publishing_monthly_sep_2026.pdf",
+    "published_at": "2026-10-01",
+    "index": "https://www.gst.gov.in/fomessage/newsupdates"
+  },
+  "cpi": {
+    "latest_listed_release": [
+      "2026-10-12",
+      "press release of cpi for the month of september 2026",
+      "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1791800601071_643518af-5320-4e52-b78c-75c92b83885b_Press_Release_for_the_month_of_September,_2026.pdf"
+    ],
+    "listing_pagination": {
+      "currentPage": 1,
+      "totalItems": 18,
+      "totalPages": 1,
+      "pageSize": 100
+    },
+    "index": "https://www.mospi.gov.in/api/latest-release/get-web-latest-release-list"
+  },
+  "trade": {
+    "latest_pdf": "https://www.commerce.gov.in/files/d-m-y/PIB%20Release%20-%20Septermber%202026.pdf",
+    "published_at": "2026-10-15",
+    "index": "https://www.commerce.gov.in/ministryofcommerce/taxonomy/term/530"
+  },
+  "gdp_IND": {
+    "latest_year": "2025",
+    "value": 7.56666179284244,
+    "dataset_updated_on": "2026-10-08",
+    "publication_date": null,
+    "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2026&per_page=100"
+  },
+  "gdp_WLD": {
+    "latest_year": "2025",
+    "value": 2.92127318539153,
+    "dataset_updated_on": "2026-10-08",
+    "publication_date": null,
+    "url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2026&per_page=100"
+  },
+  "debt": {
+    "metadata_url": "https://data360files.worldbank.org/data360-data/metadata/IMF_WEO/IMF_WEO_GGXWDG_NGDP.json",
+    "vintage_date": "2026-10-13",
+    "definition": "Gross debt, General government, Percent of GDP"
+  }
+}

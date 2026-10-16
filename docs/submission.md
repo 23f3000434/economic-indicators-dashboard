@@ -11,7 +11,7 @@ Prepared for the supplied Interview Round II Full Stack Application Challenge. T
 | Ticker + GDP/debt/trade/GST/CPI-policy/expenditure | [Current sources](sources.md), [canonical contracts](contracts.md), [actual source-to-screen](evidence/2026-10-16/source-to-screen.json), [two market polls](evidence/2026-10-16/interaction-live.json) | All implemented locally; production source egress/display acceptance pending |
 | Loading/empty/error/stale/null states and visible controls | [Frontend](frontend.md), [verification chronology](verification.md) | Implemented and covered by recorded browser/unit tests |
 | Independent validated scheduled collection, bounded/rate-aware refresh | [Architecture](architecture.md), [API/data contracts](contracts.md) | Implemented; browser reads never fetch upstream |
-| Authentication, private database and parameterized SQL | [Auth contract](contracts.md#selected-authentication-contract), SQL migrations, [evaluation procedure](evaluation-access.md) | Implemented/local security tests; real HTTPS/domain acceptance pending |
+| Authentication, private database and parameterized SQL | [Auth contract](contracts.md#selected-authentication-contract), SQL migrations, [evaluation procedure](evaluation-access.md) | Implemented/local security tests; real provider-HTTPS/auth-rewrite acceptance pending |
 | Separate frontend/API hosting, HTTPS/exact-origin CORS | [Deployment blueprint/config/runbook](deployment.md), [production acceptance](production-smoke.md) | Prepared and authorised; required concrete release inputs pending |
 | Live frontend/API(or docs)/health URLs accessible during review | [URL register](delivery-status.md#urls) | Local URLs available; public URLs not yet deployed |
 | API route/request/response/auth/config/DB/local-run documentation | Public OpenAPI at the API `/docs` and `/openapi.json`; [contracts](contracts.md), [README](../README.md), `.env.example` | Present locally; public docs URL awaits deployment |
@@ -42,3 +42,5 @@ The brief does not specify a duration, upload destination or deadline. Confirm t
 ## Handoff boundary
 
 The application, engineering materials and local evidence are reviewable. Final submission is not fully complete until working production URLs, bounded hosted acceptance, private account handoff and assessor repository access are verified. Portfolio/project links and the later recording remain owner-supplied external materials. The selected Roboto fallback is an accepted deviation from Segoe UI; sample-number differences are separately explained as accurate economic presentation.
+
+Current zero-budget delivery: see [free-deployment.md](free-deployment.md). PostgreSQL and auth-only proxy are implemented/tested; the free database is created with external access blocked. API/frontend deployment and hosted acceptance remain blocked on the recorded repository/secret actions. Portfolio/project links and recording stay separate.

@@ -23,3 +23,7 @@ AI was useful for connecting parsing, API contracts, stateful UI and failure tes
 - [Verification chronology](verification.md): passed checks plus failed attempts, repairs and the previous full-suite22/23 result followed by a focused repair. Current CI results are recorded separately in [delivery status](delivery-status.md).
 
 The code, direct parameterized SQL, migrations, fixtures and tests are reviewable in Git. No hidden production reference dashboard, invented live prices, secret transcript, externally shared passwords or recording is supplied as verification. The required post-assessment recording must be made by the owner in their own words, covering the actual implementation and these decisions; it has not been recorded by the assistant.
+
+## Zero-budget continuation,16 October2026
+
+The user superseded paid hosting/domain decisions. Implemented direct PostgreSQL storage/migrations/ownership fencing and auth-only proxy routing, verified actual PostgreSQL refresh/recovery, and repaired the reproduced Commerce PDF column-wrapping failure using actual-response fixtures. Re-inspected Figma/SVG ticker styling, retained real source statuses and verified normal release-to-screen values. Created only a free private Render database and a Hobby Vercel project. Deployment stops at the owner's GitHub second-factor/repository grant and secure credential configuration; no hosted success is inferred. See free-deployment.md for actual checks and limitations.

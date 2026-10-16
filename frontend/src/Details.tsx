@@ -11,7 +11,7 @@ export function Details({
   label: string;
   children: ReactNode;
   className?: string;
-  button?: string;
+  button?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDialogElement>(null);

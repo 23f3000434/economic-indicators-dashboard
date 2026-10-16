@@ -1,6 +1,7 @@
 import type { SessionInfo, Tokens } from './contracts';
 
 export const API = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8010').replace(/\/$/, '');
+const AUTH_PROXY = import.meta.env.VITE_AUTH_SAME_ORIGIN_PROXY === 'true';
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -62,7 +63,7 @@ class AuthClient {
     let response: Response;
     try {
       const timeout = AbortSignal.timeout(12000);
-      response = await fetch(API + path, {
+      response = await fetch((AUTH_PROXY && path.startsWith('/api/v1/auth/') ? '' : API) + path, {
         ...init,
         signal: init.signal ? AbortSignal.any([init.signal, timeout]) : timeout,
         cache: 'no-store',
@@ -91,6 +92,12 @@ class AuthClient {
       'X-CSRF-Protection': '1',
       ...(csrf ? { 'X-CSRF-Token': csrf } : {}),
     };
+  }
+  private session() {
+    return this.call<SessionInfo>('/api/v1/auth/session', {
+      credentials: 'include',
+      ...(AUTH_PROXY ? { method: 'POST', headers: this.action(), body: '{}' } : {}),
+    });
   }
   async login(username: string, password: string) {
     this.clear('checking');
@@ -135,7 +142,7 @@ class AuthClient {
     const flight = this.lock(async () => {
       this.current(generation);
       // Bootstrap from the actual shared cookie inside the lock, never an old tab's CSRF/session identity.
-      const info = await this.call<SessionInfo>('/api/v1/auth/session', { credentials: 'include' });
+      const info = await this.session();
       this.current(generation);
       const tokens = await this.call<Tokens>('/api/v1/auth/refresh', {
         method: 'POST',
@@ -214,9 +221,7 @@ class AuthClient {
     await this.lock(async () => {
       this.current(generation);
       const validBearer = tokens && Date.parse(tokens.access_expires_at) > Date.now();
-      const info = validBearer
-        ? tokens!
-        : await this.call<SessionInfo>('/api/v1/auth/session', { credentials: 'include' });
+      const info = validBearer ? tokens! : await this.session();
       this.current(generation);
       await this.call('/api/v1/auth/logout', {
         method: 'POST',

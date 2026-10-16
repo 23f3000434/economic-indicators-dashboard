@@ -1,0 +1,181 @@
+{
+  "fonts": {
+    "inspectionAvailable": true,
+    "manrope": true,
+    "roboto": true,
+    "segoe": false,
+    "status": "loaded"
+  },
+  "geometry": [
+    {
+      "border": "rgb(255, 255, 255)",
+      "borderWidth": "0px",
+      "class": "market-strip",
+      "font": "16px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 47.665061950683594,
+      "width": 1214,
+      "x": 0.9727563858032228,
+      "y": 83.65705108642578
+    },
+    {
+      "border": "rgba(0, 0, 0, 0)",
+      "borderWidth": "1px",
+      "class": "details-button market-badge",
+      "font": "18px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 28.209938049316406,
+      "width": 113.76690673828124,
+      "x": 24.31890869140625,
+      "y": 94.35736846923828
+    },
+    {
+      "border": "rgb(255, 172, 172)",
+      "borderWidth": "1px",
+      "class": "market-dot",
+      "font": "18px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 13.61858367919922,
+      "width": 13.61859130859375,
+      "x": 111.8213882446289,
+      "y": 101.65304565429688
+    },
+    {
+      "border": "rgb(65, 93, 136)",
+      "borderWidth": "1px",
+      "class": "ticker-item closed",
+      "font": "600 17.08px / 21.32px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 37.382720947265625,
+      "width": 478.375732421875,
+      "x": 143.43597412109375,
+      "y": 88.79441833496094
+    },
+    {
+      "border": "rgb(65, 93, 136)",
+      "borderWidth": "1px",
+      "class": "ticker-item closed",
+      "font": "600 17.08px / 21.32px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 37.382720947265625,
+      "width": 462.34808349609375,
+      "x": 621.8117065429688,
+      "y": 88.79441833496094
+    },
+    {
+      "border": "rgb(65, 93, 136)",
+      "borderWidth": "1px",
+      "class": "ticker-item closed",
+      "font": "600 17.08px / 21.32px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 37.382720947265625,
+      "width": 434.6397705078125,
+      "x": 1084.1597900390625,
+      "y": 88.79441833496094
+    },
+    {
+      "border": "rgb(65, 93, 136)",
+      "borderWidth": "1px",
+      "class": "ticker-item closed",
+      "font": "600 17.08px / 21.32px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 37.382720947265625,
+      "width": 478.375732421875,
+      "x": 1518.799560546875,
+      "y": 88.79441833496094
+    },
+    {
+      "border": "rgb(65, 93, 136)",
+      "borderWidth": "1px",
+      "class": "ticker-item closed",
+      "font": "600 17.08px / 21.32px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 37.382720947265625,
+      "width": 462.34814453125,
+      "x": 1997.17529296875,
+      "y": 88.79441833496094
+    },
+    {
+      "border": "rgb(65, 93, 136)",
+      "borderWidth": "1px",
+      "class": "ticker-item closed",
+      "font": "600 17.08px / 21.32px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 37.382720947265625,
+      "width": 434.6396484375,
+      "x": 2459.5234375,
+      "y": 88.79441833496094
+    },
+    {
+      "border": "rgb(255, 255, 255)",
+      "borderWidth": "0px",
+      "class": "panel gdp-panel",
+      "font": "16px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 529.179443359375,
+      "width": 566.1442260742188,
+      "x": 29.18269157409668,
+      "y": 157.58653259277344
+    },
+    {
+      "border": "rgb(255, 255, 255)",
+      "borderWidth": "0px",
+      "class": "panel debt-panel",
+      "font": "16px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 529.179443359375,
+      "width": 567.1170043945312,
+      "x": 618.6730346679688,
+      "y": 157.58653259277344
+    },
+    {
+      "border": "rgb(255, 255, 255)",
+      "borderWidth": "0px",
+      "class": "panel trade-panel",
+      "font": "16px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 529.179443359375,
+      "width": 566.1442260742188,
+      "x": 29.18269157409668,
+      "y": 710.1121826171875
+    },
+    {
+      "border": "rgb(255, 255, 255)",
+      "borderWidth": "0px",
+      "class": "panel gst-panel",
+      "font": "16px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 529.179443359375,
+      "width": 567.1170043945312,
+      "x": 618.6730346679688,
+      "y": 710.1121826171875
+    },
+    {
+      "border": "rgb(255, 255, 255)",
+      "borderWidth": "0px",
+      "class": "panel inflation-panel",
+      "font": "16px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 529.179443359375,
+      "width": 566.1442260742188,
+      "x": 29.18269157409668,
+      "y": 1262.6378173828125
+    },
+    {
+      "border": "rgb(255, 255, 255)",
+      "borderWidth": "0px",
+      "class": "panel expenditure-panel",
+      "font": "16px \"Reference Segoe\", Roboto, sans-serif",
+      "fontFamily": "\"Reference Segoe\", Roboto, sans-serif",
+      "height": 529.179443359375,
+      "width": 567.1170043945312,
+      "x": 618.6730346679688,
+      "y": 1262.6378173828125
+    }
+  ],
+  "scrollLeft": 0,
+  "viewport": {
+    "height": 2159,
+    "width": 1214
+  }
+}
