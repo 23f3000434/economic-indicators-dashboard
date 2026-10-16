@@ -1,7 +1,7 @@
 """Durable canonical measurements and network-free projections for additional panels."""
 
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal, localcontext
 from typing import Literal
 
@@ -154,26 +154,39 @@ def store_batch(database, state, run, rows: list[Measurement]):
         state.finish_in(db, run, timestamp(state.clock()))
 
 
-def annual_gaps(points, years):
+def annual_gaps(points, years, through=None, calendar_series=frozenset()):
     if not points:
         return points
     result = list(points)
     last = max(p.period.end for p in points)
     fiscal_start = last.year - (last.month <= 3)
-    completed = fiscal_start if last.month == 3 else fiscal_start - 1
+    completed = through if through is not None else (fiscal_start if last.month == 3 else fiscal_start - 1)
     for sid in {p.series_id for p in points}:
         items = [p for p in points if p.series_id == sid]
         known = {p.period.key for p in items}
         for year in range(completed - years + 1, completed + 1):
-            period = fiscal(year)
+            period = (
+                Period(
+                    key=str(year),
+                    label=f"CY {year}",
+                    kind="calendar_year",
+                    start=date(year, 1, 1),
+                    end=date(year, 12, 31),
+                )
+                if sid in calendar_series
+                else fiscal(year)
+            )
             if period.key not in known:
                 template = items[0]
                 definition = template.definition.model_copy(
                     update={
                         "status": "unspecified",
                         "published_at": None,
+                        "vintage_date": None,
+                        "source_status": None,
+                        "supporting_sources": [],
                         "inputs": [],
-                        "publication_note": "No stored observation for this requested completed fiscal year.",
+                        "publication_note": "No stored observation for this requested reporting year.",
                     }
                 )
                 result.append(
@@ -330,6 +343,10 @@ def read_indicator(database, panel_id, jobs, now, report_years=5):
     points = null_gaps(points)
     if panel_id in {"trade", "expenditure"}:
         points = annual_gaps(points, report_years)
+    elif panel_id == "debt":
+        points = annual_gaps(
+            points, report_years, datetime.fromtimestamp(now, timezone.utc).year - 1, {"debt_us"}
+        )
     for status in statuses:
         if not status.last_error_kind and any(
             p.retained and p.definition.group == status.group_id for p in points

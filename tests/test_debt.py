@@ -129,3 +129,21 @@ def test_missing_scope_retains_original_point(settings, clock):
         ).fetchone()
         assert row["value"] == omitted.value and row["retained"] == 1
         assert row["response_sha256"] == omitted.response_sha256
+
+
+def test_absent_annual_pairs_are_null_gaps_with_distinct_reporting_bases(settings, clock):
+    from app.batches import MeasurementBatch
+    from app.indicators import read_indicator, store_batch
+
+    app = create_app(settings, clock)
+    app.state.db.migrate()
+    job = app.state.jobs["debt"]
+    rows = parse(body(), body(True), timestamp(clock()), 2020, 2025, appendix(), APPENDIX)
+    missing = [p for p in rows if p.period.start.year != 2023]
+    run = job.state.begin(timestamp(clock()), 2020, 2025)
+    store_batch(app.state.db, job.state, run, MeasurementBatch(missing, rows.expected))
+    panel = read_indicator(app.state.db, "debt", app.state.jobs, clock(), 5)
+    gaps = [p for s in panel.series for p in s.points if p.period.start.year == 2023]
+    assert {p.period.key for p in gaps} == {"FY2023-24", "2023"}
+    assert all(p.value is None and p.source_url is None and p.retrieved_at is None for p in gaps)
+    assert all(p.definition.vintage_date is None and p.definition.supporting_sources == [] for p in gaps)

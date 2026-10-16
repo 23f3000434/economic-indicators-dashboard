@@ -2352,5 +2352,8 @@
         "interval_seconds": 86400
       }
     ]
-  }
+  },
+  "notes": [
+    "All selected collectors/API reads succeeded. Trade was subsequently found to lag the current PIB release; trade-markets-live.json and source-to-screen.json supersede its August latest summary. Publication and observation freshness are not inferred from collection success."
+  ]
 }
