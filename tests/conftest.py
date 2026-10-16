@@ -1,12 +1,17 @@
 import json
+import os
+import secrets
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import httpx
+import psycopg
 import pytest
 from app.config import Settings
 from app.main import create_app
 from fastapi.testclient import TestClient
+from psycopg import sql
 
 FIXTURES = Path(__file__).parent / "fixtures"
 PASSWORD = "Test-only password 93!"
@@ -45,9 +50,29 @@ def fixture_response(request):
 
 
 @pytest.fixture
-def settings(tmp_path):
+def postgres_url():
+    target = os.getenv("TEST_DATABASE_URL", "")
+    if not target:
+        yield ""
+        return
+    schema = "test_" + secrets.token_hex(12)
+    with psycopg.connect(target, autocommit=True) as db:
+        db.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema)))
+    url = urlsplit(target)
+    query = dict(parse_qsl(url.query))
+    query["options"] = "-csearch_path=" + schema
+    try:
+        yield urlunsplit((url.scheme, url.netloc, url.path, urlencode(query), url.fragment))
+    finally:
+        with psycopg.connect(target, autocommit=True) as db:
+            db.execute(sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(schema)))
+
+
+@pytest.fixture
+def settings(tmp_path, postgres_url):
     return Settings(
         database=tmp_path / "private/dashboard.sqlite3",
+        database_url=postgres_url,
         jwt_secret="j" * 48,
         csrf_secret="c" * 48,
         rotation_secret="r" * 48,

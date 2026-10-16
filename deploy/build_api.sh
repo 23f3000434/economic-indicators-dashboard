@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-# Build has no persistent disk. Migrations run at application startup after mount/owner checks.
+# Build has no database credentials. PostgreSQL migrations/ownership run at startup.
 python -c 'import subprocess, sys; assert sys.version_info[:3] == (3, 12, 14); assert subprocess.check_output(["uv", "--version"], text=True).split()[1] == "0.10.2"'
 python deploy/prepare_api.py
 uv sync --project .delivery/api --python "$(python -c 'import sys; print(sys.executable)')" --frozen --no-dev --no-install-project

@@ -2,7 +2,6 @@
 
 import asyncio
 import logging
-import sqlite3
 import threading
 import time
 from datetime import timezone
@@ -10,7 +9,7 @@ from email.utils import parsedate_to_datetime
 
 import httpx
 
-from .db import Database
+from .db import DB_ERRORS, CollectionLeaseLost, Database
 
 
 async def joined_thread(function, *args, cancelled_result=None):
@@ -79,13 +78,18 @@ class GroupState:
             self.pending_failures[run] = (at, error)
             try:
                 self.retry_failures()
-            except sqlite3.Error:
+            except CollectionLeaseLost:
+                self.pending_failures.pop(run, None)
+            except DB_ERRORS:
                 logging.getLogger(__name__).warning("%s run %s awaits storage recovery", self.group, run)
 
     def retry_failures(self):
         with self.pending_lock:
             for run, (at, error) in list(self.pending_failures.items()):
-                self.finish(run, at, error)
+                try:
+                    self.finish(run, at, error)
+                except CollectionLeaseLost:
+                    pass  # a new lease has already fenced/recovered this run
                 del self.pending_failures[run]
 
     def cooldown(self):
@@ -98,7 +102,7 @@ class GroupState:
     def defer(self, not_before):
         with self.database.connect(write=True) as db:
             db.execute(
-                "INSERT INTO provider_cooldowns VALUES (?, ?, 'retry_after') ON CONFLICT(provider_id) DO UPDATE SET not_before=MAX(not_before, excluded.not_before), reason=excluded.reason",
+                "INSERT INTO provider_cooldowns VALUES (?, ?, 'retry_after') ON CONFLICT(provider_id) DO UPDATE SET not_before=CASE WHEN provider_cooldowns.not_before > excluded.not_before THEN provider_cooldowns.not_before ELSE excluded.not_before END, reason=excluded.reason",
                 (self.provider, not_before),
             )
 
@@ -139,12 +143,23 @@ class GroupState:
                 "SELECT 1 FROM collection_runs WHERE group_id=? AND outcome='running'", (self.group,)
             ).fetchone():
                 return None
+            if self.database.is_postgres:
+                return db.execute(
+                    "INSERT INTO collection_runs(group_id, provider_id, attempted_at, outcome, window_start, window_end, owner_token) VALUES (?, ?, ?, 'running', ?, ?, ?) RETURNING id",
+                    (self.group, self.provider, at, start, end, self.database.collector_token),
+                ).fetchone()[0]
             return db.execute(
                 "INSERT INTO collection_runs(group_id, provider_id, attempted_at, outcome, window_start, window_end) VALUES (?, ?, ?, 'running', ?, ?)",
                 (self.group, self.provider, at, start, end),
             ).lastrowid
 
     def finish_in(self, db, run, at, error=None):
+        if self.database.is_postgres:
+            row = db.execute("SELECT owner_token FROM collection_runs WHERE id=?", (run,)).fetchone()
+            owner = db.execute("SELECT token FROM collection_owner WHERE id=1").fetchone()
+            if row and row[0] is not None and (not owner or row[0] != owner[0]):
+                # Raising rolls back the same transaction's observation/quote writes.
+                raise CollectionLeaseLost("Finished work belongs to a superseded collector")
         db.execute(
             "UPDATE collection_runs SET outcome=?, error_kind=?, completed_at=? WHERE id=? AND group_id=? AND outcome='running'",
             ("error" if error else "ok", error, at, run, self.group),
@@ -188,16 +203,17 @@ class ProviderHTTP:
         deadline = self.monotonic() + self.timeout * self.attempts
         for attempt in range(self.attempts):
             # Recheck before every request: a different request/group may have extended this provider's cooldown.
-            delay = max(0, self.state.cooldown() - self.state.clock())
+            not_before = await joined_thread(self.state.cooldown)
+            delay = max(0, not_before - self.state.clock())
             remaining = deadline - self.monotonic()
             if delay:
                 if delay >= remaining:
-                    raise Deferred(self.state.cooldown())
+                    raise Deferred(not_before)
                 await self.sleep(delay)
-                while self.state.clock() < self.state.cooldown():
-                    delay = self.state.cooldown() - self.state.clock()
+                while self.state.clock() < (not_before := await joined_thread(self.state.cooldown)):
+                    delay = not_before - self.state.clock()
                     if delay >= deadline - self.monotonic():
-                        raise Deferred(self.state.cooldown())
+                        raise Deferred(not_before)
                     await self.sleep(delay)
             remaining = deadline - self.monotonic()
             if remaining <= 0:
@@ -216,14 +232,14 @@ class ProviderHTTP:
                         else None
                     )
                     if until is not None:
-                        self.state.defer(
-                            until
-                        )  # persist before deciding whether another attempt is affordable
+                        # PostgreSQL may be remote/unavailable: never block the
+                        # API event loop on cooldown storage, even during failure.
+                        await joined_thread(self.state.defer, until)
                         if (
                             attempt + 1 == self.attempts
                             or until - self.state.clock() >= deadline - self.monotonic()
                         ):
-                            raise Deferred(self.state.cooldown())
+                            raise Deferred(await joined_thread(self.state.cooldown))
                         continue
                     response.raise_for_status()
                     body = bytearray()

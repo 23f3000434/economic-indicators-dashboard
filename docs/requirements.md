@@ -1,6 +1,10 @@
+# Current authorised stage: strictly zero budget
+
+Vercel Hobby frontend, Render Free API, same-region Render Free PostgreSQL/internal URL with external access completely disabled supersede the prior paid/disk/domain direction. Required corrections: measured compact ticker/status fidelity, latest official release → normal DB/API/screen verification for every indicator, explicit completed-FY versus newer monthly/FYTD modes, PostgreSQL migrations/direct SQL/concurrency/persistence, same-origin authentication rewrite, awake-only collection/wake recovery and actual free deployment acceptance. Preserve completed functionality and accepted font fallback. No paid resource, domain purchase or unrelated change is authorised. Free sleep and 30-day DB expiry must be disclosed. The assignment mapping below still applies; prior deployment gates are superseded by this statement.
+
 # Requirements and verification
 
-The supplied DOCX is the assessment brief; the user's messages define authorised work. Final delivery/submission from **596e4a7** is authorised, including separate Pages/Render deployment when the actual release inputs are available. Preserve the completed UI/interactions/ticker, authentication, parameterized SQL, canonical contracts and independent collection. Complete materials and affected verification; avoid unrelated features/refactors.
+The supplied DOCX is the assessment brief; the user's messages define authorised work. Final delivery/submission from **596e4a7** is authorised, including the superseding separate Vercel Hobby/Render Free deployment when the actual release inputs are available. Preserve the completed UI/interactions/ticker, authentication, parameterized SQL, canonical contracts and independent collection. Complete materials and affected verification; avoid unrelated features/refactors.
 
 All six panels and the three reference market indices now have locally verified source → validation → SQLite → protected API → React paths. Production access, domain/cookie/persistence acceptance and evaluation handoff are separate pending deliverables. The user accepted the documented Roboto fallback on 16 October; this is an accepted design deviation, not exact Segoe UI fidelity. See the current [delivery checklist](delivery-status.md) and [submission handoff](submission.md).
 
@@ -23,7 +27,7 @@ References read without modification:
 | R08 | Provider failures isolated; last valid observations retained and marked stale; missing values shown as `—` | Malformed/timeout/missing-value fixtures; one provider fails while other panels still render; no replacement with invalid/zero data |
 | R09 | Useful loading, empty, unavailable, API error/offline, and stale states | State and layout tests; fixed panel space during initial load; partial failures preserve dashboard structure |
 | R10 | Sign-in protects dashboard/API; selected refreshable session behaviour | Authentication acceptance in `contracts.md`; separate evaluation account instructions; local slice implements it |
-| R11 | Persistent private database; parameterized direct SQL; no untrusted SQL concatenation | SQL review; restart/redeploy and restore checks; filesystem permissions; no DB network listener or static-file exposure |
+| R11 | Persistent private database; parameterized direct SQL; no untrusted SQL concatenation | SQL review; restart/redeploy and restore checks; local file permissions; production internal-only PostgreSQL with public ingress blocked and no static-file exposure |
 | R12 | Frontend and API on separate HTTPS websites and separate hosting environments; exact-origin CORS | Remote checks of both origins, certificates, allowed/disallowed CORS requests; hosting/domain setup recorded |
 | R13 | Health route; API request/response/auth documentation; environment names; DB setup/migrations; local run instructions | OpenAPI and README review; clean-checkout setup; health does not call upstream providers |
 | R14 | Maintainable, performant, explainable application | Focused tests, asset/bundle review, cached-read performance, stable rendering; document meaningful technical/AI-assisted decisions and their verification |

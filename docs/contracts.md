@@ -1,4 +1,16 @@
-# API and data contracts
+# Current zero-budget deployment amendment (16 October 2026)
+
+The user explicitly superseded paid hosting/purchased domains. Production: Vercel Hobby React, Render Free FastAPI, same-region private Render Free PostgreSQL; internal DSN server-only and external access disabled. SQLite remains local compatibility, not ephemeral production storage.
+
+Auth proxy mode permits distinct HTTPS provider sites only with frontend same-origin `/api/v1/auth/*` rewrites to FastAPI. Frontend cookie-auth calls use relative URLs; same-origin bootstrap uses POST with JSON/custom-header verification because same-origin GET may omit Origin; protected data reads still use the separate API bearer URL with credentials omitted. Preserve Secure host-only `__Host-refresh`, HttpOnly/Strict, exact Origin/CSRF and absolute expiry; no SameSite=None or persistent JWT.
+
+PostgreSQL adds ordered checksummed migrations. A short global advisory write lock preserves SQLite's transaction serialization for refresh/auth and source commits; read snapshots remain consistent. A session-level collector lease with persisted generation fencing prevents overlapping deploys or lost owners from recovering/committing another owner's work. An awake standby API can serve stored reads while waiting. Free sleep halts collectors; startup/wake coalesces due jobs after acquiring ownership, preserving failure/cooldown/last-success metadata and stale labels.
+
+Ticker badge styling follows measured Figma/SVG, with its label derived from all actual states: uniform states use that label, mixed states say MIXED, failures/absent observations cannot imply LIVE. Concise source/as-of information remains visible without a separate metadata row; extended details stay in the existing dialog. Fiscal panels explicitly label completed-FY mode and retain monthly/matched-FYTD selection; no partial year enters annual bars.
+
+The earlier contracts below remain behavioural compatibility boundaries; earlier same-site purchased-domain/SQLite hosting paragraphs are superseded by this amendment. Full zero-budget implementation/acceptance evidence is recorded in `free-deployment.md`.
+
+# API and data contracts (existing compatibility)
 
 GDP version 1 remains a compatibility boundary. Final delivery from 596e4a7 preserves the implemented market/debt paths, measurement/provenance/period/status contracts and independent collection. Deployment is authorised once concrete release inputs are configured; production acceptance remains unverified. Historical proof examples are evidence, never application inputs.
 
@@ -6,12 +18,12 @@ GDP version 1 remains a compatibility boundary. Final delivery from 596e4a7 pres
 
 | Route | Contract |
 | --- | --- |
-| `GET /api/v1/dashboard` | Bearer access JWT plus active-session check. `{schema_version: "1", panels: [...], ticker: [...]}`. Each panel/item has independent status; provider failure does not make the entire request fail. Always reads SQLite. |
+| `GET /api/v1/dashboard` | Bearer access JWT plus active-session check. `{schema_version: "1", panels: [...], ticker: [...]}`. Each panel/item has independent status; provider failure does not make the entire request fail. Always reads the private database. |
 | `GET /api/v1/panels/gdp` | Same authentication and the GDP panel object described below; useful for the first slice. No provider calls. |
 | `GET /healthz` | Public, minimal API/database readiness; upstream outage alone remains degraded data, not process failure. Return 503 for an unusable required database. Do not expose credentials or tracebacks. |
 | `GET /docs`, `/openapi.json` | Public route/schema documentation. Data routes remain authenticated. |
 
-Return JSON; use `Cache-Control: no-store` for authenticated API/auth responses. SQLite is the durable provider cache; browser memory retains already loaded data during a failed poll. Use 401 for authentication failures, 403 for CSRF/origin failure, 422 for invalid requests, 429 for throttling, and 503 for an unavailable API/storage dependency. Do not return an upstream 403 as the dashboard's authentication error. Error shape: `{error: {code, message}}`, with stable safe codes and no raw provider HTML.
+Return JSON; use `Cache-Control: no-store` for authenticated API/auth responses. Private PostgreSQL (production) or SQLite (local) is the durable provider cache; browser memory retains already loaded data during a failed poll. Use 401 for authentication failures, 403 for CSRF/origin failure, 422 for invalid requests, 429 for throttling, and 503 for an unavailable API/storage dependency. Do not return an upstream 403 as the dashboard's authentication error. Error shape: `{error: {code, message}}`, with stable safe codes and no raw provider HTML.
 
 ## Canonical panel
 

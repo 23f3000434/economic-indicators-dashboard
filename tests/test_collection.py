@@ -1,4 +1,5 @@
 import asyncio
+import threading
 from datetime import datetime, timezone
 from email.utils import format_datetime
 
@@ -7,6 +8,30 @@ import pytest
 from app.collection import Deferred, GroupState, ProviderHTTP, retry_after
 from app.db import Database
 from app.gdp import Collector, timestamp
+
+
+def test_cooldown_storage_never_blocks_the_api_event_loop(settings, clock, monkeypatch):
+    database = Database(settings.database)
+    database.migrate()
+    state = GroupState(database, clock)
+    event_loop_thread = threading.get_ident()
+    for name in ("cooldown", "defer"):
+        original = getattr(state, name)
+
+        def off_loop(*args, original=original):
+            assert threading.get_ident() != event_loop_thread
+            return original(*args)
+
+        monkeypatch.setattr(state, name, off_loop)
+
+    async def run():
+        async with httpx.AsyncClient(
+            transport=httpx.MockTransport(lambda _: httpx.Response(429, headers={"Retry-After": "120"}))
+        ) as client:
+            with pytest.raises(Deferred):
+                await ProviderHTTP(state, client, timeout=1, attempts=1).fetch("https://example.com/data")
+
+    asyncio.run(run())
 
 
 def test_retry_after_seconds_http_date_and_invalid():

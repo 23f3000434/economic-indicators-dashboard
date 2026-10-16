@@ -1,5 +1,4 @@
 import asyncio
-import sqlite3
 import time
 from contextlib import asynccontextmanager, suppress
 from typing import Annotated
@@ -11,9 +10,10 @@ from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyCookie, HTTPAuthorizationCredentials, HTTPBearer
 
 from .auth import Auth, AuthError
+from .collection import joined_thread
 from .config import Settings
 from .dashboard import Dashboard, read_dashboard
-from .db import Database
+from .db import DB_ERRORS, Database
 from .gdp import Collector, read_panel
 from .indicators import IndicatorPanel, read_indicator
 from .macro_collector import build_jobs
@@ -23,7 +23,9 @@ from .models import EmptyBody, ErrorEnvelope, Health, Login, Panel, SessionInfo,
 
 def create_app(settings: Settings | None = None, clock=time.time, upstream_client=None):
     settings = settings or Settings.load()
-    database = Database(settings.database)
+    database = Database(
+        settings.database_url or settings.database, require_tls=settings.environment == "production"
+    )
     auth = Auth(settings, database, clock)
     collector = Collector(settings, database, clock, upstream_client)
     jobs = build_jobs(settings, database, clock, upstream_client)
@@ -33,18 +35,18 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
         else ([] if settings.environment == "test" else jobs)
     )
 
-    @asynccontextmanager
-    async def lifespan(app):
-        database.migrate()
+    def recover():
         collector.recover()
         for job in jobs.values():
             job.recover()
-        if settings.collector_enabled:
-            collector.task = asyncio.create_task(collector.supervise(), name="gdp-collector-supervisor")
-            for group, job in jobs.items():
-                if group in enabled:
-                    job.task = asyncio.create_task(job.supervise(), name=f"{group}-collector-supervisor")
-        yield
+
+    def start_collectors():
+        collector.task = asyncio.create_task(collector.supervise(), name="gdp-collector-supervisor")
+        for group, job in jobs.items():
+            if group in enabled:
+                job.task = asyncio.create_task(job.supervise(), name=f"{group}-collector-supervisor")
+
+    async def stop_collectors():
         tasks = [job.task for job in [collector, *jobs.values()] if job.task]
         for task in tasks:
             task.cancel()
@@ -52,11 +54,66 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
             with suppress(asyncio.CancelledError):
                 await task
 
+    async def ownership_supervisor():
+        while True:
+            manager = database.collector_lease()
+            entered = False
+            try:
+                connection = await joined_thread(
+                    manager.__enter__, cancelled_result=lambda _: manager.__exit__(None, None, None)
+                )
+                entered = True
+                if connection is not None:
+                    await joined_thread(recover)
+                    start_collectors()
+                    app.state.collector_role = "running"
+                    while True:
+                        await asyncio.sleep(5)
+                        await joined_thread(connection.execute, "SELECT 1")
+                        if any(job.task and job.task.done() for job in [collector, *jobs.values()]):
+                            raise RuntimeError("Collector supervisor stopped unexpectedly")
+                app.state.collector_role = "standby"
+            except DB_ERRORS:
+                app.state.collector_role = "standby"
+            finally:
+                await stop_collectors()
+                if entered:
+                    await joined_thread(manager.__exit__, None, None, None)
+            await asyncio.sleep(5)
+
+    @asynccontextmanager
+    async def lifespan(app):
+        await joined_thread(database.migrate)
+        if settings.bootstrap_username:
+            await joined_thread(
+                auth.bootstrap_user, settings.bootstrap_username, settings.bootstrap_password_hash
+            )
+        app.state.collector_role = "disabled" if not settings.collector_enabled else "standby"
+        app.state.owner_task = None
+        if database.is_postgres:
+            if settings.collector_enabled:
+                app.state.owner_task = asyncio.create_task(
+                    ownership_supervisor(), name="collector-owner-supervisor"
+                )
+        else:
+            recover()
+            if settings.collector_enabled:
+                start_collectors()
+                app.state.collector_role = "running"
+        try:
+            yield
+        finally:
+            if app.state.owner_task:
+                app.state.owner_task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await app.state.owner_task
+            await stop_collectors()
+
     app = FastAPI(
         title="Economic Indicators API",
         version="0.1.0",
         lifespan=lifespan,
-        description="Authenticated economic dashboard. Data reads use private SQLite only; independent provider groups collect macro observations, market quotes and exchange status.",
+        description="Authenticated economic dashboard. Data reads use private stored observations only; independent provider groups collect macro observations, market quotes and exchange status.",
         responses={status: {"model": ErrorEnvelope} for status in (401, 403, 409, 422, 429, 503)},
     )
     app.state.db, app.state.auth, app.state.collector = database, auth, collector
@@ -92,7 +149,6 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
             content={"error": {"code": "invalid_request", "message": "Request fields are invalid."}},
         )
 
-    @app.exception_handler(sqlite3.Error)
     async def storage_error(request, exc):
         return JSONResponse(
             status_code=503,
@@ -103,6 +159,9 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
                 }
             },
         )
+
+    for storage_exception in DB_ERRORS:
+        app.add_exception_handler(storage_exception, storage_error)
 
     security = HTTPBearer(auto_error=False)
     cookie_security = APIKeyCookie(
@@ -177,18 +236,19 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
         try:
             with database.connect() as db:
                 db.execute("SELECT 1 FROM observations LIMIT 1").fetchone()
-        except sqlite3.Error:
+        except DB_ERRORS:
             response.status_code = 503
             return dict(status="unavailable", database="unavailable", collector="stopped")
-        state = (
-            "disabled"
-            if not settings.collector_enabled
-            else "running"
-            if collector.task and not collector.task.done()
-            else "stopped"
-        )
-        if settings.collector_enabled and any(not jobs[g].task or jobs[g].task.done() for g in enabled):
+        if not settings.collector_enabled:
+            state = "disabled"
+        elif database.is_postgres and (not app.state.owner_task or app.state.owner_task.done()):
             state = "stopped"
+        elif app.state.collector_role == "standby":
+            state = "standby"
+        else:
+            state = "running" if collector.task and not collector.task.done() else "stopped"
+            if any(not jobs[g].task or jobs[g].task.done() for g in enabled):
+                state = "stopped"
         if state == "stopped":
             response.status_code = 503
         return dict(status="ok" if state != "stopped" else "unavailable", database="ready", collector=state)
@@ -210,6 +270,17 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
         dependencies=[Depends(origin)],
     )
     def session(token=Depends(cookie_security)):
+        return auth.bootstrap(token)
+
+    @app.post(
+        "/api/v1/auth/session",
+        response_model=SessionInfo,
+        tags=["authentication"],
+        dependencies=[Depends(action)],
+    )
+    def session_same_origin(body: EmptyBody, token=Depends(cookie_security)):
+        # Same-origin GET fetches can omit Origin. POST supplies it naturally;
+        # the proxy must preserve it, never invent a trusted Origin header.
         return auth.bootstrap(token)
 
     @app.post(

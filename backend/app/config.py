@@ -14,6 +14,10 @@ class Settings:
     jwt_secret: str
     csrf_secret: str
     rotation_secret: str
+    database_url: str = field(default="", repr=False)
+    auth_cookie_mode: str = "same_site"
+    bootstrap_username: str = ""
+    bootstrap_password_hash: str = field(default="", repr=False)
     environment: str = "development"
     api_origin: str = "http://localhost:8010"
     frontend_origin: str = "http://localhost:5173"
@@ -115,18 +119,31 @@ class Settings:
             or not appendix.path.endswith(".pdf")
         ):
             raise ValueError("Debt appendix must be an official IMF HTTPS PDF")
+        if self.auth_cookie_mode not in {"same_site", "frontend_proxy"}:
+            raise ValueError("AUTH_COOKIE_MODE must be same_site or frontend_proxy")
+        if self.database_url:
+            url = urlsplit(self.database_url)
+            if url.scheme not in {"postgres", "postgresql"} or not url.hostname or not url.path.strip("/"):
+                raise ValueError("DATABASE_URL must be a PostgreSQL connection URI")
+        if bool(self.bootstrap_username) != bool(self.bootstrap_password_hash):
+            raise ValueError("Bootstrap username and Argon2 hash must be configured together")
         origins = [urlsplit(self.frontend_origin), urlsplit(self.api_origin)]
         if any(o.path or o.query or o.fragment or o.username or not o.hostname for o in origins):
             raise ValueError("Origins must contain only scheme, host and optional port")
         if self.environment == "production":
-            domain = self.site_domain.lower()
             if (
-                not domain
-                or "." not in domain
-                or any(o.scheme != "https" or not o.hostname.endswith("." + domain) for o in origins)
+                any(o.scheme != "https" or o.port for o in origins)
                 or origins[0].hostname == origins[1].hostname
             ):
-                raise ValueError("Production requires distinct HTTPS subdomains of COOKIE_SITE_DOMAIN")
+                raise ValueError("Production requires distinct HTTPS frontend/API origins")
+            if self.auth_cookie_mode == "same_site":
+                domain = self.site_domain.lower()
+                if (
+                    not domain
+                    or "." not in domain
+                    or any(not o.hostname.endswith("." + domain) for o in origins)
+                ):
+                    raise ValueError("Production same-site cookies require subdomains of COOKIE_SITE_DOMAIN")
         elif (
             any(o.scheme != "http" or o.hostname not in {"localhost", "127.0.0.1", "::1"} for o in origins)
             or origins[0].hostname != origins[1].hostname
@@ -162,6 +179,10 @@ class Settings:
 
         return cls(
             database=Path(os.getenv("SQLITE_PATH", str(ROOT / "data/dashboard.sqlite3"))).resolve(),
+            database_url=os.getenv("DATABASE_URL", ""),
+            auth_cookie_mode=os.getenv("AUTH_COOKIE_MODE", "same_site"),
+            bootstrap_username=os.getenv("BOOTSTRAP_USERNAME", ""),
+            bootstrap_password_hash=os.getenv("BOOTSTRAP_PASSWORD_HASH", ""),
             jwt_secret=os.getenv("JWT_SECRET", ""),
             csrf_secret=os.getenv("CSRF_SECRET", ""),
             rotation_secret=os.getenv("ROTATION_SECRET", ""),

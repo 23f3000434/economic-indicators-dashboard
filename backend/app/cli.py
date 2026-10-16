@@ -3,6 +3,7 @@ import asyncio
 import getpass
 import json
 import time
+from contextlib import nullcontext
 from pathlib import Path
 
 from .auth import Auth
@@ -52,8 +53,14 @@ def main():
         print(json.dumps(copy_database(args.snapshot, args.destination, restore=True), indent=2))
         return
     settings = Settings.load()
-    database = Database(settings.database)
+    database = Database(
+        settings.database_url or settings.database, require_tls=settings.environment == "production"
+    )
     if args.command == "backup":
+        if database.is_postgres:
+            parser.error(
+                "SQLite backup is local-only; do not export or expose production PostgreSQL through this command"
+            )
         print(json.dumps(copy_database(database.path, args.destination), indent=2))
         return
     database.migrate()
@@ -64,7 +71,11 @@ def main():
         Auth(settings, database, time.time).create_user(args.username, password)
         print("User created. Share evaluation credentials separately.")
     elif args.command == "collect-gdp":
-        if not asyncio.run(Collector(settings, database, time.time).collect_once()):
+        with database.collector_lease() if database.is_postgres else nullcontext(True) as owner:
+            if owner is None:
+                parser.error("Another process owns collection; let its scheduler run the due job")
+            success = asyncio.run(Collector(settings, database, time.time).collect_once())
+        if not success:
             raise SystemExit(
                 "Collection did not succeed; inspect collection state, retained data is unchanged."
             )
@@ -89,7 +100,10 @@ def main():
                 result[group] = await jobs[group].collect_once()
             return result
 
-        result = asyncio.run(collect_selected())
+        with database.collector_lease() if database.is_postgres else nullcontext(True) as owner:
+            if owner is None:
+                parser.error("Another process owns collection; let its scheduler run the due jobs")
+            result = asyncio.run(collect_selected())
         print(json.dumps(result))
         if not all(result.values()):
             raise SystemExit(1)

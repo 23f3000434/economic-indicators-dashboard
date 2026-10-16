@@ -28,6 +28,7 @@ def main():
     settings = replace(
         Settings.load(),
         database=ROOT / ".verification/market-flow/dashboard.sqlite3",
+        database_url="",
         collector_enabled=False,
     )
     app = create_app(settings)

@@ -152,6 +152,8 @@ def test_csrf_origin_content_type_cors_and_rate_limit(client):
     ]:
         assert client.post("/api/v1/auth/refresh", json={}, headers=h).status_code == 403
     assert client.get("/api/v1/auth/session").status_code == 403
+    assert client.post("/api/v1/auth/session", json={}, headers=headers(tokens)).status_code == 200
+    assert client.post("/api/v1/auth/session", json={}).status_code == 403
     preflight = client.options(
         "/api/v1/auth/refresh",
         headers={"Origin": "https://evil.example", "Access-Control-Request-Method": "POST"},
@@ -168,6 +170,7 @@ def test_production_config_never_downgrades(settings, clock):
     production = replace(
         settings,
         environment="production",
+        database_url="",  # Cookie attributes are storage-independent; actual PG auth tested separately.
         frontend_origin="https://dashboard.example.com",
         api_origin="https://api.example.com",
         site_domain="example.com",

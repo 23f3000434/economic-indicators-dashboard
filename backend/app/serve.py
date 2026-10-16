@@ -1,10 +1,10 @@
-"""Production entry point: one SQLite owner, mounted private storage, explicit proxy trust."""
+"""Free production entry: one API worker, internal PostgreSQL, explicit proxy policy."""
 
 import fcntl
 import ipaddress
 import os
 from contextlib import contextmanager
-from pathlib import Path
+from urllib.parse import urlsplit
 
 import uvicorn
 
@@ -16,15 +16,16 @@ def configuration(settings):
         raise ValueError(
             "Deployment entry point requires APP_ENV=production; use the documented local command"
         )
-    root = Path(os.environ["PERSISTENT_DATA_DIR"]).resolve(strict=True)
-    if root == Path("/") or not root.is_mount():
-        raise ValueError("PERSISTENT_DATA_DIR must be the attached persistent disk mount")
-    if not settings.database.is_relative_to(root) or settings.database.parent == root:
-        raise ValueError("SQLITE_PATH must be inside a private subdirectory of the persistent mount")
-    proxies = os.environ["TRUSTED_PROXY_CIDRS"].split(",")
-    if not proxies or any(not value.strip() or value != value.strip() for value in proxies):
-        raise ValueError("Provide reviewed proxy IP addresses/CIDRs, comma-separated without spaces")
-    for value in proxies:
+    if not settings.database_url:
+        raise ValueError("Free production requires DATABASE_URL; ephemeral SQLite is forbidden")
+    target = urlsplit(settings.database_url)
+    if not target.hostname.startswith("dpg-") or "." in target.hostname:
+        raise ValueError("Production DATABASE_URL must use the Render internal hostname")
+    proxies = os.environ.get("TRUSTED_PROXY_CIDRS", "")
+    entries = proxies.split(",") if proxies else []
+    for value in entries:
+        if not value or value != value.strip():
+            raise ValueError("Proxy addresses must be explicit comma-separated CIDRs")
         network = ipaddress.ip_network(value, strict=False)
         if network.prefixlen == 0:
             raise ValueError("Trusting all peers is forbidden")
@@ -35,8 +36,8 @@ def configuration(settings):
         host="0.0.0.0",
         port=port,
         workers=1,
-        proxy_headers=True,
-        forwarded_allow_ips=",".join(proxies),
+        proxy_headers=bool(entries),
+        forwarded_allow_ips=",".join(entries),
         access_log=False,
     )
 
@@ -57,9 +58,9 @@ def main():
     os.umask(0o077)
     settings = Settings.load()
     options = configuration(settings)
-    # Acquire before lifespan migrations/recovery; a second process cannot mark active work interrupted.
-    with sqlite_owner(settings.database):
-        uvicorn.run("app.main:create_app", factory=True, **options)
+    # PostgreSQL lifespan owns the fenced advisory collector lease. A deploying
+    # standby serves reads without recovering the old active worker.
+    uvicorn.run("app.main:create_app", factory=True, **options)
 
 
 if __name__ == "__main__":

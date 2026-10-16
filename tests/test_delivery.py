@@ -14,18 +14,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def production(settings, tmp_path, monkeypatch):
-    mount = tmp_path / "mount"
-    mount.mkdir()
-    monkeypatch.setenv("PERSISTENT_DATA_DIR", str(mount))
     monkeypatch.setenv("TRUSTED_PROXY_CIDRS", "10.0.0.0/8,127.0.0.1")
     monkeypatch.setenv("PORT", "10000")
-    monkeypatch.setattr(Path, "is_mount", lambda path: path == mount)
     return replace(
         settings,
         environment="production",
-        database=mount / "private/dashboard.sqlite3",
-        frontend_origin="https://dashboard.example.org",
-        api_origin="https://api.example.org",
+        database_url="postgresql://user:private@dpg-internal-a/economic",
+        auth_cookie_mode="frontend_proxy",
+        frontend_origin="https://economic-dashboard.vercel.app",
+        api_origin="https://economic-api.onrender.com",
         site_domain="example.org",
     )
 
@@ -36,16 +33,20 @@ def test_production_entry_enforces_storage_single_worker_and_explicit_proxy_trus
     config = production(settings, tmp_path, monkeypatch)
     options = configuration(config)
     assert options["workers"] == 1 and options["host"] == "0.0.0.0" and not options["access_log"]
-    for invalid in ["*", "0.0.0.0/0", "::/0", "", "garbage", "10.0.0.0/8, "]:
+    for invalid in ["*", "0.0.0.0/0", "::/0", "garbage", "10.0.0.0/8, "]:
         monkeypatch.setenv("TRUSTED_PROXY_CIDRS", invalid)
         with pytest.raises(ValueError):
             configuration(config)
-    monkeypatch.setenv("TRUSTED_PROXY_CIDRS", "10.0.0.0/8")
-    with pytest.raises(ValueError, match="private subdirectory"):
-        configuration(replace(config, database=tmp_path / "outside.sqlite3"))
-    monkeypatch.setattr(Path, "is_mount", lambda _: False)
-    with pytest.raises(ValueError, match="mount"):
-        configuration(config)
+    monkeypatch.setenv("TRUSTED_PROXY_CIDRS", "")
+    assert not configuration(config)["proxy_headers"]
+    with pytest.raises(ValueError, match="ephemeral SQLite"):
+        configuration(replace(config, database_url=""))
+    for url in [
+        "postgresql://user:private@external.example.org/db",
+        "postgresql://user:private@dpg-internal-a.oregon-postgres.render.com/db",
+    ]:
+        with pytest.raises(ValueError, match="internal hostname"):
+            configuration(replace(config, database_url=url))
 
 
 def test_second_api_owner_cannot_recover_or_start_until_first_exits(tmp_path):

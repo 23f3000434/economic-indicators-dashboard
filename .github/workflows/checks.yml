@@ -11,6 +11,20 @@ jobs:
   verify:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: dashboard_test
+          POSTGRES_PASSWORD: test-only-not-a-production-credential
+          POSTGRES_DB: economic_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6, verified official tag
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -41,6 +55,10 @@ jobs:
           npm run format:check --prefix frontend
           uv run --frozen python scripts/verify_design.py
           node deploy/check_frontend.mjs
+      - name: Actual PostgreSQL transactions, concurrent refresh and canonical reads
+        env:
+          TEST_DATABASE_URL: postgresql://dashboard_test:test-only-not-a-production-credential@localhost:5432/economic_test
+        run: uv run --frozen pytest -q tests/test_postgres.py tests/test_auth.py tests/test_dashboard.py tests/test_trade.py
       - name: Assembled production API boundary
         run: |
           sh deploy/build_api.sh
@@ -55,7 +73,7 @@ jobs:
           node deploy/check_artifact.mjs
       - name: Compiled browser regressions (fixture server only)
         run: |
-          VITE_API_BASE_URL=http://localhost:8001 npm run build --prefix frontend -- --outDir ../.verification/browser-dist --emptyOutDir
+          VITE_API_BASE_URL=http://localhost:8001 VITE_AUTH_SAME_ORIGIN_PROXY=true npm run build --prefix frontend -- --outDir ../.verification/browser-dist --emptyOutDir
           E2E_PREVIEW=1 npm run test:browser --prefix frontend
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: failure()

@@ -111,3 +111,14 @@ Final delivery proceeds on independent documentation/repository checks while con
 | D58 External submission materials | User-owned outside repository | User requested documents ready without adding personal portfolio/project links. Track their assignment requirement and the post-assessment recording without fabricating content, identities, URLs, video or credentials. |
 | D59 Remote delivery acceptance | **Verified** | Pushed da53013 to private GitHub main. First Ubuntu 24.04 workflow succeeded: 107 backend + 9 subtests, 17 units, 27/27 complete compiled-browser checks; locked builds/lint/format/audit/runtime/artifact guards pass. Final evidence-only Markdown/JSON update skips redundant CI; application/configuration unchanged. See final-delivery-checks.json and delivery-status.md. |
 | D60 Production acceptance boundary | Pending concrete inputs, not an authorisation hold | Both hosting dashboards accessible, Cloudflare domain inventory empty. No controlled domain, applicable market display arrangement or rotated credential verified. No project service, DNS record, charge or deployment created; actual host security/source/persistence/smoke checks remain unperformed. Portfolio links stay outside the repository; recording remains post-assessment. |
+
+
+## Zero-budget amendment (16 October 2026)
+
+| Decision | Status | Evidence/consequence |
+| --- | --- | --- |
+| D61 Strict zero budget | Accepted explicit user direction | Supersedes paid Render, Pages and purchased-domain direction: Vercel Hobby + Render Free API + same-region Render Free PostgreSQL/internal-only, external ingress disabled. No paid fallback or upgrade. |
+| D62 Provider-site refresh cookies | Authorised selected approach | Same-origin Vercel rewrite for auth only; memory-only bearer reads still go directly to Render. Exact Origin/CSRF, Secure/HttpOnly/Strict host-only cookie, pending/confirm recovery and revocation preserved. |
+| D63 PostgreSQL scope | Necessary hosting adaptation | Direct psycopg SQL, ordered checksummed schema migration, bounded serialized writes and advisory collector ownership/fencing; no ORM/queue/new production dashboard. Actual PostgreSQL tests required. SQLite retained locally. |
+| D64 Free lifecycle | Required disclosure/acceptance | API sleeps after idle and collection stops. Due jobs coalesce after wake under one lease; mark old observations stale accurately. PostgreSQL expires after30 days; no perpetual durability or continuous collection promise. |
+| D65 Ticker measurements | Reference re-inspected | Browser Properties LIVE text18px Segoe UI400,39×20, local38/15. SVG outer badge92×29 at25/97, radius6.8526, red#D62D2A with red/white/red border, dot14px outer/light red stroke, separators#415D88. MCP denied448bfe93/40917ddc; browser remains inspectable. Accepted installed-Segoe/Roboto and licensed Manrope retained. |

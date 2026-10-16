@@ -1,20 +1,17 @@
-# Approved delivery blueprint. Sync only with configured release inputs in docs/delivery-status.md.
-# Legacy starter = 0.5 CPU / 512 MB; one owner and one attached private disk.
+# Zero-budget reference blueprint for a NEW deployment. Existing manually created
+# database dpg-db8vao67bikc73bdm49g-a must be linked, not recreated by syncing this.
 services:
   - type: web
     name: economic-indicators-api
     runtime: python
-    plan: starter
+    plan: free
+    region: oregon
     numInstances: 1
     autoDeployTrigger: "off"
     buildCommand: sh deploy/build_api.sh
     startCommand: sh deploy/start_api.sh
     healthCheckPath: /healthz
-    maxShutdownDelaySeconds: 45
-    disk:
-      name: private-economic-data
-      mountPath: /var/data
-      sizeGB: 1
+    maxShutdownDelaySeconds: 30
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.14
@@ -22,19 +19,21 @@ services:
         value: 0.10.2
       - key: APP_ENV
         value: production
-      - key: PERSISTENT_DATA_DIR
-        value: /var/data
-      - key: SQLITE_PATH
-        value: /var/data/private/dashboard.sqlite3
+      - key: DATABASE_URL
+        fromDatabase:
+          name: economic-indicators-db
+          property: connectionString
+      - key: AUTH_COOKIE_MODE
+        value: frontend_proxy
       - key: API_ORIGIN
         sync: false
       - key: FRONTEND_ORIGIN
         sync: false
-      - key: COOKIE_SITE_DOMAIN
-        sync: false
-      - key: TRUSTED_PROXY_CIDRS
-        sync: false
       - key: UPSTOX_ANALYTICS_TOKEN
+        sync: false
+      - key: BOOTSTRAP_USERNAME
+        sync: false
+      - key: BOOTSTRAP_PASSWORD_HASH
         sync: false
       - key: JWT_SECRET
         generateValue: true
@@ -46,3 +45,9 @@ services:
         value: "604800"
       - key: COLLECTOR_ENABLED
         value: "true"
+databases:
+  - name: economic-indicators-db
+    plan: free
+    region: oregon
+    postgresMajorVersion: "18"
+    ipAllowList: []

@@ -106,4 +106,4 @@ class Tokens(SessionInfo):
 class Health(Model):
     status: Literal["ok", "unavailable"]
     database: Literal["ready", "unavailable"]
-    collector: Literal["running", "stopped", "disabled"]
+    collector: Literal["running", "standby", "stopped", "disabled"]

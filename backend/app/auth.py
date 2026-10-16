@@ -43,6 +43,17 @@ class Auth:
                 (str(uuid.uuid4()), username, self.hasher.hash(password)),
             )
 
+    def bootstrap_user(self, username, password_hash):
+        """One-time free-host provisioning without shell access or a default password."""
+        if not 1 <= len(username) <= 100 or not password_hash.startswith("$argon2id$"):
+            raise ValueError("Bootstrap requires a username and valid Argon2id hash")
+        self.hasher.check_needs_rehash(password_hash)  # validates its encoded form
+        with self.db.connect(write=True) as db:
+            db.execute(
+                "INSERT INTO users(id, username, password_hash) VALUES (?, ?, ?) ON CONFLICT(username) DO NOTHING",
+                (str(uuid.uuid4()), username, password_hash),
+            )
+
     def csrf(self, sid):
         return hmac.new(
             self.settings.csrf_secret.encode(), ("csrf:v1:" + sid).encode(), hashlib.sha256
@@ -210,7 +221,7 @@ class Auth:
             else:
                 successor = self.successor(token)
                 db.execute(
-                    "INSERT OR IGNORE INTO refresh_tokens(digest, session_id, state, created_at) VALUES (?, ?, 'pending', ?)",
+                    "INSERT INTO refresh_tokens(digest, session_id, state, created_at) VALUES (?, ?, 'pending', ?) ON CONFLICT DO NOTHING",
                     (digest(successor), row["id"], now),
                 )
             response = self.tokens(row)
