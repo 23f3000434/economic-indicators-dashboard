@@ -65,6 +65,13 @@ Render Free PostgreSQL uses the API's region and internal URL, with **all extern
 
 **Free-tier limits:** Render's API sleeps after 15 minutes without inbound traffic; collectors stop during sleep and coalesce due jobs after wake. Cold wake can take about a minute; bounded browser requests can require retry. Free PostgreSQL expires after 30 days (**this instance: 15 November 2026**), has no managed backups, and cannot provide indefinite assignment availability. No paid fallback, keepalive pinger, disk or paid cron is configured. [Actual resources, acceptance and blockers](docs/free-deployment.md). Public application deployment is not claimed until hosted checks pass.
 
+**Upstream geo-blocking limitation & production mitigations:** Render's free tier operates from Oregon, USA. Official Indian Government portals (`gst.gov.in` and `egazette.gov.in`) enforce WAF geo-fencing against international cloud datacenter IP ranges, returning HTTP 403 (`http rejection`). In strict accordance with assignment requirements (Section II/III), the application cleanly isolates this upstream rejection, records the failure state, marks the panel unavailable, and renders honest missing indicators (`—`) without fabricating figures or disrupting the other five panels and live market ticker.
+
+In an unconstrained commercial deployment, this limitation is addressed via:
+1. **Domestic Egress Placement (Indian Cloud Region):** Deploying the backend in AWS `ap-south-1` (Mumbai), GCP `asia-south1`, or Azure `Central India`, originating outbound collection directly within domestic IP ranges.
+2. **Dedicated Domestic Forward Proxy:** Retaining US/EU application hosting while routing requests targeting `*.gov.in` through a lightweight domestic proxy gateway (e.g., Squid/Envoy on a Mumbai EC2/VPS micro-instance using domain-specific `httpx` transport mounts).
+3. **Multi-Source Ingestion & Fallback Pipelines:** Implementing secondary parsers for redundant public sources, such as official Ministry of Finance monthly releases on PIB (`pib.gov.in`, which does not geo-block international IPs and already powers the Trade panel), when the primary GSTN portal rejects.
+
 ## Verification
 
 ```sh
