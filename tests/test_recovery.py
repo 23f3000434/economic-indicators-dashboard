@@ -90,7 +90,7 @@ def test_existing_v1_database_migrates_without_losing_auth_or_gdp(tmp_path):
     legacy_restore = directory / "legacy-restored.sqlite3"
     copy_database(path, legacy_restore, restore=True)
     with Database(legacy_restore).connect() as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 3
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 4
         assert db.execute("SELECT count(*) FROM sessions").fetchone()[0] == 0
         assert db.execute("SELECT value FROM observations").fetchone()[0] == "7.57"
     database = Database(path)
@@ -102,7 +102,7 @@ def test_existing_v1_database_migrates_without_losing_auth_or_gdp(tmp_path):
         assert row["measurement_json"] is None and row["response_sha256"] == "a" * 64
         assert db.execute("SELECT password_hash FROM users").fetchone()[0] == "preserved-hash"
         assert db.execute("SELECT id FROM sessions").fetchone()[0] == "s"
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 3
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 4
     assert os.stat(path).st_mode & 0o777 == 0o600
 
 

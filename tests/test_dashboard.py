@@ -20,11 +20,14 @@ from tests.test_cga import cga_response
 from tests.test_debt import debt_response
 from tests.test_gst import gst_response
 from tests.test_inflation import inflation_response
+from tests.test_markets import market_response
 from tests.test_trade import trade_response
 
 
 def provider_response(request):
     host = request.url.host
+    if host in {"www.nseindia.com", "api.upstox.com"}:
+        return market_response(request)
     if host == "api.worldbank.org":
         return fixture_response(request)
     if host in {"data360files.worldbank.org", "data.imf.org"}:
@@ -39,6 +42,7 @@ def provider_response(request):
 
 
 def test_all_paths_dashboard_offline_reads_and_independent_failure(settings, clock, monkeypatch):
+    settings = replace(settings, upstox_analytics_token="test-only-market-token")
     upstream = httpx.AsyncClient(transport=httpx.MockTransport(provider_response))
     app = create_app(settings, clock, upstream)
     with TestClient(app) as client:
@@ -57,8 +61,8 @@ def test_all_paths_dashboard_offline_reads_and_independent_failure(settings, clo
         assert all(p["state"] == "ready" for p in panels.values())
         assert panels["debt"]["availability"] == "implemented"
         assert len(panels["debt"]["series"]) == 2 and len(panels["debt"]["collection"]) == 1
-        assert len(payload["ticker"]) == 2 and all(
-            t["value"] is None and t["exchange_timestamp"] is None and t["availability"] == "blocked"
+        assert len(payload["ticker"]) == 3 and all(
+            t["value"] is not None and t["exchange_timestamp"] is not None and t["state"] == "closed"
             for t in payload["ticker"]
         )
         assert {g["group_id"] for g in payload["collection_groups"]} == {
@@ -69,6 +73,9 @@ def test_all_paths_dashboard_offline_reads_and_independent_failure(settings, clo
             "inflation",
             "inflation_policy",
             "debt",
+            "market_nse",
+            "market_bse",
+            "market_status",
         }
         # Every card/derived/table input reference resolves inside its canonical panel.
         for k, p in panels.items():
@@ -91,11 +98,11 @@ def test_all_paths_dashboard_offline_reads_and_independent_failure(settings, clo
             for s in panels["trade"]["summaries"]
             if s["current"]["series_id"] == "trade_exports"
         }
-        assert trade["FY2026-27:08"]["comparison"]["period_key"] == "FY2025-26:08"
+        assert trade["FY2026-27:09"]["comparison"]["period_key"] == "FY2025-26:09"
         with localcontext() as ctx:
             ctx.prec = 80
             assert (
-                Decimal(trade["FY2026-27:08"]["value"]) == (Decimal("215.91") / Decimal("183.21") - 1) * 100
+                Decimal(trade["FY2026-27:09"]["value"]) == (Decimal("259.89") / Decimal("219.30") - 1) * 100
             )
         # A rejected independent provider retains data, other group timestamps/values stay intact.
         app.state.jobs["gst"].client = httpx.AsyncClient(

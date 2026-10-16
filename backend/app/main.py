@@ -17,6 +17,7 @@ from .db import Database
 from .gdp import Collector, read_panel
 from .indicators import IndicatorPanel, read_indicator
 from .macro_collector import build_jobs
+from .markets import TickerSnapshot, read_markets
 from .models import EmptyBody, ErrorEnvelope, Health, Login, Panel, SessionInfo, Tokens, User
 
 
@@ -55,7 +56,7 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
         title="Economic Indicators API",
         version="0.1.0",
         lifespan=lifespan,
-        description="Authenticated economic dashboard. Data reads use private SQLite only; independent provider groups collect upstream. Debt and market access remain explicit gates.",
+        description="Authenticated economic dashboard. Data reads use private SQLite only; independent provider groups collect macro observations, market quotes and exchange status.",
         responses={status: {"model": ErrorEnvelope} for status in (401, 403, 409, 422, 429, 503)},
     )
     app.state.db, app.state.auth, app.state.collector = database, auth, collector
@@ -283,5 +284,13 @@ def create_app(settings: Settings | None = None, clock=time.time, upstream_clien
     @app.get("/api/v1/dashboard", response_model=Dashboard, tags=["dashboard"])
     def dashboard(user=Depends(current_user)):
         return read_dashboard(database, settings, jobs, clock())
+
+    @app.get("/api/v1/ticker", response_model=TickerSnapshot, tags=["dashboard"])
+    def ticker(user=Depends(current_user)):
+        from .gdp import timestamp
+
+        now = clock()
+        items, groups = read_markets(database, jobs, now)
+        return TickerSnapshot(generated_at=timestamp(now), ticker=items, collection_groups=groups)
 
     return app

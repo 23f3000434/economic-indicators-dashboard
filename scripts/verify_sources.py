@@ -9,6 +9,8 @@ from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 from app.config import Settings  # noqa: E402
@@ -17,6 +19,7 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 
 def main():
+    load_dotenv(ROOT / ".env")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--groups", nargs="+", default=["expenditure"])
     parser.add_argument("--output", default=".verification/multi-live.json")
@@ -49,7 +52,9 @@ def main():
             job = available[group]
             ok = asyncio.run(job.collect_once())
             panel_id = "gdp" if group == "gdp" else job.panel
-            response = client.get(f"/api/v1/panels/{panel_id}", headers=bearer)
+            response = client.get(
+                "/api/v1/ticker" if panel_id == "market" else f"/api/v1/panels/{panel_id}", headers=bearer
+            )
             panel = response.json()
             report["groups"][group] = {
                 "collected": ok,
@@ -57,6 +62,7 @@ def main():
                 "state": panel.get("state"),
                 "collection": panel.get("collection"),
                 "summaries": panel.get("summaries"),
+                "ticker": panel.get("ticker"),
                 "series": [
                     {
                         "id": s["id"],

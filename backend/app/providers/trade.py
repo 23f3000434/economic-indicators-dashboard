@@ -14,6 +14,88 @@ from ..measurements import Definition, Reference, fiscal, measurements, month, n
 from .files import pdf_pages
 
 INDEX = "https://www.commerce.gov.in/ministryofcommerce/taxonomy/term/530"
+CURRENT_INDEX = "https://www.pib.gov.in/AllRelease.aspx?MenuId=30&lang=1&reg=3"
+
+
+def current_releases(body):
+    """PIB's current index updates before Commerce's monthly archive."""
+    soup = BeautifulSoup(body, "html.parser")
+    found = set()
+    for a in soup.select("a[href]"):
+        label = a.get_text(" ", strip=True).lower()
+        if "exports" in label and "merchandise" in label and "services" in label:
+            url = urljoin(CURRENT_INDEX, a["href"])
+            if not re.fullmatch(r"https://www\.pib\.gov\.in/PressReleseDetail\.aspx\?PRID=\d+", url):
+                raise ValueError("Unexpected current trade release URL")
+            # Use PIB's verified English mobile route. The legacy index route
+            # redirects to a language-specific page unsuitable for this parser.
+            found.add(url.replace("PressReleseDetail.aspx", "PressReleseDetailm.aspx") + "&lang=1&reg=3")
+    if not found:
+        raise ValueError("PIB current monthly trade release not discovered")
+    return sorted(found, key=lambda u: int(re.search(r"PRID=(\d+)", u)[1]), reverse=True)[:3]
+
+
+def parse_current_html(body, url, at):
+    soup = BeautifulSoup(body, "html.parser")
+    text = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))
+    pub = re.search(r"Posted On:\s*(\d{1,2} [A-Z]{3} 20\d\d)", text)
+    if not pub or "Ministry of Commerce & Industry" not in text:
+        raise ValueError("Current Commerce identity/date missing")
+    published = datetime.strptime(pub[1], "%d %b %Y").date()
+    candidates = {}
+    kinds = set()
+    for table in soup.find_all("table"):
+        if table.find("table"):
+            continue
+        rows = [
+            [
+                re.sub(r"\s+", " ", c.get_text(" ", strip=True))
+                for c in tr.find_all(["td", "th"], recursive=False)
+            ]
+            for tr in table.find_all("tr")
+        ]
+        exports = [r for r in rows if len(r) == 4 and r[:2] == ["Merchandise", "Exports"]]
+        imports = [r for r in rows if len(r) == 3 and r[0] == "Imports"]
+        if len(exports) != 1 or not imports:
+            continue
+        header = " ".join(rows[0])
+        monthly = re.findall(r"([A-Za-z]+) (20\d\d)\s*\(US\$ Billion\)", header)
+        fytd = re.findall(r"April-([A-Za-z]+) (20\d\d)-\d{2}\s*\(US\$ Billion\)", header)
+        if len(monthly) == 2:
+            name, year = monthly[0]
+            y, m = int(year), list(calendar.month_name).index(name)
+            if monthly[1] != (name, str(y - 1)):
+                raise ValueError("Trade monthly comparison mismatch")
+            periods = [month(y, m), month(y - 1, m)]
+            kinds.add("month")
+        elif len(fytd) == 2:
+            name, year = fytd[0]
+            y, m = int(year), list(calendar.month_name).index(name)
+            if fytd[1] != (name, str(y - 1)):
+                raise ValueError("Trade FY comparison mismatch")
+            periods = [fiscal(y, m), fiscal(y - 1, m)]
+            kinds.add("fiscal")
+        else:
+            raise ValueError("Current merchandise table period/units changed")
+        for i, period in enumerate(periods):
+            for p in points(
+                {"trade_exports": number(exports[0][2 + i]), "trade_imports": number(imports[0][1 + i])},
+                period,
+                body,
+                url,
+                at,
+                published,
+            ):
+                key = p.series_id, p.period.key
+                if key in candidates and candidates[key].value != p.value:
+                    raise ValueError("Duplicate current trade tables disagree")
+                candidates[key] = p
+    if kinds != {"month", "fiscal"} or len(candidates) != 12:
+        raise ValueError("Current matching merchandise tables missing")
+    latest_month = max(p.period.end for p in candidates.values() if p.period.kind == "month")
+    if latest_month >= published or published > date(latest_month.year + 1, 1, 31):
+        raise ValueError("Current trade release/reporting dates inconsistent")
+    return list(candidates.values())
 
 
 def monthly_nodes(body):
@@ -195,6 +277,8 @@ class Trade:
         nodes = monthly_nodes(first)
         pdf, _ = attachment(await fetch(nodes[0]))
         latest = await asyncio.to_thread(parse_pdf, await fetch(pdf), pdf, at())
+        for url in current_releases(await fetch(CURRENT_INDEX)):
+            latest += await asyncio.to_thread(parse_current_html, await fetch(url), url, at())
         latest_year = max(p.period.start.year for p in latest)
         current_fy = max(
             p.period.start.year for p in latest if p.period.kind in {"fiscal_year", "fiscal_year_to_date"}

@@ -25,6 +25,7 @@ settings = Settings(
     end_year=2025,
     collection_years=6,
     upstream_attempts=1,
+    upstox_analytics_token="test-only-market-token",
 )
 upstream = httpx.AsyncClient(transport=httpx.MockTransport(provider_response))
 app = create_app(settings, clock, upstream)
@@ -41,6 +42,8 @@ async def reset():
             "observations",
             "collection_runs",
             "provider_cooldowns",
+            "market_quotes",
+            "market_sessions",
         ):
             db.execute(f"DELETE FROM {table}")  # fixed test-only table names
     app.state.auth.attempts.clear()

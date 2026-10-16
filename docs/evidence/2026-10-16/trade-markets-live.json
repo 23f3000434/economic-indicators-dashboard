@@ -1,0 +1,887 @@
+{
+  "checked_at": "2026-10-16T03:17:41.722226+00:00",
+  "groups": {
+    "trade": {
+      "collected": true,
+      "api_status": 200,
+      "state": "ready",
+      "collection": [
+        {
+          "last_attempt_at": "2026-10-16T03:17:41.878390Z",
+          "last_success_at": "2026-10-16T03:17:45.455121Z",
+          "last_error_kind": null,
+          "in_progress": false,
+          "group_id": "trade",
+          "provider_id": "commerce",
+          "next_request_not_before": null,
+          "interval_seconds": 86400
+        }
+      ],
+      "summaries": [
+        {
+          "current": {
+            "series_id": "trade_balance",
+            "period_key": "2026-09"
+          },
+          "comparison": {
+            "series_id": "trade_balance",
+            "period_key": "2025-09"
+          },
+          "kind": "relative_percent",
+          "value": "-8.4545454545454545454545454545454545454545454545454545454545454545454545454545450",
+          "period_kind": "month"
+        },
+        {
+          "current": {
+            "series_id": "trade_balance",
+            "period_key": "FY2025-26"
+          },
+          "comparison": {
+            "series_id": "trade_balance",
+            "period_key": "FY2024-25"
+          },
+          "kind": "relative_percent",
+          "value": "17.530864197530864197530864197530864197530864197530864197530864197530864197530860",
+          "period_kind": "fiscal_year"
+        },
+        {
+          "current": {
+            "series_id": "trade_balance",
+            "period_key": "FY2026-27:09"
+          },
+          "comparison": {
+            "series_id": "trade_balance",
+            "period_key": "FY2025-26:09"
+          },
+          "kind": "relative_percent",
+          "value": "13.240262637852999298782431312551794479505322878816854720469178300503601708420990",
+          "period_kind": "fiscal_year_to_date"
+        },
+        {
+          "current": {
+            "series_id": "trade_exports",
+            "period_key": "2026-09"
+          },
+          "comparison": {
+            "series_id": "trade_exports",
+            "period_key": "2025-09"
+          },
+          "kind": "relative_percent",
+          "value": "23.059866962305986696230598669623059866962305986696230598669623059866962305986700",
+          "period_kind": "month"
+        },
+        {
+          "current": {
+            "series_id": "trade_exports",
+            "period_key": "FY2025-26"
+          },
+          "comparison": {
+            "series_id": "trade_exports",
+            "period_key": "FY2024-25"
+          },
+          "kind": "relative_percent",
+          "value": "0.9321453050034270047978067169294037011651816312542837559972583961617546264564800",
+          "period_kind": "fiscal_year"
+        },
+        {
+          "current": {
+            "series_id": "trade_exports",
+            "period_key": "FY2026-27:09"
+          },
+          "comparison": {
+            "series_id": "trade_exports",
+            "period_key": "FY2025-26:09"
+          },
+          "kind": "relative_percent",
+          "value": "18.508891928864569083447332421340629274965800273597811217510259917920656634746920",
+          "period_kind": "fiscal_year_to_date"
+        },
+        {
+          "current": {
+            "series_id": "trade_imports",
+            "period_key": "2026-09"
+          },
+          "comparison": {
+            "series_id": "trade_imports",
+            "period_key": "2025-09"
+          },
+          "kind": "relative_percent",
+          "value": "8.0052113491603937463810075275043427909669947886508396062536189924724956572090300",
+          "period_kind": "month"
+        },
+        {
+          "current": {
+            "series_id": "trade_imports",
+            "period_key": "FY2025-26"
+          },
+          "comparison": {
+            "series_id": "trade_imports",
+            "period_key": "FY2024-25"
+          },
+          "kind": "relative_percent",
+          "value": "7.4570160843039378813089295618413754853022739877981142540210759844703272323904600",
+          "period_kind": "fiscal_year"
+        },
+        {
+          "current": {
+            "series_id": "trade_imports",
+            "period_key": "FY2026-27:09"
+          },
+          "comparison": {
+            "series_id": "trade_imports",
+            "period_key": "FY2025-26:09"
+          },
+          "kind": "relative_percent",
+          "value": "16.311773931998830316080495520642262806709732301884786133928808783262886460908630",
+          "period_kind": "fiscal_year_to_date"
+        }
+      ],
+      "ticker": null,
+      "series": [
+        {
+          "id": "trade_exports",
+          "unit": "usd_billion",
+          "points": 28,
+          "first": {
+            "series_id": "trade_exports",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2023-04-13",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "vintage_date": null,
+              "source_status": null,
+              "supporting_sources": [],
+              "inputs": []
+            },
+            "value": "422.00",
+            "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+            "retrieved_at": "2026-10-16T03:17:44.381995Z",
+            "response_sha256": "e101c48b003de61d5b162694456f72df06befbc8990f64fb84caf480802b106b",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "trade_exports",
+            "period": {
+              "key": "2026-09",
+              "label": "September 2026",
+              "kind": "month",
+              "start": "2026-09-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2026-10-15",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "vintage_date": null,
+              "source_status": null,
+              "supporting_sources": [],
+              "inputs": []
+            },
+            "value": "44.40",
+            "source_url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2323944&lang=1&reg=3",
+            "retrieved_at": "2026-10-16T03:17:43.238119Z",
+            "response_sha256": "82bcd41a22e7b6a71cc8ebbbdcf37df18c3771408011e709540c9a60f290ed26",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "trade_imports",
+          "unit": "usd_billion",
+          "points": 28,
+          "first": {
+            "series_id": "trade_imports",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2023-04-13",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "vintage_date": null,
+              "source_status": null,
+              "supporting_sources": [],
+              "inputs": []
+            },
+            "value": "613.05",
+            "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+            "retrieved_at": "2026-10-16T03:17:44.381995Z",
+            "response_sha256": "e101c48b003de61d5b162694456f72df06befbc8990f64fb84caf480802b106b",
+            "footnote": "",
+            "retained": false
+          },
+          "last": {
+            "series_id": "trade_imports",
+            "period": {
+              "key": "2026-09",
+              "label": "September 2026",
+              "kind": "month",
+              "start": "2026-09-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2026-10-15",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "vintage_date": null,
+              "source_status": null,
+              "supporting_sources": [],
+              "inputs": []
+            },
+            "value": "74.61",
+            "source_url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2323944&lang=1&reg=3",
+            "retrieved_at": "2026-10-16T03:17:43.238119Z",
+            "response_sha256": "82bcd41a22e7b6a71cc8ebbbdcf37df18c3771408011e709540c9a60f290ed26",
+            "footnote": "",
+            "retained": false
+          }
+        },
+        {
+          "id": "trade_balance",
+          "unit": "usd_billion",
+          "points": 28,
+          "first": {
+            "series_id": "trade_balance",
+            "period": {
+              "key": "FY2021-22",
+              "label": "FY 2021\u201322",
+              "kind": "fiscal_year",
+              "start": "2021-04-01",
+              "end": "2022-03-31"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2023-04-13",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "vintage_date": null,
+              "source_status": null,
+              "supporting_sources": [],
+              "inputs": [
+                {
+                  "series_id": "trade_exports",
+                  "period_key": "FY2021-22"
+                },
+                {
+                  "series_id": "trade_imports",
+                  "period_key": "FY2021-22"
+                }
+              ]
+            },
+            "value": "-191.05",
+            "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1916220&reg=48&lang=2",
+            "retrieved_at": "2026-10-16T03:17:44.381995Z",
+            "response_sha256": "e101c48b003de61d5b162694456f72df06befbc8990f64fb84caf480802b106b",
+            "footnote": "Calculated merchandise exports \u2212 imports; negative values are deficits. Combined goods/services balance excluded.",
+            "retained": false
+          },
+          "last": {
+            "series_id": "trade_balance",
+            "period": {
+              "key": "2026-09",
+              "label": "September 2026",
+              "kind": "month",
+              "start": "2026-09-01",
+              "end": "2026-09-30"
+            },
+            "definition": {
+              "group": "trade",
+              "provider": "commerce",
+              "unit": "usd_billion",
+              "methodology": "india_merchandise_usd_billion_apr_mar",
+              "status": "unspecified",
+              "published_at": "2026-10-15",
+              "publication_note": "Published merchandise values. Services estimates excluded; no final merchandise status is inferred.",
+              "vintage_date": null,
+              "source_status": null,
+              "supporting_sources": [],
+              "inputs": [
+                {
+                  "series_id": "trade_exports",
+                  "period_key": "2026-09"
+                },
+                {
+                  "series_id": "trade_imports",
+                  "period_key": "2026-09"
+                }
+              ]
+            },
+            "value": "-30.21",
+            "source_url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2323944&lang=1&reg=3",
+            "retrieved_at": "2026-10-16T03:17:43.238119Z",
+            "response_sha256": "82bcd41a22e7b6a71cc8ebbbdcf37df18c3771408011e709540c9a60f290ed26",
+            "footnote": "Calculated merchandise exports \u2212 imports; negative values are deficits. Combined goods/services balance excluded.",
+            "retained": false
+          }
+        }
+      ]
+    },
+    "market_nse": {
+      "collected": true,
+      "api_status": 200,
+      "state": null,
+      "collection": null,
+      "summaries": null,
+      "ticker": [
+        {
+          "id": "sensex",
+          "label": "SENSEX",
+          "exchange": "BSE",
+          "provider_id": "upstox",
+          "availability": "implemented",
+          "state": "unavailable",
+          "unit": "index_points",
+          "value": null,
+          "previous_close": null,
+          "previous_close_basis": null,
+          "change_points": null,
+          "change_percent": null,
+          "exchange_timestamp": null,
+          "exchange_timestamp_precision": null,
+          "provider_timestamp": null,
+          "retrieved_at": null,
+          "source_url": null,
+          "response_sha256": null,
+          "market_state": "unknown",
+          "market_status_at": null,
+          "market_status_checked_at": null,
+          "market_status_source_url": null,
+          "market_status_sha256": null,
+          "market_session_close_at": null,
+          "market_timings_source_url": null,
+          "market_timings_sha256": null,
+          "retained": false,
+          "error_kind": null
+        },
+        {
+          "id": "nifty_bank",
+          "label": "NIFTY BANK",
+          "exchange": "NSE",
+          "provider_id": "nse",
+          "availability": "implemented",
+          "state": "stale",
+          "unit": "index_points",
+          "value": "55810.5",
+          "previous_close": "55316",
+          "previous_close_basis": "published_previous_close",
+          "change_points": "494.5",
+          "change_percent": "0.893954732807867524766794417528382384800",
+          "exchange_timestamp": "2026-10-15T10:00:00Z",
+          "exchange_timestamp_precision": "minute",
+          "provider_timestamp": null,
+          "retrieved_at": "2026-10-16T03:17:45.542506Z",
+          "source_url": "https://www.nseindia.com/api/allIndices",
+          "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+          "market_state": "unknown",
+          "market_status_at": null,
+          "market_status_checked_at": null,
+          "market_status_source_url": null,
+          "market_status_sha256": null,
+          "market_session_close_at": null,
+          "market_timings_source_url": null,
+          "market_timings_sha256": null,
+          "retained": true,
+          "error_kind": "market_status_unverified"
+        },
+        {
+          "id": "nifty_it",
+          "label": "NIFTY IT",
+          "exchange": "NSE",
+          "provider_id": "nse",
+          "availability": "implemented",
+          "state": "stale",
+          "unit": "index_points",
+          "value": "30719.8",
+          "previous_close": "30171",
+          "previous_close_basis": "published_previous_close",
+          "change_points": "548.8",
+          "change_percent": "1.818965231513705213615723708196612641300",
+          "exchange_timestamp": "2026-10-15T10:00:00Z",
+          "exchange_timestamp_precision": "minute",
+          "provider_timestamp": null,
+          "retrieved_at": "2026-10-16T03:17:45.542506Z",
+          "source_url": "https://www.nseindia.com/api/allIndices",
+          "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+          "market_state": "unknown",
+          "market_status_at": null,
+          "market_status_checked_at": null,
+          "market_status_source_url": null,
+          "market_status_sha256": null,
+          "market_session_close_at": null,
+          "market_timings_source_url": null,
+          "market_timings_sha256": null,
+          "retained": true,
+          "error_kind": "market_status_unverified"
+        }
+      ],
+      "series": []
+    },
+    "market_bse": {
+      "collected": true,
+      "api_status": 200,
+      "state": null,
+      "collection": null,
+      "summaries": null,
+      "ticker": [
+        {
+          "id": "sensex",
+          "label": "SENSEX",
+          "exchange": "BSE",
+          "provider_id": "upstox",
+          "availability": "implemented",
+          "state": "stale",
+          "unit": "index_points",
+          "value": "74315.61",
+          "previous_close": "72781.89",
+          "previous_close_basis": "last_price_minus_net_change",
+          "change_points": "1533.72",
+          "change_percent": "2.107282457215661753219104367858542832600",
+          "exchange_timestamp": "2026-10-15T10:29:59.981000Z",
+          "exchange_timestamp_precision": "millisecond",
+          "provider_timestamp": "2026-10-16T03:17:45.681000+00:00",
+          "retrieved_at": "2026-10-16T03:17:45.600739Z",
+          "source_url": "https://api.upstox.com/v3/market-quote/quotes?instrument_key=BSE_INDEX%7CSENSEX",
+          "response_sha256": "c59bc0d3e367aeb364380faa023c43a61f9fd041392c0cfc4a2860cced56d665",
+          "market_state": "unknown",
+          "market_status_at": null,
+          "market_status_checked_at": null,
+          "market_status_source_url": null,
+          "market_status_sha256": null,
+          "market_session_close_at": null,
+          "market_timings_source_url": null,
+          "market_timings_sha256": null,
+          "retained": true,
+          "error_kind": "market_status_unverified"
+        },
+        {
+          "id": "nifty_bank",
+          "label": "NIFTY BANK",
+          "exchange": "NSE",
+          "provider_id": "nse",
+          "availability": "implemented",
+          "state": "stale",
+          "unit": "index_points",
+          "value": "55810.5",
+          "previous_close": "55316",
+          "previous_close_basis": "published_previous_close",
+          "change_points": "494.5",
+          "change_percent": "0.893954732807867524766794417528382384800",
+          "exchange_timestamp": "2026-10-15T10:00:00Z",
+          "exchange_timestamp_precision": "minute",
+          "provider_timestamp": null,
+          "retrieved_at": "2026-10-16T03:17:45.542506Z",
+          "source_url": "https://www.nseindia.com/api/allIndices",
+          "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+          "market_state": "unknown",
+          "market_status_at": null,
+          "market_status_checked_at": null,
+          "market_status_source_url": null,
+          "market_status_sha256": null,
+          "market_session_close_at": null,
+          "market_timings_source_url": null,
+          "market_timings_sha256": null,
+          "retained": true,
+          "error_kind": "market_status_unverified"
+        },
+        {
+          "id": "nifty_it",
+          "label": "NIFTY IT",
+          "exchange": "NSE",
+          "provider_id": "nse",
+          "availability": "implemented",
+          "state": "stale",
+          "unit": "index_points",
+          "value": "30719.8",
+          "previous_close": "30171",
+          "previous_close_basis": "published_previous_close",
+          "change_points": "548.8",
+          "change_percent": "1.818965231513705213615723708196612641300",
+          "exchange_timestamp": "2026-10-15T10:00:00Z",
+          "exchange_timestamp_precision": "minute",
+          "provider_timestamp": null,
+          "retrieved_at": "2026-10-16T03:17:45.542506Z",
+          "source_url": "https://www.nseindia.com/api/allIndices",
+          "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+          "market_state": "unknown",
+          "market_status_at": null,
+          "market_status_checked_at": null,
+          "market_status_source_url": null,
+          "market_status_sha256": null,
+          "market_session_close_at": null,
+          "market_timings_source_url": null,
+          "market_timings_sha256": null,
+          "retained": true,
+          "error_kind": "market_status_unverified"
+        }
+      ],
+      "series": []
+    },
+    "market_status": {
+      "collected": true,
+      "api_status": 200,
+      "state": null,
+      "collection": null,
+      "summaries": null,
+      "ticker": [
+        {
+          "id": "sensex",
+          "label": "SENSEX",
+          "exchange": "BSE",
+          "provider_id": "upstox",
+          "availability": "implemented",
+          "state": "closed",
+          "unit": "index_points",
+          "value": "74315.61",
+          "previous_close": "72781.89",
+          "previous_close_basis": "last_price_minus_net_change",
+          "change_points": "1533.72",
+          "change_percent": "2.107282457215661753219104367858542832600",
+          "exchange_timestamp": "2026-10-15T10:29:59.981000Z",
+          "exchange_timestamp_precision": "millisecond",
+          "provider_timestamp": "2026-10-16T03:17:45.681000+00:00",
+          "retrieved_at": "2026-10-16T03:17:45.600739Z",
+          "source_url": "https://api.upstox.com/v3/market-quote/quotes?instrument_key=BSE_INDEX%7CSENSEX",
+          "response_sha256": "c59bc0d3e367aeb364380faa023c43a61f9fd041392c0cfc4a2860cced56d665",
+          "market_state": "closed",
+          "market_status_at": "2026-10-15T10:30:00.030000Z",
+          "market_status_checked_at": "2026-10-16T03:17:45.702823Z",
+          "market_status_source_url": "https://api.upstox.com/v2/market/status/BSE",
+          "market_status_sha256": "de70963442bbe9c9bee14e987f33b225af5c93e541544634caa5f7e25f0eadac",
+          "market_session_close_at": "2026-10-15T10:00:00Z",
+          "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-15",
+          "market_timings_sha256": "959c7a6440681c617b90dcc00892f2fc22c9f743d09a6aa4da57aacf1e00941b",
+          "retained": false,
+          "error_kind": null
+        },
+        {
+          "id": "nifty_bank",
+          "label": "NIFTY BANK",
+          "exchange": "NSE",
+          "provider_id": "nse",
+          "availability": "implemented",
+          "state": "closed",
+          "unit": "index_points",
+          "value": "55810.5",
+          "previous_close": "55316",
+          "previous_close_basis": "published_previous_close",
+          "change_points": "494.5",
+          "change_percent": "0.893954732807867524766794417528382384800",
+          "exchange_timestamp": "2026-10-15T10:00:00Z",
+          "exchange_timestamp_precision": "minute",
+          "provider_timestamp": null,
+          "retrieved_at": "2026-10-16T03:17:45.542506Z",
+          "source_url": "https://www.nseindia.com/api/allIndices",
+          "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+          "market_state": "closed",
+          "market_status_at": "2026-10-15T10:30:00.024000Z",
+          "market_status_checked_at": "2026-10-16T03:17:45.677180Z",
+          "market_status_source_url": "https://api.upstox.com/v2/market/status/NSE",
+          "market_status_sha256": "692488ac0baa75935a1e9e71d2d642fb490fe0239ef21518aabf43222732789c",
+          "market_session_close_at": "2026-10-15T10:00:00Z",
+          "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-15",
+          "market_timings_sha256": "959c7a6440681c617b90dcc00892f2fc22c9f743d09a6aa4da57aacf1e00941b",
+          "retained": false,
+          "error_kind": null
+        },
+        {
+          "id": "nifty_it",
+          "label": "NIFTY IT",
+          "exchange": "NSE",
+          "provider_id": "nse",
+          "availability": "implemented",
+          "state": "closed",
+          "unit": "index_points",
+          "value": "30719.8",
+          "previous_close": "30171",
+          "previous_close_basis": "published_previous_close",
+          "change_points": "548.8",
+          "change_percent": "1.818965231513705213615723708196612641300",
+          "exchange_timestamp": "2026-10-15T10:00:00Z",
+          "exchange_timestamp_precision": "minute",
+          "provider_timestamp": null,
+          "retrieved_at": "2026-10-16T03:17:45.542506Z",
+          "source_url": "https://www.nseindia.com/api/allIndices",
+          "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+          "market_state": "closed",
+          "market_status_at": "2026-10-15T10:30:00.024000Z",
+          "market_status_checked_at": "2026-10-16T03:17:45.677180Z",
+          "market_status_source_url": "https://api.upstox.com/v2/market/status/NSE",
+          "market_status_sha256": "692488ac0baa75935a1e9e71d2d642fb490fe0239ef21518aabf43222732789c",
+          "market_session_close_at": "2026-10-15T10:00:00Z",
+          "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-15",
+          "market_timings_sha256": "959c7a6440681c617b90dcc00892f2fc22c9f743d09a6aa4da57aacf1e00941b",
+          "retained": false,
+          "error_kind": null
+        }
+      ],
+      "series": []
+    }
+  },
+  "dashboard": {
+    "api_status": 200,
+    "schema_version": "1",
+    "panels": [
+      {
+        "id": "gdp",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 10
+      },
+      {
+        "id": "debt",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 12
+      },
+      {
+        "id": "trade",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 84
+      },
+      {
+        "id": "gst",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 240
+      },
+      {
+        "id": "inflation",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 84
+      },
+      {
+        "id": "expenditure",
+        "state": "ready",
+        "availability": "implemented",
+        "canonical_points": 21
+      }
+    ],
+    "ticker": [
+      {
+        "id": "sensex",
+        "label": "SENSEX",
+        "exchange": "BSE",
+        "provider_id": "upstox",
+        "availability": "implemented",
+        "state": "closed",
+        "unit": "index_points",
+        "value": "74315.61",
+        "previous_close": "72781.89",
+        "previous_close_basis": "last_price_minus_net_change",
+        "change_points": "1533.72",
+        "change_percent": "2.107282457215661753219104367858542832600",
+        "exchange_timestamp": "2026-10-15T10:29:59.981000Z",
+        "exchange_timestamp_precision": "millisecond",
+        "provider_timestamp": "2026-10-16T03:17:45.681000+00:00",
+        "retrieved_at": "2026-10-16T03:17:45.600739Z",
+        "source_url": "https://api.upstox.com/v3/market-quote/quotes?instrument_key=BSE_INDEX%7CSENSEX",
+        "response_sha256": "c59bc0d3e367aeb364380faa023c43a61f9fd041392c0cfc4a2860cced56d665",
+        "market_state": "closed",
+        "market_status_at": "2026-10-15T10:30:00.030000Z",
+        "market_status_checked_at": "2026-10-16T03:17:45.702823Z",
+        "market_status_source_url": "https://api.upstox.com/v2/market/status/BSE",
+        "market_status_sha256": "de70963442bbe9c9bee14e987f33b225af5c93e541544634caa5f7e25f0eadac",
+        "market_session_close_at": "2026-10-15T10:00:00Z",
+        "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-15",
+        "market_timings_sha256": "959c7a6440681c617b90dcc00892f2fc22c9f743d09a6aa4da57aacf1e00941b",
+        "retained": false,
+        "error_kind": null
+      },
+      {
+        "id": "nifty_bank",
+        "label": "NIFTY BANK",
+        "exchange": "NSE",
+        "provider_id": "nse",
+        "availability": "implemented",
+        "state": "closed",
+        "unit": "index_points",
+        "value": "55810.5",
+        "previous_close": "55316",
+        "previous_close_basis": "published_previous_close",
+        "change_points": "494.5",
+        "change_percent": "0.893954732807867524766794417528382384800",
+        "exchange_timestamp": "2026-10-15T10:00:00Z",
+        "exchange_timestamp_precision": "minute",
+        "provider_timestamp": null,
+        "retrieved_at": "2026-10-16T03:17:45.542506Z",
+        "source_url": "https://www.nseindia.com/api/allIndices",
+        "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+        "market_state": "closed",
+        "market_status_at": "2026-10-15T10:30:00.024000Z",
+        "market_status_checked_at": "2026-10-16T03:17:45.677180Z",
+        "market_status_source_url": "https://api.upstox.com/v2/market/status/NSE",
+        "market_status_sha256": "692488ac0baa75935a1e9e71d2d642fb490fe0239ef21518aabf43222732789c",
+        "market_session_close_at": "2026-10-15T10:00:00Z",
+        "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-15",
+        "market_timings_sha256": "959c7a6440681c617b90dcc00892f2fc22c9f743d09a6aa4da57aacf1e00941b",
+        "retained": false,
+        "error_kind": null
+      },
+      {
+        "id": "nifty_it",
+        "label": "NIFTY IT",
+        "exchange": "NSE",
+        "provider_id": "nse",
+        "availability": "implemented",
+        "state": "closed",
+        "unit": "index_points",
+        "value": "30719.8",
+        "previous_close": "30171",
+        "previous_close_basis": "published_previous_close",
+        "change_points": "548.8",
+        "change_percent": "1.818965231513705213615723708196612641300",
+        "exchange_timestamp": "2026-10-15T10:00:00Z",
+        "exchange_timestamp_precision": "minute",
+        "provider_timestamp": null,
+        "retrieved_at": "2026-10-16T03:17:45.542506Z",
+        "source_url": "https://www.nseindia.com/api/allIndices",
+        "response_sha256": "eb1d50d4da36c5c6830bfa3359f332f885294efbd400180be3886600429ab3c6",
+        "market_state": "closed",
+        "market_status_at": "2026-10-15T10:30:00.024000Z",
+        "market_status_checked_at": "2026-10-16T03:17:45.677180Z",
+        "market_status_source_url": "https://api.upstox.com/v2/market/status/NSE",
+        "market_status_sha256": "692488ac0baa75935a1e9e71d2d642fb490fe0239ef21518aabf43222732789c",
+        "market_session_close_at": "2026-10-15T10:00:00Z",
+        "market_timings_source_url": "https://api.upstox.com/v2/market/timings/2026-10-15",
+        "market_timings_sha256": "959c7a6440681c617b90dcc00892f2fc22c9f743d09a6aa4da57aacf1e00941b",
+        "retained": false,
+        "error_kind": null
+      }
+    ],
+    "collection_groups": [
+      {
+        "last_attempt_at": "2026-10-15T21:13:50.604546Z",
+        "last_success_at": "2026-10-15T21:13:50.974326Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "gdp",
+        "provider_id": "world_bank_wdi",
+        "next_request_not_before": null,
+        "interval_seconds": 604800
+      },
+      {
+        "last_attempt_at": "2026-10-15T21:10:42.275018Z",
+        "last_success_at": "2026-10-15T21:10:45.073156Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "debt",
+        "provider_id": "world_bank_data360",
+        "next_request_not_before": null,
+        "interval_seconds": 604800
+      },
+      {
+        "last_attempt_at": "2026-10-16T03:17:41.878390Z",
+        "last_success_at": "2026-10-16T03:17:45.455121Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "trade",
+        "provider_id": "commerce",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      },
+      {
+        "last_attempt_at": "2026-10-15T21:13:59.334062Z",
+        "last_success_at": "2026-10-15T21:14:04.576202Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "gst",
+        "provider_id": "gstn",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      },
+      {
+        "last_attempt_at": "2026-10-15T21:14:06.721802Z",
+        "last_success_at": "2026-10-15T21:14:09.592145Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "inflation",
+        "provider_id": "mospi",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      },
+      {
+        "last_attempt_at": "2026-10-15T21:14:09.601470Z",
+        "last_success_at": "2026-10-15T21:14:12.277237Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "inflation_policy",
+        "provider_id": "gazette",
+        "next_request_not_before": null,
+        "interval_seconds": 604800
+      },
+      {
+        "last_attempt_at": "2026-10-15T21:13:50.985079Z",
+        "last_success_at": "2026-10-15T21:13:59.327114Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "expenditure",
+        "provider_id": "cga",
+        "next_request_not_before": null,
+        "interval_seconds": 86400
+      },
+      {
+        "last_attempt_at": "2026-10-16T03:17:45.465663Z",
+        "last_success_at": "2026-10-16T03:17:45.545777Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "market_nse",
+        "provider_id": "nse",
+        "next_request_not_before": null,
+        "interval_seconds": 30
+      },
+      {
+        "last_attempt_at": "2026-10-16T03:17:45.550312Z",
+        "last_success_at": "2026-10-16T03:17:45.601833Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "market_bse",
+        "provider_id": "upstox",
+        "next_request_not_before": null,
+        "interval_seconds": 30
+      },
+      {
+        "last_attempt_at": "2026-10-16T03:17:45.605706Z",
+        "last_success_at": "2026-10-16T03:17:45.703785Z",
+        "last_error_kind": null,
+        "in_progress": false,
+        "group_id": "market_status",
+        "provider_id": "upstox",
+        "next_request_not_before": null,
+        "interval_seconds": 30
+      }
+    ]
+  }
+}

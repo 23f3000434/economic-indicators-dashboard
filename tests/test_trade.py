@@ -10,7 +10,7 @@ import httpx
 import pytest
 from app.indicators import read_indicator
 from app.main import create_app
-from app.providers.trade import parse_historical_html, parse_pdf
+from app.providers.trade import current_releases, parse_current_html, parse_historical_html, parse_pdf
 from fastapi.testclient import TestClient
 
 from tests.conftest import PASSWORD, login
@@ -37,7 +37,9 @@ def test_real_trade_publications():
         if "reviewed_values" not in m:
             continue
         parsed = (
-            parse_historical_html(raw, m["url"], m["checked_at"])
+            parse_current_html(raw, m["url"], m["checked_at"])
+            if m.get("parser") == "current_html"
+            else parse_historical_html(raw, m["url"], m["checked_at"])
             if "pib" in m["name"]
             else parse_pdf(raw, m["url"], m["checked_at"])
         )
@@ -86,13 +88,13 @@ def test_trade_live_discovery_fixture_to_authenticated_api(settings, clock):
         assert len(years) == 8 and sum(p.value is None for p in years) == 3
         assert all(p.source_url is None for p in years if p.value is None)
         monthly = next(s for s in data["summaries"] if s["current"]["series_id"] == "trade_exports")
-        assert monthly["comparison"]["period_key"] == "2025-08"
+        assert monthly["comparison"]["period_key"] == "2025-09"
         with localcontext() as ctx:
             ctx.prec = 80
-            assert Decimal(monthly["value"]) == (Decimal("43.81") / Decimal("34.74") - 1) * 100
+            assert Decimal(monthly["value"]) == (Decimal("44.40") / Decimal("36.08") - 1) * 100
         assert asyncio.run(app.state.jobs["trade"].collect_once())
         with app.state.db.connect() as db:
-            assert db.execute("SELECT count(*) FROM observations WHERE group_id='trade'").fetchone()[0] == 33
+            assert db.execute("SELECT count(*) FROM observations WHERE group_id='trade'").fetchone()[0] == 45
         app.state.jobs["trade"].client = httpx.AsyncClient(
             transport=httpx.MockTransport(lambda r: httpx.Response(403))
         )
@@ -109,3 +111,12 @@ def test_historical_period_mismatch_is_rejected():
             "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2017942",
             "2026-10-15T12:00:00Z",
         )
+
+
+def test_current_release_discovery_and_mismatched_tables_fail_closed():
+    urls = current_releases(body("pib_current_index"))
+    assert urls == ["https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2323944&lang=1&reg=3"]
+    raw = body("pib_sep2026")
+    for wrong in (raw.replace(b"36.08", b"-36.08"), raw.replace(b"September 2025", b"September 2024")):
+        with pytest.raises(ValueError):
+            parse_current_html(wrong, urls[0], "2026-10-16T00:00:00Z")

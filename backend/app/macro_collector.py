@@ -11,7 +11,7 @@ import httpx
 from pypdf.errors import PyPdfError
 
 from .batches import MeasurementBatch
-from .collection import Deferred, GroupState, ProviderHTTP, joined_thread
+from .collection import Deferred, GroupState, NotConfigured, ProviderHTTP, joined_thread
 from .gdp import timestamp
 from .indicators import store_batch
 
@@ -67,18 +67,22 @@ class MacroCollector:
                 http = ProviderHTTP(
                     self.state,
                     self.client or owned,
-                    self.settings.upstream_timeout,
+                    getattr(self.adapter, "timeout", self.settings.upstream_timeout),
                     self.settings.upstream_attempts,
                 )
 
                 async def fetch(url, **kwargs):
-                    return await http.fetch(url, max_bytes=32 * 1024 * 1024, **kwargs)
+                    if hasattr(self.adapter, "request_headers"):
+                        kwargs["headers"] = self.adapter.request_headers(url)
+                    return await http.fetch(
+                        url, max_bytes=getattr(self.adapter, "max_bytes", 32 * 1024 * 1024), **kwargs
+                    )
 
-                async with asyncio.timeout(self.settings.collection_budget):
+                async with asyncio.timeout(getattr(self.adapter, "budget", self.settings.collection_budget)):
                     rows = await self.adapter.collect(fetch, lambda: timestamp(self.clock()))
-            if not isinstance(rows, MeasurementBatch):
+            if not isinstance(rows, getattr(self.adapter, "batch_type", MeasurementBatch)):
                 raise ValueError("Adapter must declare its expected response scope")
-            await joined_thread(store_batch, self.db, self.state, run, rows)
+            await joined_thread(getattr(self.adapter, "persist", store_batch), self.db, self.state, run, rows)
             LOG.info("%s collection %s succeeded (%s points)", self.group, run, len(rows))
             return True
         except asyncio.CancelledError:
@@ -86,7 +90,9 @@ class MacroCollector:
             raise
         except Exception as exc:
             kind = (
-                "rate_limited"
+                "source_not_configured"
+                if isinstance(exc, NotConfigured)
+                else "rate_limited"
                 if isinstance(exc, Deferred)
                 else "timeout"
                 if isinstance(exc, (httpx.TimeoutException, TimeoutError))
@@ -128,6 +134,7 @@ class MacroCollector:
 
 
 def build_jobs(settings, database, clock, client=None):
+    from .markets import MarketBSE, MarketNSE, MarketStatus
     from .providers.cga import CGA
     from .providers.cpi import CPI
     from .providers.debt import Debt
@@ -137,5 +144,15 @@ def build_jobs(settings, database, clock, client=None):
 
     return {
         a.group: MacroCollector(a, settings, database, clock, client)
-        for a in [CGA(settings), GST(settings), Trade(settings), CPI(settings), Policy(settings), Debt(settings)]
+        for a in [
+            CGA(settings),
+            GST(settings),
+            Trade(settings),
+            CPI(settings),
+            Policy(settings),
+            Debt(settings),
+            MarketNSE(settings),
+            MarketBSE(settings),
+            MarketStatus(settings),
+        ]
     }

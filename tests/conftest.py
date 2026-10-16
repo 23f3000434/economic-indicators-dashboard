@@ -1,4 +1,5 @@
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 import httpx
@@ -13,7 +14,9 @@ PASSWORD = "Test-only password 93!"
 
 class Clock:
     def __init__(self):
-        self.value = 1792065600.0  # 2026-10-15 UTC; tests never change the production clock.
+        self.value = datetime(
+            2026, 10, 15, 22, tzinfo=UTC
+        ).timestamp()  # After captured market responses; test-only clock.
 
     def __call__(self):
         return self.value

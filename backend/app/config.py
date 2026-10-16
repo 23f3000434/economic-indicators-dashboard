@@ -1,5 +1,5 @@
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -37,6 +37,9 @@ class Settings:
     policy_interval: int = 604800
     debt_interval: int = 604800
     debt_appendix_url: str = "https://data.imf.org/-/media/iData/External-Storage/Documents/C4182C5C54794FC48892DE8F6C74FF82/en/October-2026-WEO-Database-Appendix.pdf"
+    upstox_analytics_token: str = field(default="", repr=False)
+    market_interval: int = 30
+    market_timeout: int = 10
     policy_url: str = "https://egazette.gov.in/WriteReadData/2026/271285.pdf"
     macro_groups: tuple[str, ...] | None = None
     collection_budget: int = 600
@@ -85,8 +88,15 @@ class Settings:
             "inflation",
             "inflation_policy",
             "debt",
+            "market_nse",
+            "market_bse",
+            "market_status",
         }:
             raise ValueError("Unknown collection group")
+        if not 30 <= self.market_interval <= 3600 or not 1 <= self.market_timeout <= 20:
+            raise ValueError("Market interval must be 30..3600 seconds; timeout 1..20 seconds")
+        if any(c.isspace() for c in self.upstox_analytics_token):
+            raise ValueError("Market credential must not contain whitespace")
         policy = urlsplit(self.policy_url)
         if (
             policy.scheme != "https"
@@ -177,6 +187,9 @@ class Settings:
             cpi_interval=integer("CPI_COLLECTION_INTERVAL_SECONDS", 86400),
             policy_interval=integer("POLICY_COLLECTION_INTERVAL_SECONDS", 604800),
             debt_interval=integer("DEBT_COLLECTION_INTERVAL_SECONDS", 604800),
+            upstox_analytics_token=os.getenv("UPSTOX_ANALYTICS_TOKEN", ""),
+            market_interval=integer("MARKET_COLLECTION_INTERVAL_SECONDS", 30),
+            market_timeout=integer("MARKET_REQUEST_TIMEOUT_SECONDS", 10),
             debt_appendix_url=os.getenv(
                 "DEBT_APPENDIX_URL", cls.__dataclass_fields__["debt_appendix_url"].default
             ),

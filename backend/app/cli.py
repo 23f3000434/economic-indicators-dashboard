@@ -34,7 +34,18 @@ def main():
     collect.add_argument(
         "groups",
         nargs="+",
-        choices=["gdp", "debt", "expenditure", "gst", "trade", "inflation", "inflation_policy"],
+        choices=[
+            "gdp",
+            "debt",
+            "expenditure",
+            "gst",
+            "trade",
+            "inflation",
+            "inflation_policy",
+            "market_nse",
+            "market_bse",
+            "market_status",
+        ],
     )
     args = parser.parse_args()
     if args.command == "restore":

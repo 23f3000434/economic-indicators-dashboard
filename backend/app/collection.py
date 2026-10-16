@@ -53,6 +53,10 @@ class Deferred(Exception):
         super().__init__("Provider cooldown exceeds the current request budget")
 
 
+class NotConfigured(Exception):
+    pass
+
+
 class GroupState:
     def __init__(
         self,
@@ -172,15 +176,15 @@ class ProviderHTTP:
         self.state, self.client = state, client
         self.timeout, self.attempts, self.sleep, self.monotonic = timeout, attempts, sleep, monotonic
 
-    async def fetch(self, url, max_bytes=4 * 1024 * 1024, *, method="GET", json=None):
+    async def fetch(self, url, max_bytes=4 * 1024 * 1024, *, method="GET", json=None, headers=None):
         if method not in {"GET", "POST"}:
             raise ValueError("Unsupported public provider request method")
         # HTTPX read timeouts reset between chunks. This outer deadline also
         # bounds slow/dripping streams and mock transports that ignore timeouts.
         async with asyncio.timeout(self.timeout * self.attempts):
-            return await self._fetch(url, max_bytes, method, json)
+            return await self._fetch(url, max_bytes, method, json, headers)
 
-    async def _fetch(self, url, max_bytes, method, payload):
+    async def _fetch(self, url, max_bytes, method, payload, headers):
         deadline = self.monotonic() + self.timeout * self.attempts
         for attempt in range(self.attempts):
             # Recheck before every request: a different request/group may have extended this provider's cooldown.
@@ -203,6 +207,7 @@ class ProviderHTTP:
                     method,
                     url,
                     json=payload,
+                    headers=headers,
                     timeout=httpx.Timeout(min(self.timeout, remaining), connect=min(5, remaining)),
                 ) as response:
                     until = (

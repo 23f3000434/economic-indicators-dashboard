@@ -174,5 +174,36 @@
       "trade_imports:FY2021-22": "613.05",
       "trade_balance:FY2021-22": "-191.05"
     }
+  },
+  {
+    "name": "pib_current_index",
+    "url": "https://www.pib.gov.in/AllRelease.aspx?MenuId=30&lang=1&reg=3",
+    "final_url": "https://www.pib.gov.in/AllRelease.aspx?MenuId=30&lang=1&reg=3",
+    "checked_at": "2026-10-15T22:00:00Z",
+    "sha256": "7abbb955bac50e3ab1b86ddb81f0809ac1b919ac005be360fc1b5f053f2a58f1",
+    "bytes": 840389
+  },
+  {
+    "name": "pib_sep2026",
+    "url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2323944&lang=1&reg=3",
+    "final_url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2323944&lang=1&reg=3",
+    "checked_at": "2026-10-15T22:00:00Z",
+    "sha256": "e992f29091eca30c2c25e383fb1a9b102d2852392501bd98620f9eea9ee690c6",
+    "bytes": 413516,
+    "parser": "current_html",
+    "reviewed_values": {
+      "trade_exports:2026-09": "44.40",
+      "trade_imports:2026-09": "74.61",
+      "trade_balance:2026-09": "-30.21",
+      "trade_exports:2025-09": "36.08",
+      "trade_imports:2025-09": "69.08",
+      "trade_balance:2025-09": "-33.00",
+      "trade_exports:FY2026-27:09": "259.89",
+      "trade_imports:FY2026-27:09": "437.53",
+      "trade_balance:FY2026-27:09": "-177.64",
+      "trade_exports:FY2025-26:09": "219.30",
+      "trade_imports:FY2025-26:09": "376.17",
+      "trade_balance:FY2025-26:09": "-156.87"
+    }
   }
 ]
