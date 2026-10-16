@@ -20,6 +20,17 @@ The final commands used the compiled production bundle with test-only servers on
 
 See [completion-checks.json](evidence/2026-10-16/completion-checks.json) for the exact final command results and remaining gates. The local normal-API build is refreshed after the focused rerun; no public deployment occurs.
 
+## Focused interaction pass after a59bb96
+
+- **10 focused compiled-browser scenarios passed in 2.4m**: canonical values and fixed geometry across all six panels, keyboard/Details access, CPI gaps/policy validity, market failure retention/recovery, unchanged cross-tab logout assertions, reload/memory-only authentication, pointer period changes, shared tooltips, missing bars, mobile tap/dismissal and ticker pause/manual/reduced-motion/two-poll phase continuity.
+- Browser inspection then measured a 325px trailing ticker spacer. A scoped flex correction removes it; the ticker case, including a new boundary-gap assertion, **passed 1/1 in 28.7s**. Other application behaviour was unchanged; unaffected tests were not repeated.
+- After the band-centre repair, pointer/grouped-bar and mobile tap cases **passed 2/2**. The added alignment assertion initially used an obsolete tick selector and timed out; correcting it to the rendered label layer preserved the coordinate assertion, and the six-panel case **passed 1/1 in 24.9s**. Crosshair and last source-year tick both measure x=482.5 in the normal GDP chart. No final interaction assertion remains failing.
+- **3 tooltip-placement unit tests passed**; strict TypeScript and compiled builds for the test API and normal API passed. No dependencies, backend code, SQL, authentication or collection cadence changed. No full browser/backend suite was claimed or repeated during this focused pass.
+- Initial new pointer/tap checks failed pinning, and were repaired with native pointer events plus the chart's mapped category centres. Screenshot inspection also caught the initial band-start crosshair offset; explicit band centres repair both the crosshair alignment and selection on either grouped bar. Focused assertions check both bars and compare crosshair/tick coordinates without increasing timeouts or weakening expectations. Canonical missing observations have no fabricated bars/dots. Full notes remain accessible inside Details.
+- Normal Chrome inspection confirms compact GDP/debt tooltips, accurate FY/CY and estimate/actual labels, crosshairs/active marks, native manual quote scrolling/focus pause, and zero trailing seam gap. The normal-source proof records three actual stored snapshots across two automatic polling intervals; original quote values, exchange times and statuses agree with the UI. See [interaction evidence](evidence/2026-10-16/interaction-live.json) and [recorded checks](evidence/2026-10-16/interaction-checks.json).
+
+Current screenshots: [desktop tooltip](evidence/2026-10-16/interaction-preview.png), [full desktop](evidence/2026-10-16/interaction-desktop.png), [mobile](evidence/2026-10-16/interaction-mobile.png). They use the normal application and real stored observations, not the fixture server. Segoe UI fallback, public market display/credential rotation, production hosting/domain/recovery acceptance and final submission deliverables remain open as listed in design-completion.md. No deployment occurred.
+
 ## Earlier checkpoint records
 
 # Local verification

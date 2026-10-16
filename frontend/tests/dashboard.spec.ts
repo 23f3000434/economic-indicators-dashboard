@@ -87,7 +87,7 @@ test('complete interface agrees with canonical API and uses supplied artwork at 
   const first = panelAt(data, 'trade')
     .series.find((s) => s.id === 'trade_exports')!
     .points.find((p) => p.period.kind === 'fiscal_year')!;
-  await expect(trade.locator('.chart-tooltip')).toContainText(expected(first));
+  await expect(page.locator('.chart-tooltip[data-chart="trade"]')).toContainText(expected(first));
   await openDetails(page, 'trade');
   await expect(page.getByTestId(`table-trade_exports-${first.period.key}`)).toHaveText(expected(first));
   await closeDetails(page);
@@ -274,7 +274,7 @@ test('keyboard controls, focus return, chart inspection and accessible data alte
   const chart = page.locator('.gdp-panel').getByRole('application');
   await chart.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(page.locator('.gdp-panel .chart-tooltip')).toContainText('India');
+  await expect(page.locator('.chart-tooltip[data-chart="gdp"]')).toContainText('India');
 });
 
 test('component errors are isolated and retry reads repaired data', async ({ page }) => {

@@ -1,0 +1,94 @@
+{
+  "checked_at": "2026-10-16T06:28:36.936963+00:00",
+  "base_commit": "a59bb96",
+  "scope": "Compact shared tooltip; canonical chart selection; accessible seamless quote scroll; actual two-poll verification. No deployment.",
+  "checks": [
+    {
+      "command": "npm test -- src/ChartSelection.test.ts",
+      "passed": 3,
+      "failed": 0,
+      "duration_ms": 566
+    },
+    {
+      "command": "E2E_PREVIEW=1 npm run test:browser -- --grep 'interaction pass|complete interface agrees|keyboard controls|CPI bases and gaps|real-format market|logout from another tab|login, canonical values'",
+      "passed": 10,
+      "failed": 0,
+      "duration_display": "2.4m"
+    },
+    {
+      "command": "E2E_PREVIEW=1 npm run test:browser -- tests/interactions.spec.ts --grep 'seamless ticker'",
+      "passed": 1,
+      "failed": 0,
+      "duration_seconds": 28.7,
+      "reason": "After browser inspection found a 325px trailing spacer, verify the scoped flex repair and new gap assertion; other checks not repeated."
+    },
+    {
+      "command": "E2E_PREVIEW=1 npm run test:browser -- tests/interactions.spec.ts --grep 'all six charts|pointer period|tap selection'",
+      "passed": 2,
+      "failed": 1,
+      "reason": "After band-centre correction, pointer/tap passed; alignment harness timed out using an obsolete axis-label selector."
+    },
+    {
+      "command": "E2E_PREVIEW=1 npm run test:browser -- tests/interactions.spec.ts --grep 'all six charts'",
+      "passed": 1,
+      "failed": 0,
+      "duration_seconds": 24.9,
+      "reason": "Correct rendered label-layer selector; coordinate/canonical/geometry assertions unchanged."
+    },
+    {
+      "command": "VITE_API_BASE_URL=http://localhost:8010 npm run build",
+      "status": "passed",
+      "vite_build_seconds": 2.55
+    },
+    {
+      "command": "node scripts/verify_interactions.mjs",
+      "status": "passed",
+      "mode": "Normal private persistent SQLite/API and actual scheduled providers; no test server, synthetic prices or fake clock",
+      "snapshots": 3,
+      "automatic_poll_intervals": 2
+    },
+    {
+      "command": "Prettier --check changed source/test/script files; recheck formatted interaction test",
+      "status": "passed"
+    }
+  ],
+  "reproduced_and_repaired": [
+    "Original tooltip repeated full source/methodology/footnotes and inherited canvas scaling.",
+    "Initial new hover/click channels failed pinning on desktop and touch. Native pointer hit testing using the existing chart scale repairs both; no assertions/timeouts relaxed.",
+    "Browser-measured 325.078125 CSS pixel trailing spacer removed. Final gap is zero.",
+    "Screenshot found band-start crosshair offset. Explicit category centres now align the crosshair and both grouped bars; normal GDP crosshair/tick are both x=482.5."
+  ],
+  "unchanged_boundaries": [
+    "Measured six-panel/plot layout",
+    "Canonical periods, nulls and backend comparisons",
+    "Real quote values and backend market-state rules",
+    "Authentication and cross-tab logout assertions",
+    "Provider collection scheduling and database-only reads",
+    "Parameterized SQL and private SQLite",
+    "Dependencies"
+  ],
+  "browser_inspection": [
+    "Normal Chrome GDP and debt selection with actual FY/CY/estimate/actual labels",
+    "Compact opaque 14px portal above panel stacking contexts",
+    "Crosshairs, active bar outlines and point marks",
+    "Native manual ticker scrolling and focus pause",
+    "Final ticker seam gap zero"
+  ],
+  "remaining_submission_blockers": [
+    "Licensed Segoe UI webfonts or explicit fallback acceptance",
+    "Market public-display/redistribution acceptance and replace the credential supplied in chat before production",
+    "Separate HTTPS origins/domain/DNS/hosting and persistent disk/proxy/cookie/egress/recovery/off-host-backup acceptance",
+    "Deployed frontend/API/docs/health URLs, evaluation account handoff, portfolio/project role links and required post-assessment recording"
+  ],
+  "full_or_backend_suite_repeated": false,
+  "deployment_performed": false,
+  "final_affected_cases": "All passing after the documented repairs and targeted reruns; no full or backend suite repeated.",
+  "normal_proof_alignment": {
+    "crosshair_x": 482.5,
+    "tick_x": 482.5
+  },
+  "normal_proof_seam": {
+    "width": 1070.031982421875,
+    "trailing_gap": -6.103515625e-05
+  }
+}

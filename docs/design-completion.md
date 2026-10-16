@@ -103,6 +103,8 @@ Cold local Chrome measurements (cache disabled; response overhead included) keep
 
 ## Remaining inputs before public acceptance
 
+The subsequent focused interaction pass preserves the measured layout while replacing the tall provenance tooltip with a compact selection overlay and adding continuous accessible quote scrolling. [Current desktop capture](evidence/2026-10-16/interaction-desktop.png) and [mobile capture](evidence/2026-10-16/interaction-mobile.png) show the normal application after those repairs; [two-poll source/UI evidence](evidence/2026-10-16/interaction-live.json) preserves actual prices, exchange timestamps and labels. See verification.md for the focused checks; these additions do not establish exact Segoe UI acceptance or public deployment.
+
 - Licensed Segoe UI webfonts, or an explicit acceptance of the provisional fallback; final visual review distinguishes data corrections from font differences.
 - Replace the token supplied through chat before production; confirm the accepted market display/redistribution arrangement for the deployed audience.
 - The agreed controlled domain/two HTTPS origins, deployment account/project access, actual proxy trust/mount/egress/cookie checks and private off-host backup operation remain the later deployment stage. None is claimed as already deployed.

@@ -1,18 +1,19 @@
+import { useEffect, useRef, useState } from 'react';
 import {
   Area,
   Bar,
+  Cell,
   LabelList,
   CartesianGrid,
   ComposedChart,
   Line,
   ReferenceLine,
   ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 import { metric, scaledDecimal } from './contracts';
-import { PointDetails } from './PanelParts';
+import { ChartSelectionLayer, type ChartPicker, type ChartSelection } from './ChartSelection';
 import { plotKeys, type ViewSeries } from './presentation';
 
 export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[] }) {
@@ -23,6 +24,29 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
     muted: '#a7b3bf',
   };
   const keys = plotKeys(series);
+  const host = useRef<HTMLDivElement>(null);
+  const picker = useRef<ChartPicker>(null);
+  const pressed = useRef<{ x: number; y: number; id: number } | null>(null);
+  const [selection, setSelection] = useState<ChartSelection | null>(null);
+  const active = selection && keys.includes(selection.key) ? selection : null;
+  const select = (key: string, pinned: boolean, pointerY?: number) => {
+    window.dispatchEvent(new CustomEvent('economic-chart-selection', { detail: id }));
+    setSelection({ key, pinned, pointerY });
+  };
+  useEffect(() => {
+    const dismiss = (event: PointerEvent) => {
+      if (!host.current?.contains(event.target as Node)) setSelection(null);
+    };
+    const another = (event: Event) => {
+      if ((event as CustomEvent).detail !== id) setSelection(null);
+    };
+    document.addEventListener('pointerdown', dismiss);
+    window.addEventListener('economic-chart-selection', another);
+    return () => {
+      document.removeEventListener('pointerdown', dismiss);
+      window.removeEventListener('economic-chart-selection', another);
+    };
+  }, [id]);
   const data = keys.map((key) => ({
     key,
     ...Object.fromEntries(
@@ -36,7 +60,74 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
   const label = (raw: string | null | undefined) =>
     metric(unit === 'inr_crore' ? scaledDecimal(raw, 5) : raw, unit === 'percent' ? '%' : '');
   return (
-    <div className="chart-space" data-testid={`${id}-chart`}>
+    <div
+      className="chart-space"
+      data-testid={`${id}-chart`}
+      ref={host}
+      role="application"
+      tabIndex={0}
+      aria-label={`${id} canonical observations chart`}
+      aria-describedby={active ? `${id}-chart-tooltip` : undefined}
+      onPointerMove={(e) => {
+        if (e.pointerType === 'touch') return;
+        const key = picker.current?.(e.clientX, e.clientY);
+        if (!key) return;
+        window.dispatchEvent(new CustomEvent('economic-chart-selection', { detail: id }));
+        setSelection((old) => ({ key, pinned: old?.pinned || false, pointerY: e.clientY }));
+      }}
+      onPointerDown={(e) => {
+        pressed.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
+      }}
+      onPointerUp={(e) => {
+        const down = pressed.current;
+        pressed.current = null;
+        if (!down || down.id !== e.pointerId || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 8)
+          return;
+        const key = picker.current?.(e.clientX, e.clientY);
+        if (!key) return;
+        window.dispatchEvent(new CustomEvent('economic-chart-selection', { detail: id }));
+        setSelection((old) =>
+          old?.pinned && old.key === key ? null : { key, pinned: true, pointerY: e.clientY },
+        );
+      }}
+      onPointerCancel={() => {
+        pressed.current = null;
+      }}
+      onPointerLeave={() => {
+        setSelection((old) => (old?.pinned ? old : null));
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setSelection(null);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          setSelection(null);
+          e.preventDefault();
+          return;
+        }
+        if (!keys.length) return;
+        const index = active ? keys.indexOf(active.key) : -1;
+        const next =
+          e.key === 'Home'
+            ? 0
+            : e.key === 'End'
+              ? keys.length - 1
+              : e.key === 'ArrowRight'
+                ? Math.min(index + 1, keys.length - 1)
+                : e.key === 'ArrowLeft'
+                  ? Math.max(index - 1, 0)
+                  : undefined;
+        if (next !== undefined) {
+          e.preventDefault();
+          select(keys[next], false);
+        }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (active?.pinned) setSelection(null);
+          else select(active?.key || keys[0], true);
+        }
+      }}
+    >
       {series.some((s) => s.points.some((p) => p.value !== null)) ? (
         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           <ComposedChart
@@ -49,7 +140,7 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
             }}
             barGap={5}
             aria-label={`${id} canonical observations chart`}
-            accessibilityLayer
+            accessibilityLayer={false}
           >
             <defs>
               <linearGradient id={`${id}-reference-line`} x1="0" y1="0" x2="1" y2="0">
@@ -137,23 +228,6 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
               }
             />
             <ReferenceLine y={0} stroke="#7e8790" />
-            <Tooltip
-              cursor={{ fill: '#ffffff08' }}
-              content={({ active, label }) =>
-                active ? (
-                  <div className="chart-tooltip">
-                    <strong>{String(label)}</strong>
-                    {series.map((s) => (
-                      <PointDetails
-                        key={s.id}
-                        p={s.points.find((p) => (p.axisKey || p.key) === String(label))}
-                        series={s}
-                      />
-                    ))}
-                  </div>
-                ) : null
-              }
-            />
             {series
               .filter((s) => s.plot !== false)
               .map((s) =>
@@ -168,6 +242,14 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
                     maxBarSize={id === 'expenditure' ? 37 : id === 'gst' ? 34.78 : 25.4254}
                     isAnimationActive={false}
                   >
+                    {keys.map((key) => (
+                      <Cell
+                        key={key}
+                        className={active?.key === key ? 'chart-active-bar' : undefined}
+                        stroke={active?.key === key ? '#fff' : 'none'}
+                        strokeWidth={2.5}
+                      />
+                    ))}
                     <LabelList
                       content={(props) => {
                         const key = data[Number(props.index)]?.key;
@@ -217,6 +299,7 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
                     strokeWidth={id === 'inflation' ? 3.51 : 2}
                     type="linear"
                     dot={false}
+                    activeDot={false}
                     connectNulls={false}
                     isAnimationActive={false}
                   />
@@ -229,12 +312,21 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
                     strokeWidth={s.dashed ? 1.4 : 2}
                     strokeDasharray={s.dashed ? '5 4' : undefined}
                     dot={keys.length <= 12 && !s.dashed ? { r: 2, fill: colors[s.color] } : false}
+                    activeDot={false}
                     type="linear"
                     connectNulls={false}
                     isAnimationActive={false}
                   />
                 ),
               )}
+            <ChartSelectionLayer
+              id={id}
+              selection={active}
+              series={series}
+              colors={colors}
+              host={host}
+              picker={picker}
+            />
           </ComposedChart>
         </ResponsiveContainer>
       ) : (
@@ -243,8 +335,8 @@ export function CanonicalChart({ id, series }: { id: string; series: ViewSeries[
         </div>
       )}
       <span className="sr-only">
-        {id} chart. Arrow keys inspect periods. The observations table provides the same values and source
-        details.
+        {id} chart. Move the pointer or use arrow keys to inspect periods. Click or tap to keep a selection;
+        tap again, click outside or press Escape to dismiss. Full source details are in Details &amp; data.
       </span>
     </div>
   );

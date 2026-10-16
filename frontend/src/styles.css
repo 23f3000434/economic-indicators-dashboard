@@ -182,11 +182,21 @@ a {
   scrollbar-width: none;
   flex: 1;
   height: 49px;
+  min-width: 0;
+  overflow-anchor: none;
+  outline-offset: -2px;
+}
+.ticker-group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: 100%;
 }
 .ticker-track::-webkit-scrollbar {
   display: none;
 }
 .ticker-item {
+  flex: 1 0 auto;
   white-space: nowrap;
   display: flex;
   flex-direction: column;
@@ -612,39 +622,71 @@ a {
   height: 286px;
 }
 .chart-tooltip {
+  position: fixed;
+  pointer-events: none;
   border: 1px solid #7790a3;
   border-radius: 5px;
   padding: 10px;
-  color: #e4ebf1;
-  background: #071421fa;
+  color: #f3f7fc;
+  background: #081625;
   box-shadow: 0 5px 20px #000b;
   font:
-    12px Roboto,
+    14px / 1.4 Roboto,
     sans-serif;
-  max-width: 340px;
-  z-index: 10;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 16px));
+  z-index: 1000;
 }
-.chart-tooltip strong {
+.chart-tooltip > strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
-.chart-tooltip > div {
-  margin: 8px 0;
+.chart-tooltip .tooltip-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 16px;
+  margin-top: 5px;
 }
-.chart-tooltip b {
-  margin-left: 12px;
+.tooltip-row b {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
-.chart-tooltip small {
-  display: block;
-  margin-top: 4px;
-  color: #c1c9d3;
-  line-height: 1.5;
-  font-size: 10px;
+.tooltip-row small {
+  grid-column: 1 / -1;
+  color: #d3dfec;
+  font-size: 12px;
+  text-transform: capitalize;
 }
 .chart-tooltip .dot {
   width: 10px;
   height: 10px;
   margin-right: 5px;
+}
+.chart-crosshair {
+  stroke: #f1f7ff;
+  stroke-width: 1.25px;
+  stroke-dasharray: 4 3;
+  vector-effect: non-scaling-stroke;
+}
+.chart-active-point,
+.chart-active-bar {
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 2px #fff8);
+}
+.observation-details {
+  margin-top: 12px;
+  white-space: normal;
+}
+.observation-details summary {
+  cursor: pointer;
+}
+.observation-details > div {
+  margin: 12px 0;
+}
+.observation-details small {
+  display: block;
+  line-height: 1.5;
 }
 .chart-empty,
 .chart-skeleton {

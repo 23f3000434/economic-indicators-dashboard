@@ -1,0 +1,188 @@
+{
+  "checked_at": "2026-10-16T06:27:48.886Z",
+  "frontend": "http://localhost:5175",
+  "api": "http://localhost:8010",
+  "mode": "Normal application, private persistent SQLite, real scheduled providers; no fixture server, synthetic price changes or fake clock",
+  "checks": [
+    "Initial quote snapshot plus two independent automatic 30-second API polls",
+    "Every displayed price/status/exchange timestamp agrees with its stored API snapshot",
+    "Exchange timestamps never regress; unchanged quotes remain unchanged",
+    "NSE is never relabelled Live",
+    "Quote group DOM remains mounted across polling cycles",
+    "Compact tooltip, 14px unscaled text, no repeated provenance",
+    "Desktop/mobile screenshots and no browser runtime errors"
+  ],
+  "cycles": [
+    {
+      "cycle": 0,
+      "generated_at": "2026-10-16T06:26:48.005497Z",
+      "captured_at": "2026-10-16T06:26:48.263Z",
+      "scroll_left": 9,
+      "quotes": [
+        {
+          "id": "sensex",
+          "provider": "upstox",
+          "value": "74658.7",
+          "previous_close": "74315.61",
+          "change_percent": "0.461666129094546892638033920464354662500",
+          "state": "live",
+          "error_kind": null,
+          "exchange_timestamp": "2026-10-16T06:26:27.138000Z",
+          "precision": "millisecond",
+          "retrieved_at": "2026-10-16T06:26:27.290279Z",
+          "retained": false,
+          "displayed": "SENSEX 74,658.70 (+0.46%)\nBSE / Upstox · LIVE · 16 Oct 2026, 11:56:27.138 am IST"
+        },
+        {
+          "id": "nifty_bank",
+          "provider": "nse",
+          "value": "55714.95",
+          "previous_close": "55810.5",
+          "change_percent": "-0.1712043432687397532722337194613916736100",
+          "state": "delayed",
+          "error_kind": "quote_not_current",
+          "exchange_timestamp": "2026-10-16T06:25:00Z",
+          "precision": "minute",
+          "retrieved_at": "2026-10-16T06:26:44.954051Z",
+          "retained": false,
+          "displayed": "NIFTY BANK 55,714.95 (-0.17%)\nNSE · DELAYED · 16 Oct 2026, 11:55 am IST"
+        },
+        {
+          "id": "nifty_it",
+          "provider": "nse",
+          "value": "31527.45",
+          "previous_close": "30719.8",
+          "change_percent": "2.629086126862805096387346271785623604300",
+          "state": "delayed",
+          "error_kind": "quote_not_current",
+          "exchange_timestamp": "2026-10-16T06:25:00Z",
+          "precision": "minute",
+          "retrieved_at": "2026-10-16T06:26:44.954051Z",
+          "retained": false,
+          "displayed": "NIFTY IT 31,527.45 (+2.63%)\nNSE · DELAYED · 16 Oct 2026, 11:55 am IST"
+        }
+      ]
+    },
+    {
+      "cycle": 1,
+      "generated_at": "2026-10-16T06:27:18.008476Z",
+      "captured_at": "2026-10-16T06:27:18.154Z",
+      "scroll_left": 696,
+      "quotes": [
+        {
+          "id": "sensex",
+          "provider": "upstox",
+          "value": "74686.58",
+          "previous_close": "74315.61",
+          "change_percent": "0.499181800431968465306279528621241217000",
+          "state": "live",
+          "error_kind": null,
+          "exchange_timestamp": "2026-10-16T06:26:57.162000Z",
+          "precision": "millisecond",
+          "retrieved_at": "2026-10-16T06:26:57.379513Z",
+          "retained": false,
+          "displayed": "SENSEX 74,686.58 (+0.50%)\nBSE / Upstox · LIVE · 16 Oct 2026, 11:56:57.162 am IST"
+        },
+        {
+          "id": "nifty_bank",
+          "provider": "nse",
+          "value": "55719.65",
+          "previous_close": "55810.5",
+          "change_percent": "-0.1627829888641026330170845987762159450300",
+          "state": "snapshot",
+          "error_kind": null,
+          "exchange_timestamp": "2026-10-16T06:26:00Z",
+          "precision": "minute",
+          "retrieved_at": "2026-10-16T06:27:15.080643Z",
+          "retained": false,
+          "displayed": "NIFTY BANK 55,719.65 (-0.16%)\nNSE · SNAPSHOT · 16 Oct 2026, 11:56 am IST"
+        },
+        {
+          "id": "nifty_it",
+          "provider": "nse",
+          "value": "31552.05",
+          "previous_close": "30719.8",
+          "change_percent": "2.709164773208158907284552633806209675800",
+          "state": "snapshot",
+          "error_kind": null,
+          "exchange_timestamp": "2026-10-16T06:26:00Z",
+          "precision": "minute",
+          "retrieved_at": "2026-10-16T06:27:15.080643Z",
+          "retained": false,
+          "displayed": "NIFTY IT 31,552.05 (+2.71%)\nNSE · SNAPSHOT · 16 Oct 2026, 11:56 am IST"
+        }
+      ]
+    },
+    {
+      "cycle": 2,
+      "generated_at": "2026-10-16T06:27:48.011240Z",
+      "captured_at": "2026-10-16T06:27:48.189Z",
+      "scroll_left": 295,
+      "quotes": [
+        {
+          "id": "sensex",
+          "provider": "upstox",
+          "value": "74675.08",
+          "previous_close": "74315.61",
+          "change_percent": "0.483707258811439480884298736160545543500",
+          "state": "live",
+          "error_kind": null,
+          "exchange_timestamp": "2026-10-16T06:27:27.188000Z",
+          "precision": "millisecond",
+          "retrieved_at": "2026-10-16T06:27:27.466910Z",
+          "retained": false,
+          "displayed": "SENSEX 74,675.08 (+0.48%)\nBSE / Upstox · LIVE · 16 Oct 2026, 11:57:27.188 am IST"
+        },
+        {
+          "id": "nifty_bank",
+          "provider": "nse",
+          "value": "55719.65",
+          "previous_close": "55810.5",
+          "change_percent": "-0.1627829888641026330170845987762159450300",
+          "state": "delayed",
+          "error_kind": "quote_not_current",
+          "exchange_timestamp": "2026-10-16T06:26:00Z",
+          "precision": "minute",
+          "retrieved_at": "2026-10-16T06:27:45.270430Z",
+          "retained": false,
+          "displayed": "NIFTY BANK 55,719.65 (-0.16%)\nNSE · DELAYED · 16 Oct 2026, 11:56 am IST"
+        },
+        {
+          "id": "nifty_it",
+          "provider": "nse",
+          "value": "31552.05",
+          "previous_close": "30719.8",
+          "change_percent": "2.709164773208158907284552633806209675800",
+          "state": "delayed",
+          "error_kind": "quote_not_current",
+          "exchange_timestamp": "2026-10-16T06:26:00Z",
+          "precision": "minute",
+          "retrieved_at": "2026-10-16T06:27:45.270430Z",
+          "retained": false,
+          "displayed": "NIFTY IT 31,552.05 (+2.71%)\nNSE · DELAYED · 16 Oct 2026, 11:56 am IST"
+        }
+      ]
+    }
+  ],
+  "tooltip": {
+    "text": "FY 2025–26 · CY 2025India7.57%World2.92%",
+    "font_size": "14px",
+    "background": "rgb(8, 22, 37)",
+    "height": 91.78125,
+    "width": 163.515625
+  },
+  "seam": {
+    "width": 1070.031982421875,
+    "trailing_gap": -0.00006103515625
+  },
+  "alignment": {
+    "crosshair_x": 482.5,
+    "tick_x": 482.5
+  },
+  "browser_errors": [],
+  "limitations": [
+    "Same quote timestamp across cycles may be a cached/closed observation; retrieval time is not quote freshness.",
+    "Local source/UI verification does not establish public market redistribution rights or hosted acceptance.",
+    "Segoe UI fallback and other submission gates remain in design-completion.md."
+  ]
+}

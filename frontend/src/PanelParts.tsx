@@ -218,6 +218,8 @@ export function ObservationTable({
   rowHeading?: string;
   rowLabel?: (key: string) => string;
 }) {
+  const [inspected, setInspected] = useState('');
+  const key = keys.includes(inspected) ? inspected : keys.at(-1);
   return (
     <div className="observations" tabIndex={0} role="region" aria-label={`${id} observations table`}>
       <table>
@@ -267,6 +269,28 @@ export function ObservationTable({
           )}
         </tbody>
       </table>
+      <details className="observation-details">
+        <summary>Methodology, sources and observation notes</summary>
+        <label>
+          Reporting period{' '}
+          <select
+            aria-label={`${id} observation details period`}
+            value={key || ''}
+            onChange={(e) => setInspected(e.target.value)}
+          >
+            {keys.map((k) => (
+              <option key={k} value={k}>
+                {rowLabel
+                  ? rowLabel(k)
+                  : series.flatMap((s) => s.points).find((p) => p.key === k)?.label || k}
+              </option>
+            ))}
+          </select>
+        </label>
+        {series.map((s) => (
+          <PointDetails key={s.id} p={s.points.find((p) => p.key === key)} series={s} />
+        ))}
+      </details>
     </div>
   );
 }

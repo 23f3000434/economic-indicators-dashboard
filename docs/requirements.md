@@ -2,7 +2,7 @@
 
 The supplied DOCX is the product/assessment brief; the user's instructions define the authorised work. Current scope from af5ff07 is precise design and data completion: measured Figma reproduction, actual market snapshots, comparable India/US debt, current official-release checks and source-to-screen/visual acceptance. Preserve GDP/authentication, canonical measurements, independent collection and delivery safeguards. Public deployment remains pending completion review. Unavailable debt/market states do not fulfil those required data features.
 
-The final local checkpoint is limited to the confirmed cross-tab logout defect, its unchanged browser regression, one subsequent complete sequential browser suite, evidence and commits. No further features/refactors or public deployment are authorised at this checkpoint.
+The current local interaction pass is limited to compact readable tooltips, shared period selection/crosshairs/active marks, a seamless accessible quote scroll, and verification of real values/statuses across two polling cycles. Preserve the measured layout, authentication and backend architecture. Unrelated features/refactors and public deployment remain outside scope.
 
 References read without modification:
 - `Interview_Round_2_Full_Stack_Application_Challenge.docx` supplied from Downloads.
