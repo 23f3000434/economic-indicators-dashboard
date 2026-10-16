@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-10-16T04:27:33.591334+00:00",
+  "mode": "Online snapshot of normal private database, isolated restore only; active DB not restored or overwritten",
+  "schema_version": 4,
+  "backup_counts": {
+    "collection_runs": 187,
+    "market_quotes": 3,
+    "market_sessions": 2,
+    "observations": 412,
+    "refresh_tokens": 44,
+    "sessions": 28,
+    "users": 1
+  },
+  "restore_counts": {
+    "collection_runs": 187,
+    "market_quotes": 3,
+    "market_sessions": 2,
+    "observations": 412,
+    "refresh_tokens": 0,
+    "sessions": 0,
+    "users": 1
+  },
+  "canonical_tables_unchanged": {
+    "observations": true,
+    "market_quotes": true,
+    "market_sessions": true,
+    "collection_runs": true,
+    "provider_cooldowns": true,
+    "users": true
+  },
+  "snapshot_unchanged": true,
+  "restored_sessions_removed": true,
+  "file_modes": [
+    "0o600",
+    "0o600"
+  ],
+  "private_directory_mode": "0o700"
+}

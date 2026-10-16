@@ -70,7 +70,9 @@ def copy_database(source: Path, destination: Path, *, restore=False):
             version = validate(target)
             counts = {
                 table: target.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
-                for table in sorted(TABLES)
+                for table in sorted(
+                    TABLES | ({"market_quotes", "market_sessions"} if version >= 4 else set())
+                )
             }  # fixed internal allowlist only
         with staged.open("rb") as handle:
             os.fsync(handle.fileno())

@@ -186,3 +186,31 @@ def test_restore_rejects_incomplete_schema_even_if_sqlite_integrity_is_ok(tmp_pa
     with pytest.raises(ValueError, match="schema"):
         copy_database(source, destination, restore=True)
     assert not destination.exists()
+
+
+def test_market_snapshots_and_status_survive_private_restore(settings, clock, tmp_path):
+    from tests.conftest import PASSWORD
+    from tests.test_markets import market_response, market_settings
+
+    config = market_settings(settings)
+    app = create_app(config, clock, httpx.AsyncClient(transport=httpx.MockTransport(market_response)))
+    with TestClient(app) as client:
+        app.state.auth.create_user("analyst", PASSWORD)
+        tokens = login(client).json()
+        bearer = {"Authorization": "Bearer " + tokens["access_token"]}
+        for group in ("market_nse", "market_bse", "market_status"):
+            assert asyncio.run(app.state.jobs[group].collect_once())
+        original = client.get("/api/v1/ticker", headers=bearer).json()
+        directory = private_dir(tmp_path / "market-recovery")
+        snapshot, restored = directory / "saved.sqlite3", directory / "restored.sqlite3"
+        result = copy_database(config.database, snapshot)
+        assert result["schema_version"] == 4
+        assert result["counts"]["market_quotes"] == 3 and result["counts"]["market_sessions"] == 2
+        result = copy_database(snapshot, restored, restore=True)
+        assert result["counts"]["sessions"] == 0
+        assert result["counts"]["market_quotes"] == 3 and result["counts"]["market_sessions"] == 2
+        with TestClient(create_app(replace(config, database=restored), clock)) as recovered:
+            assert recovered.get("/api/v1/ticker", headers=bearer).status_code == 401
+            new_bearer = {"Authorization": "Bearer " + login(recovered).json()["access_token"]}
+            assert recovered.get("/api/v1/ticker", headers=new_bearer).json() == original
+        assert client.get("/api/v1/ticker", headers=bearer).status_code == 200
